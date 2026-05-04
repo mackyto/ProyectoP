@@ -1,14 +1,14 @@
 CREATE DATABASE IF NOT EXISTS ProyectoP;
 USE ProyectoP;
 
-CREATE TABLE IF NOT EXISTS personas (
+CREATE TABLE IF NOT EXISTS Persona (
     id INT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
     telefono VARCHAR(20)
 );
 
-CREATE TABLE IF NOT EXISTS articulos (
+CREATE TABLE IF NOT EXISTS Articulo (
     id INT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     precio_base DECIMAL(10, 2) NOT NULL,
@@ -16,43 +16,43 @@ CREATE TABLE IF NOT EXISTS articulos (
 );
 
 
-CREATE TABLE IF NOT EXISTS productos_fisicos (
+CREATE TABLE IF NOT EXISTS ProductoFisico (
     articulo_id INT PRIMARY KEY,
     stock INT NOT NULL,
     CONSTRAINT fk_art_producto FOREIGN KEY (articulo_id) 
-        REFERENCES articulos(id) ON DELETE CASCADE
+        REFERENCES Articulo(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE IF NOT EXISTS servicios (
+CREATE TABLE IF NOT EXISTS Servicio (
     articulo_id INT PRIMARY KEY,
     minutos INT NOT NULL,
     urgente BOOLEAN NOT NULL,
     CONSTRAINT fk_art_servicio FOREIGN KEY (articulo_id) 
-        REFERENCES articulos(id) ON DELETE CASCADE
+        REFERENCES Articulo(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE IF NOT EXISTS clientes (
+CREATE TABLE IF NOT EXISTS Cliente (
     persona_id INT PRIMARY KEY,
     fidelidad INT,
     email VARCHAR(150),
     CONSTRAINT fk_persona_cliente FOREIGN KEY (persona_id) 
-        REFERENCES personas(id) ON DELETE CASCADE
+        REFERENCES Persona(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE IF NOT EXISTS pedidos (
+CREATE TABLE IF NOT EXISTS Pedido (
     id INT PRIMARY KEY AUTO_INCREMENT,
     fecha DATETIME NOT NULL,
     precio_total DECIMAL(10, 2),
     cliente_id INT NOT NULL,
     CONSTRAINT fk_pedido_cliente FOREIGN KEY (cliente_id) 
-        REFERENCES clientes(persona_id)
+        REFERENCES Cliente(persona_id)
 );
 
 
-CREATE TABLE IF NOT EXISTS lineas_pedido (
+CREATE TABLE IF NOT EXISTS LineasPedido (
     pedido_id INT,
     numero_linea INT,
     articulo_id INT NOT NULL,
@@ -61,14 +61,14 @@ CREATE TABLE IF NOT EXISTS lineas_pedido (
     
     PRIMARY KEY (pedido_id, numero_linea),
     CONSTRAINT fk_linea_pedido FOREIGN KEY (pedido_id) 
-        REFERENCES pedidos(id) ON DELETE CASCADE,
+        REFERENCES Pedido(id) ON DELETE CASCADE,
     CONSTRAINT fk_linea_articulo FOREIGN KEY (articulo_id) 
-        REFERENCES articulos(id)
+        REFERENCES Articulo(id)
 );
 
 
 
-CREATE OR REPLACE VIEW v_clientes AS
+CREATE OR REPLACE VIEW v_cliente AS
 SELECT 
     p.id AS cliente_id,
     p.nombre,
@@ -76,6 +76,6 @@ SELECT
     p.telefono,
     c.fidelidad,
     c.email
-FROM personas p
-JOIN clientes c ON p.id = c.persona_id;
+FROM Persona p
+JOIN Cliente c ON p.id = c.persona_id;
 
