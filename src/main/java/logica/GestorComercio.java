@@ -182,8 +182,8 @@ public class GestorComercio implements LogicaNegocio {
     }
 
     /**
-     * Borra el pedido actual las lineas se borran automaticamente al pperder la
-     * referencia las lineas de pedido
+     * Borra el pedido actual las lineas se borran automaticamente al perder la
+     * referencia y quedar huerfanas... las lineas de pedido
      */
     @Override
     public void cancelarPedido() {
