@@ -47,7 +47,8 @@ public abstract class Persona extends EntidadBase {
      * @param id código único incremental.
      * @throws ErrorDatos 
      */
-    public Persona(String nombre, String apellidos, String telefono, int id) throws ErrorDatos {
+    public Persona(String nombre, String apellidos, String telefono, int id) throws ErrorDatos {          
+            
         super(id);
         
         if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío."))
@@ -58,6 +59,10 @@ public abstract class Persona extends EntidadBase {
         
         if (Utils.isTlfo(telefono))
             this.telefono = telefono;
+       
+        if (puntero <= id)
+            puntero = id +1;
+        
     }
 
     public String getNombre() {
