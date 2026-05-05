@@ -139,7 +139,7 @@ public class Utils {
      */
     public static boolean rangoFidelidad (int fidelidad) throws ErrorDatos{
         
-        if (fidelidad < 1 || fidelidad >5)
+        if (fidelidad < 1 || fidelidad > 5)
             throw new ErrorDatos("ERROR. Valor de fidelidad fuera de rango: " + fidelidad + " (valores entre 1 - 5)");
         
         return true;

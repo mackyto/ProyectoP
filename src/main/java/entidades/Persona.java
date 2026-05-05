@@ -92,7 +92,9 @@ public abstract class Persona extends EntidadBase {
         if (Utils.isTlfo(telefono))
             this.telefono = telefono;
     }
-    
-    
+
+    public static int getPuntero() {
+        return puntero++;
+    }
     
 }

@@ -35,19 +35,20 @@ public class Main {
             
             System.out.println("Menú");
             System.out.println("1 - Crear cliente.");
-            System.out.println("2 -");
+            System.out.println("2 - Listar Clientes");
             System.out.println("3 - ");
             System.out.println("4 - ");
             System.out.println("5 -");
             System.out.println("6 - ");
             System.out.println("7 - ");
+            System.out.println("Q - Salir.");
 
             opcion = kl.nextLine();
            
             switch (opcion) {
                 
-                case "1": crearCliente(); break;                
-                case "2": ; break;                
+                case "1": crearCliente(gestor); break;                
+                case "2": gestor.imprimirClientes(); break;                
                 case "3": ; break;                
                 case "4": ; break;                
                 case "5": ; break;                
@@ -71,7 +72,7 @@ public class Main {
             generador.mostrarEstadisticas();
 
             //    generarCli.crearClientes(comercio, 80);
-            gestor.imprimirListaClientes(gestor.buscarClientes("José"));
+            gestor.imprimirListaClientes(gestor.buscarClientes("javier"));
 
             //gestor.imprimirClientes();
             //gestor.imprimirArticulos();
@@ -80,6 +81,7 @@ public class Main {
             System.out.println(er.getMessage());
 
         }
+
 
         }while (!opcion.equalsIgnoreCase("q"));
         
@@ -102,31 +104,34 @@ public class Main {
 
     }
 
-    public static Cliente crearCliente() {
-
-        Cliente cl = null;
+    /**
+     * Solicita datos de cliente
+     * @param gestor
+     * @return
+     */
+    public static boolean crearCliente(GestorComercio gestor) {
 
         try {
 
-            System.out.println("Nombre: ");
+            System.out.print("Nombre: ");
             String nombre = kl.nextLine();
-            System.out.println("Apellidos: ");
+            System.out.print("Apellidos: ");
             String apellidos = kl.nextLine();
-            System.out.println("telefono: ");
+            System.out.print("telefono: ");
             String telefono = kl.nextLine();
-            System.out.println("Fidelidad: ");
+            System.out.print("Fidelidad (1-5): ");
             int fidelidad = Integer.parseInt(kl.nextLine());
-            System.out.println("email: ");
+            System.out.print("email: ");
             String email = kl.nextLine();
 
-            cl = new Cliente(email, fidelidad, nombre, apellidos, telefono);
+            gestor.crearCliente(nombre, apellidos, telefono, email, fidelidad);
 
         } catch (ErrorDatos ed) {
             ed.printStackTrace();
         }
 
-        return cl;
-
+        return true;
+        
     }
 
 }

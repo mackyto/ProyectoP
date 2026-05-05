@@ -68,7 +68,12 @@ public class GestorComercio implements LogicaNegocio {
      */
     @Override
     public Cliente crearCliente(String nombre, String apellidos, String telefono, String email, int nivelFidelidad) throws ErrorDatos {
-        clientes.add(new Cliente(email, nivelFidelidad, nombre, apellidos, telefono));
+        int id = Cliente.getPuntero();
+        
+        Cliente cl = new Cliente(email, nivelFidelidad, nombre, apellidos, telefono, id);
+        
+        
+        clientes.add(cl);
         return clientes.getLast();
     }
 
