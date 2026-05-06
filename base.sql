@@ -79,3 +79,25 @@ SELECT
 FROM Persona p
 JOIN Cliente c ON p.id = c.persona_id;
 
+
+CREATE OR REPLACE VIEW v_artifisico AS
+SELECT 
+    a.id AS articulo_id,
+    a.nombre,
+    a.precio_base,
+    a.iva,
+    f.stock
+FROM Articulo a
+JOIN ProductoFisico f ON a.id = f.articulo_id;
+
+
+CREATE OR REPLACE VIEW v_artiservicio AS
+SELECT 
+    a.id AS articulo_id,
+    a.nombre,
+    a.precio_base,
+    a.iva,
+    s.minutos,
+    s.urgente
+FROM Articulo a
+JOIN Servicio s ON a.id = s.articulo_id;
