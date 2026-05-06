@@ -15,6 +15,19 @@ public abstract class Persona extends EntidadBase {
     private String telefono;
     
     private static int puntero = 0;
+
+    
+    
+    /**
+     * Constructor para recuperar datos de persistencia
+     * @param id
+     * @throws ErrorDatos 
+     */
+    public Persona() throws ErrorDatos {
+        super();
+    }
+    
+    
     
     /**
      * Constructor Persona calculando el id único
@@ -95,6 +108,10 @@ public abstract class Persona extends EntidadBase {
 
     public static int getPuntero() {
         return puntero++;
+    }
+    
+    public static void setPuntero(int p) {
+        puntero = p;
     }
     
 }

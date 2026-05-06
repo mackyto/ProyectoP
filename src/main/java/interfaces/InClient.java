@@ -16,6 +16,6 @@ public interface InClient {
     public boolean persistirCliente (Cliente c) throws SQLException;
     public List<Integer> listarIDClientes () throws SQLException;
     public Cliente recuperarCliennteByID (int id) throws SQLException;
-    
+    public List<Cliente> recuperarTodos();
     
 }

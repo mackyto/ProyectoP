@@ -5,24 +5,23 @@
 package logica;
 
 /**
- *  System.out.println("Telefonno: " + cl.getTelefono());
-                System.out.println("email: " + cl.getEmail());
-                System.out.println("Fidelidad(1-5): " + cl.getNivelFidelidad());
-                System.out.println("----------------------------------------");
-                System.out.println();
-                System.out.println();
-            }
-        } else {
-            throw new ErrorDatos("ERROR. No hay Clientes en la lista.");
-        }
-
-    }
+ * System.out.println("Telefonno: " + cl.getTelefono());
+ * System.out.println("email: " + cl.getEmail());
+ * System.out.println("Fidelidad(1-5): " + cl.getNivelFidelidad());
+ * System.out.println("----------------------------------------");
+ * System.out.println(); System.out.println(); } } else { throw new
+ * ErrorDatos("ERROR. No hay Clientes en la lista."); }
+ *
+ * }
+ *
  * @author Jorge
  */
 import interfaces.LogicaNegocio;
 import entidades.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import persistencia.PersisClient;
 
 public class GestorComercio implements LogicaNegocio {
 
@@ -34,12 +33,23 @@ public class GestorComercio implements LogicaNegocio {
     private List<Pedido> pedidos;
     private Cliente clienteActual;
     private Pedido pedidoEnCurso;
+    private PersisClient pClient;
 
     private GestorComercio() {
         //INICIALIZAR COLECCIONES
         clientes = new ArrayList<>();
         articulos = new ArrayList<>();
         pedidos = new ArrayList<>();
+        pClient = new PersisClient();
+
+        int maxId = 0;
+        for (Cliente c : clientes) {
+            if (c.getId() > maxId) {
+                maxId = c.getId();
+            }
+        }
+
+        Persona.setPuntero(maxId + 1);
 
     }
 
@@ -63,18 +73,22 @@ public class GestorComercio implements LogicaNegocio {
      * @param telefono del cliente
      * @param email del cliente
      * @param nivelFidelidad del cliente
-     * @return
+     * @param Cliente.getPuntero() variable estática, puntero de indexación de
+     * clientes
+     * @return Cliente Objeto creado e incorporado a la lista this.clientes
+     * @throws java.sql.SQLException
      * @throws ErrorDatos
      */
     @Override
-    public Cliente crearCliente(String nombre, String apellidos, String telefono, String email, int nivelFidelidad) throws ErrorDatos {
+    public Cliente crearCliente(String nombre, String apellidos, String telefono, String email, int nivelFidelidad) throws SQLException, ErrorDatos {
+
         int id = Cliente.getPuntero();
-        
         Cliente cl = new Cliente(email, nivelFidelidad, nombre, apellidos, telefono, id);
-        
-        
+        if (!pClient.persistirCliente(cl))
+            throw new SQLException("Error de Integridad de Datos");
         clientes.add(cl);
         return clientes.getLast();
+
     }
 
     /**
@@ -251,8 +265,9 @@ public class GestorComercio implements LogicaNegocio {
 
     /**
      * Impprime datos de los articulos desde una lista
+     *
      * @param articulos liste de articulos a imprimir
-     * @throws ErrorDatos 
+     * @throws ErrorDatos
      */
     public void imprimirListaArticulos(List<Articulo> articulos) throws ErrorDatos {
 
@@ -286,6 +301,7 @@ public class GestorComercio implements LogicaNegocio {
 
     /**
      * Busca un cliente por nombre
+     *
      * @param nombre del cliente a buscar
      * @param apellidos del cliente a buscar
      * @return del primer cliente localizado.
@@ -301,6 +317,7 @@ public class GestorComercio implements LogicaNegocio {
 
     /**
      * Crea una lista de clientes por coincidencia de nombre o apellidos.
+     *
      * @param nombre de los clientes a buscar.
      * @return lista de clientes con coincidencias.
      */
@@ -316,7 +333,8 @@ public class GestorComercio implements LogicaNegocio {
 
     /**
      * Imprime los datos de los clientes del comercio
-     * @throws ErrorDatos 
+     *
+     * @throws ErrorDatos
      */
     public void imprimirClientes() throws ErrorDatos {
 
@@ -341,8 +359,9 @@ public class GestorComercio implements LogicaNegocio {
 
     /**
      * Imprime los clienytes de la lista de entrada
+     *
      * @param clientes lista de clientes a imprimir
-     * @throws ErrorDatos 
+     * @throws ErrorDatos
      */
     public void imprimirListaClientes(List<Cliente> clientes) throws ErrorDatos {
 
@@ -363,6 +382,19 @@ public class GestorComercio implements LogicaNegocio {
             throw new ErrorDatos("ERROR. No hay Clientes en la lista.");
         }
 
+    }
+
+    private void cargarDatosIniciales() {
+        try {
+
+//            this.articulos.addAll(pArticulo.recuperarTodos());
+            this.clientes.addAll(pClient.recuperarTodos());
+
+//            this.pedidos.addAll(pPedido.recuperarTodos());
+            System.out.println("Base de datos cargada correctamente.");
+        } catch (Exception e) {
+            System.err.println("Error al sincronizar con la base de datos: " + e.getMessage());
+        }
     }
 
 }

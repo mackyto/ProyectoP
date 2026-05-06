@@ -11,12 +11,13 @@ package interfaces;
 
 import java.util.List;
 import entidades.*;
+import java.sql.SQLException;
 
 
 public interface LogicaNegocio {
 
     // CLIENTES
-    Cliente crearCliente(String nombre, String apellidos, String telefono, String email, int nivelFidelidad) throws ErrorDatos ;
+    Cliente crearCliente(String nombre, String apellidos, String telefono, String email, int nivelFidelidad) throws SQLException, ErrorDatos ;
     List<Cliente> listarClientes();
 
     // ARTÍCULOS

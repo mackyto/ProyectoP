@@ -17,6 +17,13 @@ public class Cliente extends Persona {
     private int nivelFidelidad;
     private List<Pedido> listaPedidos;
 
+    public Cliente() throws ErrorDatos {
+        super();
+    }
+
+    
+    
+
     /**
      * Constructor de cliente inicializando la lista de pedidos con id
      * automático

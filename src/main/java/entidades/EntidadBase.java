@@ -13,6 +13,12 @@ import interfaces.Identificable;
 public abstract class EntidadBase implements Identificable {
     
     private int id;
+
+    /**
+     * Constructor vacío para recuperacion de datos persistidos
+     */
+    public EntidadBase() {
+    }
     
     /**
      * Constructor cin identificador como parrametro
@@ -42,8 +48,11 @@ public abstract class EntidadBase implements Identificable {
      */
     @Override
     public void setId(int identificador) throws ErrorDatos {
-        if (Utils.numeroPositivo(id, "Error. El identificador no puede ser negativo."))
-            this.id = id;
+        if (Utils.numeroPositivo(id, "Error. El identificador no puede ser negativo.")){
+            this.id = identificador;
+            if (identificador >= Persona.getPuntero())
+                Persona.setPuntero(identificador + 1);
+        }
     }
     
 }

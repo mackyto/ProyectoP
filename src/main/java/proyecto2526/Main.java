@@ -7,6 +7,7 @@ package proyecto2526;
 import interfaces.LogicaNegocio;
 import logica.GestorComercio;
 import entidades.*;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -76,11 +77,10 @@ public class Main {
 
             //gestor.imprimirClientes();
             //gestor.imprimirArticulos();
-        } catch (ErrorDatos er) {
-
-            System.out.println(er.getMessage());
-
-        }
+            
+        } catch (SQLException sql) {System.out.println(sql.getMessage());            
+            
+        } catch (ErrorDatos er) {System.out.println(er.getMessage());}
 
 
         }while (!opcion.equalsIgnoreCase("q"));
@@ -109,7 +109,7 @@ public class Main {
      * @param gestor
      * @return
      */
-    public static boolean crearCliente(GestorComercio gestor) {
+    public static boolean crearCliente(GestorComercio gestor) throws SQLException {
 
         try {
 

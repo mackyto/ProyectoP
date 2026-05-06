@@ -9,6 +9,7 @@ import interfaces.LogicaNegocio;
 import java.util.ArrayList;
 import java.util.List;
 import entidades.Utils;
+import java.sql.SQLException;
 
 /**
  *
@@ -71,7 +72,7 @@ public class GeneradorClientes {
      * @param cantidad cantidad de clientes a generar.
      * @throws ErrorDatos 
      */
-    public void crearClientes(LogicaNegocio comercio, int cantidad) throws ErrorDatos {
+    public void crearClientes(LogicaNegocio comercio, int cantidad) throws ErrorDatos, SQLException {
 
         GestorComercio gestor = (GestorComercio) comercio;
         
