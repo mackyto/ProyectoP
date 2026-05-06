@@ -48,10 +48,8 @@ public abstract class EntidadBase implements Identificable {
      */
     @Override
     public void setId(int identificador) throws ErrorDatos {
-        if (Utils.numeroPositivo(id, "Error. El identificador no puede ser negativo.")){
+        if (Utils.numeroPositivo(identificador, "Error. El identificador no puede ser negativo.")){
             this.id = identificador;
-            if (identificador >= Persona.getPuntero())
-                Persona.setPuntero(identificador + 1);
         }
     }
     

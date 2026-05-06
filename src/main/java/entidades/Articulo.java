@@ -18,6 +18,11 @@ public abstract class Articulo extends EntidadBase implements Vendible {
 
     private static int puntero = 0;
 
+    
+    public Articulo() {
+    }
+    
+    
     /**
      * Constructor de super clase con id autoḿatico
      * @param nombre - El nombre que describe o representa un articulo.
@@ -78,5 +83,20 @@ public abstract class Articulo extends EntidadBase implements Vendible {
         return this.precioBase;
     }
 
-
+    /**
+     * Actualiza el ID del Articulo ajustando el valor de puntero para evitar colisiones de valor
+     * @param identificador
+     * @throws ErrorDatos 
+     */
+    @Override
+    public void setId(int identificador) throws ErrorDatos {
+        
+        if (Utils.numeroPositivo(identificador, "Error. El identificador no puede ser negativo.")) {
+            super.setId(identificador);
+            if (identificador >= puntero) 
+                puntero = identificador + 1;
+        }
+        
+    }
+    
 }

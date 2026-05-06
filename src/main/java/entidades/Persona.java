@@ -9,73 +9,79 @@ package entidades;
  * @author javsimoli
  */
 public abstract class Persona extends EntidadBase {
-    
+
     private String nombre;
     private String apellidos;
     private String telefono;
-    
+
     private static int puntero = 0;
 
-    
-    
     /**
      * Constructor para recuperar datos de persistencia
+     *
      * @param id
-     * @throws ErrorDatos 
+     * @throws ErrorDatos
      */
     public Persona() throws ErrorDatos {
         super();
     }
-    
-    
-    
+
     /**
      * Constructor Persona calculando el id único
+     *
      * @param nombre de la persona
      * @param apellidos de la persona
      * @param telefono de la persona
      * @param id código único incremental.
-     * @throws ErrorDatos 
+     * @throws ErrorDatos
      */
     public Persona(String nombre, String apellidos, String telefono) throws ErrorDatos {
 
         super(++puntero);
-        
-        if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío."))
+
+        if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío.")) {
             this.nombre = nombre;
-        
-        if (Utils.stringNoNulo(apellidos, "ERROR. El apellido es nulo no vacío."))
+        }
+
+        if (Utils.stringNoNulo(apellidos, "ERROR. El apellido es nulo no vacío.")) {
             this.apellidos = apellidos;
-        
-        if (Utils.isTlfo(telefono))
+        }
+
+        if (Utils.isTlfo(telefono)) {
             this.telefono = telefono;
-        
+        }
+
     }
 
     /**
      * Constructor Persona con todos los parametros
+     *
      * @param nombre de la persona
      * @param apellidos de la persona
      * @param telefono de la persona
      * @param id código único incremental.
-     * @throws ErrorDatos 
+     * @throws ErrorDatos
      */
-    public Persona(String nombre, String apellidos, String telefono, int id) throws ErrorDatos {          
-            
+    public Persona(String nombre, String apellidos, String telefono, int id) throws ErrorDatos {
+
         super(id);
-        
-        if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío."))
+
+        if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío.")) {
             this.nombre = nombre;
-        
-        if (Utils.stringNoNulo(nombre, "ERROR. El apellido es nulo no vacío."))
+        }
+
+        if (Utils.stringNoNulo(nombre, "ERROR. El apellido es nulo no vacío.")) {
             this.apellidos = apellidos;
-        
-        if (Utils.isTlfo(telefono))
+        }
+
+        if (Utils.isTlfo(telefono)) {
             this.telefono = telefono;
-       
-        if (puntero <= id)
-            puntero = id +1;
-        
+        }
+
+        if (puntero <= id) {
+            puntero = id + 1;
+        }
+
     }
 
     public String getNombre() {
@@ -83,8 +89,9 @@ public abstract class Persona extends EntidadBase {
     }
 
     public void setNombre(String nombre) throws ErrorDatos {
-        if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío."))
+        if (Utils.stringNoNulo(nombre, "ERROR. El nombre es nulo no vacío.")) {
             this.nombre = nombre;
+        }
     }
 
     public String getApellidos() {
@@ -93,8 +100,9 @@ public abstract class Persona extends EntidadBase {
     }
 
     public void setApellidos(String apellidos) throws ErrorDatos {
-        if (Utils.stringNoNulo(nombre, "ERROR. El apellido es nulo no vacío."))        
+        if (Utils.stringNoNulo(nombre, "ERROR. El apellido es nulo no vacío.")) {
             this.apellidos = apellidos;
+        }
     }
 
     public String getTelefono() {
@@ -102,16 +110,28 @@ public abstract class Persona extends EntidadBase {
     }
 
     public void setTelefono(String telefono) throws ErrorDatos {
-        if (Utils.isTlfo(telefono))
+        if (Utils.isTlfo(telefono)) {
             this.telefono = telefono;
+        }
     }
 
     public static int getPuntero() {
-        return puntero++;
+        return puntero;
     }
-    
+
     public static void setPuntero(int p) {
         puntero = p;
     }
-    
+
+    @Override
+    public void setId(int identificador) throws ErrorDatos {
+        
+        if (Utils.numeroPositivo(identificador, "Error. El identificador no puede ser negativo.")) {
+            super.setId(identificador);
+            if (identificador >= getPuntero()) 
+                setPuntero(identificador + 1);
+        }
+        
+    }
+
 }

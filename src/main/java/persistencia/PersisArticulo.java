@@ -5,13 +5,17 @@
 package persistencia;
 
 import entidades.Articulo;
+import entidades.Cliente;
+import entidades.ErrorDatos;
 import entidades.ProductoFisico;
 import entidades.Servicio;
 import interfaces.InArticulo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,37 +49,88 @@ public class PersisArticulo implements InArticulo {
     }
 
     private void insertarArticulo(Articulo a) {
+        
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
 
-            PreparedStatement aps = conn.prepareStatement(INSERT_ARTICULO);
+            PreparedStatement aps = conn.prepareStatement(INSERTAR_ARTICULO);
 
-            aps.setInt(1, c.getId());
-            pps.setString(2, c.getNombre());
-            pps.setString(3, c.getApellidos());
-            pps.setString(4, c.getTelefono());
-            pps.executeUpdate();
-            cps.setInt(1, c.getId());
-            cps.setInt(2, c.getNivelFidelidad());
-            cps.setString(3, c.getEmail());
-            cps.executeUpdate();
+            aps.setInt(1, a.getId());
+            aps.setString(2, a.getNombre());
+            aps.setDouble(3, a.getPrecioBase());
+            aps.setDouble(4, a.getIva());
+            aps.executeUpdate();
+
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+        
+    }
 
+    private boolean insertarFisico(ProductoFisico p) {
+        
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
+
+            PreparedStatement pps = conn.prepareStatement(INSERTAR_PFISICO);
+
+            pps.setInt(1, p.getId());
+            pps.setDouble(2, p.precioUnitarioFinal());
+            pps.setDouble(3, p.getIva());
+            pps.executeUpdate();
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
         return true;
+        
     }
 
-    private boolean insertarFisico(ProductoFisico productoFisico) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    private boolean insertarServicio(Servicio s) {
+        
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
 
-    private boolean insertarServicio(Servicio servicio) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            PreparedStatement sps = conn.prepareStatement(INSERTAR_SERVICIO);
+
+            sps.setInt(1, s.getId());
+            sps.setInt(2, s.getMinutos());
+            sps.setBoolean(3, s.isUrgente());
+            sps.executeUpdate();
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return true;
+        
     }
 
     @Override
     public List<Articulo> recuperarTodo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Articulo> lista = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); 
+             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); 
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setId(rs.getInt("cliente_id"));
+                c.setNombre(rs.getString("nombre"));
+                c.setApellidos(rs.getString("apellidos"));
+                c.setTelefono(rs.getString("telefono"));
+                c.setNivelFidelidad(rs.getInt("fidelidad"));
+                c.setEmail(rs.getString("email"));
+                lista.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al recuperar clientes: " + e.getMessage());
+        } catch (ErrorDatos ex) {
+            System.getLogger(PersisClient.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
+        return lista;
+    }
     }
 
 }

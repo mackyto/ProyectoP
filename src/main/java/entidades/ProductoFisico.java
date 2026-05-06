@@ -12,6 +12,10 @@ public class ProductoFisico extends Articulo {
  
     private int stock;
 
+    
+    public ProductoFisico() {
+    }
+    
     /**
      * Constructor 
      * @param stock cantidad de servicio
