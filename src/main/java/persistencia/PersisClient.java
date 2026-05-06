@@ -21,9 +21,9 @@ import java.util.List;
  */
 public class PersisClient implements InClient {
 
-    private static final String INSERT_PERSONA = "INSERT INTO personas (id, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
-    private static final String INSERT_CLIENTE = "INSERT INTO clientes (persona_id, fidelidad, email) VALUES (?, ?, ?)";
-    private static final String SQL_SELECT_ALL = "SELECT * FROM v_clientes";
+    private static final String INSERT_PERSONA = "INSERT INTO Persona (id, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_CLIENTE = "INSERT INTO Cliente (persona_id, fidelidad, email) VALUES (?, ?, ?)";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM `v_cliente`";
 
     /**
      * Guarda los datos de un cliente en la base de datos
@@ -34,7 +34,7 @@ public class PersisClient implements InClient {
     @Override
     public boolean persistirCliente(Cliente c) {
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://mysql.gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8Z%")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
 
             PreparedStatement pps = conn.prepareStatement(INSERT_PERSONA);
             PreparedStatement cps = conn.prepareStatement(INSERT_CLIENTE);
@@ -71,7 +71,7 @@ public class PersisClient implements InClient {
     public List<Cliente> recuperarTodos() {
         List<Cliente> lista = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://mysql.gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8Z%"); 
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); 
              PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ALL); 
              ResultSet rs = ps.executeQuery()) {
 

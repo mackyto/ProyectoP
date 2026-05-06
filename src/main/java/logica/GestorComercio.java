@@ -37,10 +37,12 @@ public class GestorComercio implements LogicaNegocio {
 
     private GestorComercio() {
         //INICIALIZAR COLECCIONES
-        clientes = new ArrayList<>();
         articulos = new ArrayList<>();
         pedidos = new ArrayList<>();
+        // Recupera los Datos persistidos
         pClient = new PersisClient();
+        
+        this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
 
         int maxId = 0;
         for (Cliente c : clientes) {
