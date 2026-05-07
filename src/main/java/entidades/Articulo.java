@@ -83,6 +83,14 @@ public abstract class Articulo extends EntidadBase implements Vendible {
         return this.precioBase;
     }
 
+    public static int getPuntero() {
+        return puntero;
+    }
+
+    public static void setPuntero(int puntero) {
+        Articulo.puntero = puntero;
+    }
+    
     /**
      * Actualiza el ID del Articulo ajustando el valor de puntero para evitar colisiones de valor
      * @param identificador
@@ -99,4 +107,5 @@ public abstract class Articulo extends EntidadBase implements Vendible {
         
     }
     
+
 }

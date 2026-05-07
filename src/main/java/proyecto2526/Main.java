@@ -29,62 +29,64 @@ public class Main {
         GestorComercio gestor = (GestorComercio) comercio;
 
         String opcion = "";
-        
-        do{
-            
-        try {
-            
-            System.out.println("Menú");
-            System.out.println("1 - Crear cliente.");
-            System.out.println("2 - Listar Clientes");
-            System.out.println("3 - ");
-            System.out.println("4 - ");
-            System.out.println("5 -");
-            System.out.println("6 - ");
-            System.out.println("7 - ");
-            System.out.println("Q - Salir.");
 
-            opcion = kl.nextLine();
-           
-            switch (opcion) {
-                
-                case "1": crearCliente(gestor); break;                
-                case "2": gestor.imprimirClientes(); break;                
-                case "3": ; break;                
-                case "4": ; break;                
-                case "5": ; break;                
-                case "6": ; break;                
-                case "7": ; break;
-                
-                
-                
-                
-                
+        do {
+
+            try {
+
+                System.out.println("Menú");
+                System.out.println("1 - Crear cliente.");
+                System.out.println("2 - Listar Clientes");
+                System.out.println("3 - Crear Articulo");
+                System.out.println("4 - Listar Articulos");
+                System.out.println("5 -");
+                System.out.println("6 - ");
+                System.out.println("7 - ");
+                System.out.println("Q - Salir.");
+
+                opcion = kl.nextLine();
+
+                switch (opcion) {
+
+                    case "1":
+                        crearCliente(gestor);
+                        break;
+                    case "2":
+                        gestor.imprimirClientes();
+                        break;
+                    case "3":
+                        crearArticulo(gestor);
+                        break;
+                    case "4":
+                        gestor.imprimirArticulos();
+                        generador.mostrarEstadisticas();
+                        break;
+                    case "5": ;
+                        break;
+                    case "6": ;
+                        break;
+                    case "7": ;
+                        break;
+
+                }
+
+//                generador.generarArticulos(comercio, 100, 70);
+//                generador.mostrarEstadisticas();
+
+                //    generarCli.crearClientes(comercio, 80);
+                gestor.imprimirListaClientes(gestor.buscarClientes("javier"));
+
+                //gestor.imprimirClientes();
+                //gestor.imprimirArticulos();
+            } catch (SQLException sql) {
+                System.out.println(sql.getMessage());
+
+            } catch (ErrorDatos er) {
+                System.out.println(er.getMessage());
             }
-            
-            
-            
-            
-            
-            
-            
 
-            generador.generarArticulos(comercio, 100, 70);
-            generador.mostrarEstadisticas();
+        } while (!opcion.equalsIgnoreCase("q"));
 
-            //    generarCli.crearClientes(comercio, 80);
-            gestor.imprimirListaClientes(gestor.buscarClientes("javier"));
-
-            //gestor.imprimirClientes();
-            //gestor.imprimirArticulos();
-            
-        } catch (SQLException sql) {System.out.println(sql.getMessage());            
-            
-        } catch (ErrorDatos er) {System.out.println(er.getMessage());}
-
-
-        }while (!opcion.equalsIgnoreCase("q"));
-        
     }
 
     /**
@@ -106,6 +108,7 @@ public class Main {
 
     /**
      * Solicita datos de cliente
+     *
      * @param gestor
      * @return
      */
@@ -131,7 +134,66 @@ public class Main {
         }
 
         return true;
-        
+
+    }
+
+    public static boolean crearArticulo(GestorComercio gestor) throws SQLException {
+
+        try {
+
+            System.out.println("Tipo de Articulo");
+            System.out.println("-------------------------");
+            System.out.println("P - Producto.");
+            System.out.println("S - Servicio.");
+            System.out.println("Q - Volver al Menú.");
+            System.out.println("-------------------------");
+            char opcion = kl.nextLine().trim().toLowerCase().charAt(0);
+            if (opcion == 's') {
+                System.out.println("Servicio");
+            } else if (opcion == 'p'){
+                System.out.println("Producto Físico");
+            } else {
+                return false;
+            }
+            System.out.println("-------------------------");
+            System.out.print("Nombre: ");
+            String nombre = kl.nextLine();
+            System.out.print("Precio Base: ");
+            double precio = Double.parseDouble(kl.nextLine());
+            System.out.print("IVA aplicable ");
+            double iva = Double.parseDouble(kl.nextLine());
+
+            switch (opcion) {
+
+                case 'p': {
+                    System.out.print("Stock de Producto: ");
+                    int stock = Integer.parseInt(kl.nextLine());
+
+                    gestor.crearProductoFisico(nombre, precio, iva, stock);
+                }
+                
+                break;
+                case 's': {
+                    System.out.print("Tiempo de ejecución (minutos): ");
+                    int minutos = Integer.parseInt(kl.nextLine());
+                    System.out.print("Es un Sericio Urgente (Y/N): ");
+                    char urgente = kl.nextLine().trim().toLowerCase().charAt(0);
+                    if (urgente == 'y')
+                        gestor.crearServicio(nombre, precio, iva, minutos, true);
+                    else 
+                        gestor.crearServicio(nombre, precio, iva, minutos, false);
+                }
+                
+                break;
+
+            }
+
+        } catch (ErrorDatos ed) {
+            ed.printStackTrace();
+        }
+
+        return true;
+
     }
 
 }

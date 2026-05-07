@@ -13,6 +13,9 @@ public class Servicio extends Articulo {
     private int minutos;
     private boolean urgente; 
 
+    public Servicio() {
+    }
+    
     /**
      * Constructor de servicio
      * @param minutos
@@ -35,7 +38,7 @@ public class Servicio extends Articulo {
     public void setMinutos(int minutos) {
         this.minutos = minutos;
     }
-
+    
     public boolean isUrgente() {
         return urgente;
     }
@@ -61,6 +64,20 @@ public class Servicio extends Articulo {
 
         return precio;
     
+    }
+    
+    @Override
+    public String toString(){
+        
+        String mensaje = String.format("%5d Servicio: %-50s Precio: %8.2f€ IVA: %5.2f Estimación %6d minutos   %s",
+                super.getId(), 
+                super.getNombre(), 
+                super.getPrecioBase(), 
+                super.getIva(), 
+                this.getMinutos(), 
+                this.isUrgente() ? "URGENTE" : "");
+        
+        return mensaje;
     }
     
 }

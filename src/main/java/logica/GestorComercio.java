@@ -37,17 +37,25 @@ public class GestorComercio implements LogicaNegocio {
 
     private GestorComercio() {
         //INICIALIZAR COLECCIONES
+        pClient = new PersisClient();
+        this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
         articulos = new ArrayList<>();
         pedidos = new ArrayList<>();
         // Recupera los Datos persistidos
-        pClient = new PersisClient();
-        
-        this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
+
+
 
         int maxId = 0;
         for (Cliente c : clientes) {
             if (c.getId() > maxId) {
                 maxId = c.getId();
+            }
+        }
+        
+        maxId = 0;
+        for (Articulo a : articulos) {
+            if (a.getId() > maxId) {
+                maxId = a.getId();
             }
         }
 
@@ -229,13 +237,19 @@ public class GestorComercio implements LogicaNegocio {
         }
         throw new ErrorDatos("ERROR . El Articulo no se encuentra");
     }
-
+    
+    
+    public void imprimirArticulos() throws ErrorDatos {
+        for (Articulo a: this.listarArticulos())
+            System.out.println(a.toString());
+    } 
+    
     /**
      * Imprime datos de los articulos en la lista
      *
      * @throws ErrorDatos
      */
-    public void imprimirArticulos() throws ErrorDatos {
+    public void imprimirArticulosPlus() throws ErrorDatos {
 
         if (this.listarArticulos().size() != 0) {
             for (Articulo a : this.listarArticulos()) {
@@ -263,15 +277,20 @@ public class GestorComercio implements LogicaNegocio {
             throw new ErrorDatos("ERROR. No hay articulos en la lista.");
         }
 
-    }
-
+    }    
+    
+    public void imprimirListaArticulos(List<Articulo> articulos) throws ErrorDatos {    
+        for (Articulo a: articulos)
+        System.out.println(a.toString());
+    } 
+    
     /**
      * Impprime datos de los articulos desde una lista
      *
      * @param articulos liste de articulos a imprimir
      * @throws ErrorDatos
      */
-    public void imprimirListaArticulos(List<Articulo> articulos) throws ErrorDatos {
+    public void imprimirListaArticulosPlus(List<Articulo> articulos) throws ErrorDatos {
 
         if (articulos.size() != 0) {
             for (Articulo a : articulos) {
@@ -333,12 +352,19 @@ public class GestorComercio implements LogicaNegocio {
         return result;
     }
 
+    public void imprimirClientes() throws ErrorDatos {
+        for (Cliente cl: this.listarClientes())
+            System.out.println(cl.toString());    
+   
+    }    
+    
+    
     /**
      * Imprime los datos de los clientes del comercio
      *
      * @throws ErrorDatos
      */
-    public void imprimirClientes() throws ErrorDatos {
+    public void imprimirClientesPlus() throws ErrorDatos {
 
         if (this.listarClientes().size() != 0) {
             for (Cliente cl : this.listarClientes()) {
@@ -358,6 +384,17 @@ public class GestorComercio implements LogicaNegocio {
         }
 
     }
+    
+    /**
+     *
+     * @param clientes
+     */
+    public void imprimirListaClientes (List<Cliente> clientes) {
+        if (clientes.size() != 0) {
+            for (Cliente cl : clientes) 
+                System.out.println(cl.toString());
+        }
+    }
 
     /**
      * Imprime los clienytes de la lista de entrada
@@ -365,7 +402,7 @@ public class GestorComercio implements LogicaNegocio {
      * @param clientes lista de clientes a imprimir
      * @throws ErrorDatos
      */
-    public void imprimirListaClientes(List<Cliente> clientes) throws ErrorDatos {
+    public void imprimirListaClientesPlus (List<Cliente> clientes) throws ErrorDatos {
 
         if (clientes.size() != 0) {
             for (Cliente cl : clientes) {

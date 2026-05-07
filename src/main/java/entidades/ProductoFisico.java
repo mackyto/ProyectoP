@@ -63,6 +63,17 @@ public class ProductoFisico extends Articulo {
 
     }
     
-    
+    @Override
+    public String toString(){
+        
+        String mensaje = String.format("%5d Producto: %-50s Precio: %8.2f€ IVA: %5.2f Estimación %6d unidades",
+                super.getId(), 
+                super.getNombre(), 
+                super.getPrecioBase(), 
+                super.getIva(), 
+                this.getStock());
+        
+        return mensaje;
+    }
     
 }

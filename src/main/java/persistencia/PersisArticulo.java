@@ -49,7 +49,7 @@ public class PersisArticulo implements InArticulo {
     }
 
     private void insertarArticulo(Articulo a) {
-        
+
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
 
             PreparedStatement aps = conn.prepareStatement(INSERTAR_ARTICULO);
@@ -63,11 +63,11 @@ public class PersisArticulo implements InArticulo {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        
+
     }
 
     private boolean insertarFisico(ProductoFisico p) {
-        
+
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
 
             PreparedStatement pps = conn.prepareStatement(INSERTAR_PFISICO);
@@ -80,13 +80,13 @@ public class PersisArticulo implements InArticulo {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        
+
         return true;
-        
+
     }
 
     private boolean insertarServicio(Servicio s) {
-        
+
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
 
             PreparedStatement sps = conn.prepareStatement(INSERTAR_SERVICIO);
@@ -99,30 +99,48 @@ public class PersisArticulo implements InArticulo {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        
+
         return true;
-        
+
     }
 
     @Override
     public List<Articulo> recuperarTodo() {
+
         List<Articulo> lista = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); 
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); 
-             ResultSet rs = ps.executeQuery()) {
+        try {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8");
+                    PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS);
+                    ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                Cliente c = new Cliente();
-                c.setId(rs.getInt("cliente_id"));
-                c.setNombre(rs.getString("nombre"));
-                c.setApellidos(rs.getString("apellidos"));
-                c.setTelefono(rs.getString("telefono"));
-                c.setNivelFidelidad(rs.getInt("fidelidad"));
-                c.setEmail(rs.getString("email"));
-                lista.add(c);
+                while (rs.next()) {
+                    Servicio s = new Servicio();
+                    s.setId(rs.getInt("id"));
+                    s.setNombre(rs.getString("nombre"));
+                    s.setPrecioBase(rs.getDouble("precio_base"));
+                    s.setIva(rs.getDouble("iva"));
+                    s.setMinutos(rs.getInt("minutos"));
+                    s.setUrgente(rs.getBoolean("urgente"));
+                    lista.add(s);
+                }
+
             }
 
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8");
+                    PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS);
+                    ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    ProductoFisico pf = new ProductoFisico();
+                    pf.setId(rs.getInt("id"));
+                    pf.setNombre(rs.getString("nombre"));
+                    pf.setPrecioBase(rs.getDouble("precio_base"));
+                    pf.setIva(rs.getDouble("iva"));
+                    pf.setStock(rs.getInt("stock"));
+                    lista.add(pf);
+                }
+            }
         } catch (SQLException e) {
             System.err.println("Error al recuperar clientes: " + e.getMessage());
         } catch (ErrorDatos ex) {
@@ -130,7 +148,6 @@ public class PersisArticulo implements InArticulo {
         }
 
         return lista;
-    }
     }
 
 }
