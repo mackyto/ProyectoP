@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author 29160712r
  */
-public class PersisArticulo implements InArticulo {
+public class PersisArticulo extends ConexionBase implements InArticulo {
 
     private static final String INSERTAR_ARTICULO = "INSERT INTO Articulo (id, nombre, precio_base, iva) VALUES (?, ?, ?, ?)";
     private static final String INSERTAR_SERVICIO = "INSERT INTO Servicio (articulo_id, minutos, urgente) VALUES (?, ?, ?)";
@@ -31,13 +31,9 @@ public class PersisArticulo implements InArticulo {
     private static final String SQL_SELECT_PFISICOS = "SELECT * FROM `v_artifisico`";
 
 
-    private Connection obtenerConexion() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8");
-    }
-
     @Override
     public boolean persistirProducto(ProductoFisico p) {
-        try (Connection conn = obtenerConexion()) {
+        try (Connection conn = conexionDB()) {
             conn.setAutoCommit(false);
             insertarArticuloBase(p, conn); // Paso 1
 
@@ -58,7 +54,7 @@ public class PersisArticulo implements InArticulo {
 
     @Override
     public boolean persistirServicio(Servicio s) {
-        try (Connection conn = obtenerConexion()) {
+        try (Connection conn = conexionDB()) {
             conn.setAutoCommit(false);
 
             insertarArticuloBase(s, conn); // Paso 1
@@ -95,11 +91,13 @@ public class PersisArticulo implements InArticulo {
         List<Articulo> lista = new ArrayList<>();
 
         try {
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); ResultSet rs = ps.executeQuery()) {
+            try (Connection conn = conexionDB(); 
+            PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); 
+            ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     Servicio s = new Servicio();
-                    s.setId(rs.getInt("id"));
+                    s.setId(rs.getInt("articulo_id"));
                     s.setNombre(rs.getString("nombre"));
                     s.setPrecioBase(rs.getDouble("precio_base"));
                     s.setIva(rs.getDouble("iva"));
@@ -110,11 +108,13 @@ public class PersisArticulo implements InArticulo {
 
             }
 
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS); ResultSet rs = ps.executeQuery()) {
+            try (Connection conn = conexionDB(); 
+            PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS); 
+            ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     ProductoFisico pf = new ProductoFisico();
-                    pf.setId(rs.getInt("id"));
+                    pf.setId(rs.getInt("articulo_id"));
                     pf.setNombre(rs.getString("nombre"));
                     pf.setPrecioBase(rs.getDouble("precio_base"));
                     pf.setIva(rs.getDouble("iva"));
