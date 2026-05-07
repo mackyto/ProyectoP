@@ -21,6 +21,7 @@ import entidades.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import persistencia.PersisArticulo;
 import persistencia.PersisClient;
 
 public class GestorComercio implements LogicaNegocio {
@@ -34,24 +35,27 @@ public class GestorComercio implements LogicaNegocio {
     private Cliente clienteActual;
     private Pedido pedidoEnCurso;
     private PersisClient pClient;
+    private PersisArticulo pArticulo;
 
     private GestorComercio() {
         //INICIALIZAR COLECCIONES
         pClient = new PersisClient();
+        pArticulo = new PersisArticulo();
+        
         this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
         articulos = new ArrayList<>();
         pedidos = new ArrayList<>();
         // Recupera los Datos persistidos
 
 
-
+        // Ajuste puntero clase Cliente para evitar colisiones
         int maxId = 0;
         for (Cliente c : clientes) {
             if (c.getId() > maxId) {
                 maxId = c.getId();
             }
         }
-        
+        // Ajuste puntero clase Articulo para evitar colisiones        
         maxId = 0;
         for (Articulo a : articulos) {
             if (a.getId() > maxId) {
@@ -124,6 +128,7 @@ public class GestorComercio implements LogicaNegocio {
     @Override
     public ProductoFisico crearProductoFisico(String nombre, double precioBase, double iva, int stock) throws ErrorDatos {
         ProductoFisico articulo = new ProductoFisico(stock, nombre, precioBase, iva);
+        
         articulos.add(articulo);
         return articulo;
     }
