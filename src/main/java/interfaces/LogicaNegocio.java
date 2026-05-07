@@ -21,8 +21,8 @@ public interface LogicaNegocio {
     List<Cliente> listarClientes();
 
     // ARTÍCULOS
-    ProductoFisico crearProductoFisico(String nombre, double precioBase, double iva, int stock) throws ErrorDatos;
-    Servicio crearServicio(String nombre, double precioBase, double iva, int minutos, boolean urgente) throws ErrorDatos;
+    ProductoFisico crearProductoFisico(String nombre, double precioBase, double iva, int stock) throws SQLException, ErrorDatos;
+    Servicio crearServicio(String nombre, double precioBase, double iva, int minutos, boolean urgente) throws SQLException, ErrorDatos;
     List<Articulo> listarArticulos();
 
     // PEDIDOS

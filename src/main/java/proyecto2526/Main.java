@@ -23,8 +23,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GeneradorArticulos generador = GeneradorArticulos.getInstancia();
-        //    GeneradorClientes generarCli = GeneradorClientes.getInstancia();
+        //GeneradorArticulos generador = GeneradorArticulos.getInstancia();
+        //GeneradorClientes generarCli = GeneradorClientes.getInstancia();
         LogicaNegocio comercio = GestorComercio.getInstance();
         GestorComercio gestor = (GestorComercio) comercio;
 
@@ -59,7 +59,7 @@ public class Main {
                         break;
                     case "4":
                         gestor.imprimirArticulos();
-                        generador.mostrarEstadisticas();
+//                        generador.mostrarEstadisticas();
                         break;
                     case "5": ;
                         break;
@@ -72,8 +72,7 @@ public class Main {
 
 //                generador.generarArticulos(comercio, 100, 70);
 //                generador.mostrarEstadisticas();
-
-                //    generarCli.crearClientes(comercio, 80);
+//                generarCli.crearClientes(comercio, 80);
                 gestor.imprimirListaClientes(gestor.buscarClientes("javier"));
 
                 //gestor.imprimirClientes();

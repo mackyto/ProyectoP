@@ -35,15 +35,16 @@ public class GestorComercio implements LogicaNegocio {
     private Cliente clienteActual;
     private Pedido pedidoEnCurso;
     private PersisClient pClient;
-    private PersisArticulo pArticulo;
+    private PersisArticulo pArticul;
 
     private GestorComercio() {
         //INICIALIZAR COLECCIONES
         pClient = new PersisClient();
-        pArticulo = new PersisArticulo();
+        pArticul = new PersisArticulo();
         
         this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
-        articulos = new ArrayList<>();
+        
+        this.articulos = (ArrayList<Articulo>) pArticul.recuperarTodo();
         pedidos = new ArrayList<>();
         // Recupera los Datos persistidos
 
@@ -126,9 +127,10 @@ public class GestorComercio implements LogicaNegocio {
      * @throws ErrorDatos
      */
     @Override
-    public ProductoFisico crearProductoFisico(String nombre, double precioBase, double iva, int stock) throws ErrorDatos {
+    public ProductoFisico crearProductoFisico(String nombre, double precioBase, double iva, int stock) throws SQLException, ErrorDatos {
         ProductoFisico articulo = new ProductoFisico(stock, nombre, precioBase, iva);
-        
+        if (!pArticul.persistirProducto(articulo))
+            throw new SQLException("Error de Integridad de Datos");
         articulos.add(articulo);
         return articulo;
     }
@@ -145,8 +147,11 @@ public class GestorComercio implements LogicaNegocio {
      * @throws ErrorDatos
      */
     @Override
-    public Servicio crearServicio(String nombre, double precioBase, double iva, int minutos, boolean urgente) throws ErrorDatos {
+    public Servicio crearServicio(String nombre, double precioBase, double iva, int minutos, boolean urgente) throws SQLException, ErrorDatos {
+
         Servicio servicio = new Servicio(minutos, urgente, nombre, precioBase, iva);
+        if (!pArticul.persistirServicio(servicio))
+            throw new SQLException("Error de Integridad de Datos");
         articulos.add(servicio);
         return servicio;
     }

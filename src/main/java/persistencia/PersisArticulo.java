@@ -30,78 +30,63 @@ public class PersisArticulo implements InArticulo {
     private static final String SQL_SELECT_SERVICIOS = "SELECT * FROM `v_artiservicio`";
     private static final String SQL_SELECT_PFISICOS = "SELECT * FROM `v_artifisico`";
 
-    /**
-     *
-     * @param a
-     * @return
-     */
-    @Override
-    public boolean persistirArticulo(Articulo a) {
 
-        insertarArticulo(a);
-
-        if (a instanceof ProductoFisico) {
-            return insertarFisico((ProductoFisico) a);
-        } else if (a instanceof Servicio) {
-            return insertarServicio((Servicio) a);
-        }
-        return false;
+    private Connection obtenerConexion() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8");
     }
 
-    private void insertarArticulo(Articulo a) {
+    @Override
+    public boolean persistirProducto(ProductoFisico p) {
+        try (Connection conn = obtenerConexion()) {
+            conn.setAutoCommit(false);
+            insertarArticuloBase(p, conn); // Paso 1
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
+            try (PreparedStatement pps = conn.prepareStatement(INSERTAR_PFISICO)) {
+                pps.setInt(1, p.getId());
+                pps.setInt(2, p.getStock());
+                pps.executeUpdate();
+            }
 
-            PreparedStatement aps = conn.prepareStatement(INSERTAR_ARTICULO);
+            conn.commit();
+            return true;
+        } catch (SQLException sqle) {
+            // Si algo falla, aquí no se guarda nada
+            sqle.printStackTrace();
+            return false;
+        }
+    }
 
+    @Override
+    public boolean persistirServicio(Servicio s) {
+        try (Connection conn = obtenerConexion()) {
+            conn.setAutoCommit(false);
+
+            insertarArticuloBase(s, conn); // Paso 1
+
+            try (PreparedStatement sps = conn.prepareStatement(INSERTAR_SERVICIO)) {
+                sps.setInt(1, s.getId());
+                sps.setInt(2, s.getMinutos());
+                sps.setBoolean(3, s.isUrgente());
+                sps.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return false;
+        }
+    }
+
+// Este es el método que ambos comparten, pero recibe la conexión abierta
+    private void insertarArticuloBase(Articulo a, Connection conn) throws SQLException {
+        try (PreparedStatement aps = conn.prepareStatement(INSERTAR_ARTICULO)) {
             aps.setInt(1, a.getId());
             aps.setString(2, a.getNombre());
             aps.setDouble(3, a.getPrecioBase());
             aps.setDouble(4, a.getIva());
             aps.executeUpdate();
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
         }
-
-    }
-
-    private boolean insertarFisico(ProductoFisico p) {
-
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
-
-            PreparedStatement pps = conn.prepareStatement(INSERTAR_PFISICO);
-
-            pps.setInt(1, p.getId());
-            pps.setDouble(2, p.precioUnitarioFinal());
-            pps.setDouble(3, p.getIva());
-            pps.executeUpdate();
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-
-        return true;
-
-    }
-
-    private boolean insertarServicio(Servicio s) {
-
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8")) {
-
-            PreparedStatement sps = conn.prepareStatement(INSERTAR_SERVICIO);
-
-            sps.setInt(1, s.getId());
-            sps.setInt(2, s.getMinutos());
-            sps.setBoolean(3, s.isUrgente());
-            sps.executeUpdate();
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-
-        return true;
-
     }
 
     @Override
@@ -110,9 +95,7 @@ public class PersisArticulo implements InArticulo {
         List<Articulo> lista = new ArrayList<>();
 
         try {
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8");
-                    PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS);
-                    ResultSet rs = ps.executeQuery()) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     Servicio s = new Servicio();
@@ -127,9 +110,7 @@ public class PersisArticulo implements InArticulo {
 
             }
 
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8");
-                    PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS);
-                    ResultSet rs = ps.executeQuery()) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://gamvers.xyz:3306/ProyectoP", "javier", "hqxjt8"); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS); ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     ProductoFisico pf = new ProductoFisico();

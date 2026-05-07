@@ -8,6 +8,7 @@ import java.util.List;
 import interfaces.LogicaNegocio;
 import logica.GestorComercio;
 import entidades.Utils;
+import java.sql.SQLException;
 /**
  *
  * @author macky
@@ -48,7 +49,7 @@ public class GeneradorArticulos {
      * @param porcentaje
      * @throws ErrorDatos 
      */
-    public void generarArticulos(LogicaNegocio comercio, int cantidad, int porcentaje) throws ErrorDatos {
+    public void generarArticulos(LogicaNegocio comercio, int cantidad, int porcentaje) throws ErrorDatos, SQLException {
         
         //articulos.clear();
         if (cantidad > 1000)
