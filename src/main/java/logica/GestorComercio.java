@@ -38,7 +38,7 @@ public class GestorComercio implements LogicaNegocio {
     private PersisArticulo pArticul;
 
     private GestorComercio() {
-        //INICIALIZAR COLECCIONES
+
         pClient = new PersisClient();
         pArticul = new PersisArticulo();
         
@@ -46,7 +46,7 @@ public class GestorComercio implements LogicaNegocio {
         
         this.articulos = (ArrayList<Articulo>) pArticul.recuperarTodo();
         pedidos = new ArrayList<>();
-        // Recupera los Datos persistidos
+
 
 
         // Ajuste puntero clase Cliente para evitar colisiones
@@ -472,5 +472,5 @@ public class GestorComercio implements LogicaNegocio {
         }
 
     }
-
+    
 }

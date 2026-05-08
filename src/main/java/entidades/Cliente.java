@@ -205,7 +205,7 @@ public class Cliente extends Persona {
     public void imprimirPedidos() throws ErrorDatos {
 
         for (Pedido p : this.listarPedidos()) {
-            p.imprimirCabezeraPedido(p);
+            p.toString();
         }
 
     }

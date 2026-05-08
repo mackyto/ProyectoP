@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class Main {
 
     public static Scanner kl = new Scanner(System.in);
-    public static GestorComercio gestor;
+//    public static GestorComercio gestor;
 
     /**
      * @param args the command line arguments
@@ -27,7 +27,7 @@ public class Main {
         //GeneradorArticulos generador = GeneradorArticulos.getInstancia();
         //GeneradorClientes generarCli = GeneradorClientes.getInstancia();
         LogicaNegocio comercio = GestorComercio.getInstance();
-        gestor = (GestorComercio) comercio;
+        GestorComercio gestor = (GestorComercio) comercio;
 
         String opcion = "";
 
@@ -41,8 +41,8 @@ public class Main {
                 System.out.println("3 - Crear Articulo");
                 System.out.println("4 - Listar Articulos");
                 System.out.println("5 - Crear Pedido");
-                System.out.println("6 - ");
-                System.out.println("7 - ");
+                System.out.println("6 - Listar pedidos del cliente");
+                System.out.println("7 - Listar todos los pedidos");
                 System.out.println("Q - Salir.");
 
                 opcion = kl.nextLine();
@@ -50,21 +50,22 @@ public class Main {
                 switch (opcion) {
 
                     case "1":
-                        crearCliente();
+                        crearCliente(gestor);
                         break;
                     case "2":
                         gestor.imprimirClientes();
                         break;
                     case "3":
-                        crearArticulo();
+                        crearArticulo(gestor);
                         break;
                     case "4":
                         gestor.imprimirArticulos();
-//                        generador.mostrarEstadisticas();
                         break;
-                    case "5": ;
+                    case "5":
+                        agregarPedido(gestor);
                         break;
-                    case "6": ;
+                    case "6": 
+                        imprimirPedidosCliente (gestor);
                         break;
                     case "7": ;
                         break;
@@ -112,7 +113,7 @@ public class Main {
      * @param gestor
      * @return
      */
-    public static boolean crearCliente() throws SQLException {
+    public static boolean crearCliente(GestorComercio gestor) throws SQLException {
 
         try {
 
@@ -137,7 +138,7 @@ public class Main {
 
     }
 
-    public static boolean crearArticulo() throws SQLException {
+    public static boolean crearArticulo(GestorComercio gestor) throws SQLException {
 
         try {
 
@@ -196,7 +197,7 @@ public class Main {
 
     }
     
-    public static void agregarPedido (){
+    public static void agregarPedido (GestorComercio gestor){
         String opcion;
         
         try  {
@@ -227,4 +228,25 @@ public class Main {
         }
     }
 
+    
+        public static void imprimirPedidosCliente (GestorComercio gestor){
+        String opcion;
+        
+        try  {
+            System.out.println("Nombre del cliente");
+            gestor.imprimirListaClientes(gestor.buscarClientes(kl.nextLine()));
+            
+            System.out.println("Introduce su Identificador");
+            (gestor.selecionarCliente(Integer.parseInt(kl.nextLine()))).imprimirPedidos();        
+        
+            
+            
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
 }

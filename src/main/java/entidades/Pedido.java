@@ -202,17 +202,15 @@ public class Pedido {
         
         String mensaje = "";
         try {
-            mensaje = String.format("Pedido Cliente:%-20s %-40s \tfecha: %s Total: %8.2f\n"
-                    + "==============================================================================\n",
+            mensaje = String.format("Pedido Cliente:%-20s %-40s \tfecha: %s Total: %8.2f\n",
                     this.getCliente().getNombre(),
                     this.getCliente().getApellidos(),
                     this.getFechaCreacion(),
                     this.calcularTotal());
-        } catch (ErrorDatos ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return mensaje;
-        
     }
 
 
