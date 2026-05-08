@@ -21,6 +21,7 @@ import entidades.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import persistencia.PersisArticulo;
 import persistencia.PersisClient;
 
@@ -41,13 +42,11 @@ public class GestorComercio implements LogicaNegocio {
 
         pClient = new PersisClient();
         pArticul = new PersisArticulo();
-        
+
         this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
-        
+
         this.articulos = (ArrayList<Articulo>) pArticul.recuperarTodo();
         pedidos = new ArrayList<>();
-
-
 
         // Ajuste puntero clase Cliente para evitar colisiones
         int maxId = 0;
@@ -99,8 +98,9 @@ public class GestorComercio implements LogicaNegocio {
 
         int id = Cliente.getPuntero();
         Cliente cl = new Cliente(email, nivelFidelidad, nombre, apellidos, telefono, id);
-        if (!pClient.persistirCliente(cl))
+        if (!pClient.persistirCliente(cl)) {
             throw new SQLException("Error de Integridad de Datos");
+        }
         clientes.add(cl);
         return clientes.getLast();
 
@@ -129,8 +129,9 @@ public class GestorComercio implements LogicaNegocio {
     @Override
     public ProductoFisico crearProductoFisico(String nombre, double precioBase, double iva, int stock) throws SQLException, ErrorDatos {
         ProductoFisico articulo = new ProductoFisico(stock, nombre, precioBase, iva);
-        if (!pArticul.persistirProducto(articulo))
+        if (!pArticul.persistirProducto(articulo)) {
             throw new SQLException("Error de Integridad de Datos");
+        }
         articulos.add(articulo);
         return articulo;
     }
@@ -150,8 +151,9 @@ public class GestorComercio implements LogicaNegocio {
     public Servicio crearServicio(String nombre, double precioBase, double iva, int minutos, boolean urgente) throws SQLException, ErrorDatos {
 
         Servicio servicio = new Servicio(minutos, urgente, nombre, precioBase, iva);
-        if (!pArticul.persistirServicio(servicio))
+        if (!pArticul.persistirServicio(servicio)) {
             throw new SQLException("Error de Integridad de Datos");
+        }
         articulos.add(servicio);
         return servicio;
     }
@@ -189,6 +191,7 @@ public class GestorComercio implements LogicaNegocio {
 
         if (pedidoEnCurso != null) {
             LineaPedido linea = new LineaPedido(cantidad, articulo, this.pedidoEnCurso);
+            this.pedidoEnCurso.getLista().add(linea);
         } else {
             throw new ErrorDatos("ERROR. No hay pedido en curso");
         }
@@ -247,87 +250,17 @@ public class GestorComercio implements LogicaNegocio {
         }
         throw new ErrorDatos("ERROR . El Articulo no se encuentra");
     }
-    
-    
+
     public void imprimirArticulos() throws ErrorDatos {
-        for (Articulo a: this.listarArticulos())
+        for (Articulo a : this.listarArticulos()) {
             System.out.println(a.toString());
-    } 
-    
-    /**
-     * Imprime datos de los articulos en la lista
-     *
-     * @throws ErrorDatos
-     */
-    public void imprimirArticulosPlus() throws ErrorDatos {
-
-        if (this.listarArticulos().size() != 0) {
-            for (Articulo a : this.listarArticulos()) {
-                System.out.println("----------------------------------------");
-                System.out.println(a.getNombre());
-                System.out.printf("Precio: %.2f€\n", a.getPrecioBase());
-                System.out.printf("IVA aplicable: %.1f%%\n", a.getIva());
-                System.out.println();
-
-                if (a instanceof ProductoFisico pf) {
-                    System.out.println("Stock: " + pf.getStock());
-                } else if (a instanceof Servicio s) {
-                    System.out.println("Duración: " + s.getMinutos() + " minutos");
-                    if (s.isUrgente()) {
-                        System.out.println("Servicio ¡¡¡URGENTE!!!");
-                    }
-                } else {
-                    throw new ErrorDatos("ERROR. inconsistencia en los datos de articulos");
-                }
-                System.out.println("----------------------------------------");
-                System.out.println();
-                System.out.println();
-            }
-        } else {
-            throw new ErrorDatos("ERROR. No hay articulos en la lista.");
         }
+    }
 
-    }    
-    
-    public void imprimirListaArticulos(List<Articulo> articulos) throws ErrorDatos {    
-        for (Articulo a: articulos)
-        System.out.println(a.toString());
-    } 
-    
-    /**
-     * Impprime datos de los articulos desde una lista
-     *
-     * @param articulos liste de articulos a imprimir
-     * @throws ErrorDatos
-     */
-    public void imprimirListaArticulosPlus(List<Articulo> articulos) throws ErrorDatos {
-
-        if (articulos.size() != 0) {
-            for (Articulo a : articulos) {
-                System.out.println("----------------------------------------");
-                System.out.println(a.getNombre());
-                System.out.printf("Precio: %.2f€\n", a.getPrecioBase());
-                System.out.printf("IVA aplicable: %.1f%%\n", a.getIva());
-                System.out.println();
-
-                if (a instanceof ProductoFisico pf) {
-                    System.out.println("Stock: " + pf.getStock());
-                } else if (a instanceof Servicio s) {
-                    System.out.println("Duración: " + s.getMinutos() + " minutos");
-                    if (s.isUrgente()) {
-                        System.out.println("Servicio ¡¡¡URGENTE!!!");
-                    }
-                } else {
-                    throw new ErrorDatos("ERROR. inconsistencia en los datos de articulos");
-                }
-                System.out.println("----------------------------------------");
-                System.out.println();
-                System.out.println();
-            }
-        } else {
-            throw new ErrorDatos("ERROR. No hay articulos en la lista.");
+    public void imprimirListaArticulos(List<Articulo> articulos) throws ErrorDatos {
+        for (Articulo a : articulos) {
+            System.out.println(a.toString());
         }
-
     }
 
     /**
@@ -354,123 +287,126 @@ public class GestorComercio implements LogicaNegocio {
      */
     public List<Cliente> buscarClientes(String nombre) {
         List<Cliente> result = new ArrayList<>();
+        nombre = nombre.toLowerCase();
         for (Cliente cl : this.listarClientes()) {
-            if (cl.getNombre().equalsIgnoreCase(nombre) || cl.getApellidos().toLowerCase().contains(nombre.toLowerCase())) {
+            if (cl.getNombre().toLowerCase().contains(nombre) || cl.getApellidos().toLowerCase().contains(nombre)) {
                 result.add(cl);
             }
         }
         return result;
     }
 
-    public Cliente selecionarCliente (int id) throws Exception {
-        
-        for (Cliente cl : this.listarClientes()){
-            if (cl.getId() == id)
-                return cl;
+    /**
+     * Selecciona un Cliente de una lista por su identificador único
+     * @param List<Cliente> lista de Cliente en donde se van a buscar los objetos
+     * @param id identificador único de un objeto Cliente
+     * @return devuelve el Cliente de la lista entregada y no de todos los Clientes de Gestor comercio, cuyo id coincide con el solicitado.
+     * @throws NoSuchElementException 
+     */
+    public Cliente selecionarCliente(List<Cliente> lista, int id) throws NoSuchElementException {
+        if (lista != null) {
+            for (Cliente cl : lista) {
+                if (cl.getId() == id) {
+                    return cl;
+                }
+            }
         }
-        throw new Exception("El id del Cliente no exixte");
-        
+        throw new NoSuchElementException("Cliente con ID " + id + " no encontrado.");
     }
-    
-    
+
     /**
      * Crea una lista de clientes por coincidencia de nombre o apellidos.
      *
      * @param nombre de los clientes a buscar.
      * @return lista de clientes con coincidencias.
      */
-    public List<Articulo> buscarArticulos(String nombre) {
+    public List<Articulo> buscarArticulos(String nombre) throws NoSuchElementException {
         List<Articulo> result = new ArrayList<>();
+        nombre = nombre.toLowerCase();
         for (Articulo ar : this.listarArticulos()) {
-            if (ar.getNombre().equalsIgnoreCase(nombre) || ar.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+            if (ar.getNombre().toLowerCase().contains(nombre) || ar.getNombre().toLowerCase().contains(nombre)) {
                 result.add(ar);
             }
         }
+
+        if (result == null) {
+            throw new NoSuchElementException("No se han encontrado clientes con la cadena " + nombre);
+        }
+
         return result;
     }
-    
-    public Articulo selecionarArticulo (int id) throws Exception {
-        
-        for (Articulo ar : this.listarArticulos()){
-            if (ar.getId() == id)
+
+    /**
+     * Selecciona un Articulo de una lista por su identificador único
+     * @param articulos Lista de Articulo en donde se van a buscar los objetos
+     * @param id identificador único de un objeto Articulo
+     * @return devuelve el articulo de la lista entregada, no de todos los articulos de Gestor comercio, cuyo id coincide con el solicitado.
+     * @throws NoSuchElementException 
+     */
+    public Articulo selecionarArticulo(List<Articulo> articulos, int id) throws NoSuchElementException {
+
+        for (Articulo ar : articulos) {
+            if (ar.getId() == id) {
                 return ar;
-        }
-        throw new Exception("El id del Articulo no exixte");
-        
-    }
-    
-    
-    
-    
-    public void imprimirClientes() throws ErrorDatos {
-        for (Cliente cl: this.listarClientes())
-            System.out.println(cl.toString());    
-   
-    }    
-    
-    
-    /**
-     * Imprime los datos de los clientes del comercio
-     *
-     * @throws ErrorDatos
-     */
-    public void imprimirClientesPlus() throws ErrorDatos {
-
-        if (this.listarClientes().size() != 0) {
-            for (Cliente cl : this.listarClientes()) {
-                System.out.println("----------------------------------------");
-                System.out.println("Nombre: " + cl.getNombre());
-                System.out.println("Apellidos: " + cl.getApellidos());
-                System.out.println("Identificador: " + cl.getId());
-                System.out.println("Telefonno: " + cl.getTelefono());
-                System.out.println("email: " + cl.getEmail());
-                System.out.println("Fidelidad(1-5): " + cl.getNivelFidelidad());
-                System.out.println("----------------------------------------");
-                System.out.println();
-                System.out.println();
             }
-        } else {
-            throw new ErrorDatos("ERROR. No hay Clientes en la lista.");
         }
-
-    }
-    
-    /**
-     *
-     * @param clientes
-     */
-    public void imprimirListaClientes (List<Cliente> clientes) {
-        if (clientes.size() != 0) {
-            for (Cliente cl : clientes) 
-                System.out.println(cl.toString());
-        }
+        throw new NoSuchElementException("El Articulo con id: " + id + " no exixte");
     }
 
     /**
-     * Imprime los clienytes de la lista de entrada
-     *
-     * @param clientes lista de clientes a imprimir
-     * @throws ErrorDatos
+     * Imprime todos los clientes de gestor de comercio
      */
-    public void imprimirListaClientesPlus (List<Cliente> clientes) throws ErrorDatos {
+    public void imprimirClientes() throws ErrorDatos {
+        for (Cliente cl : this.listarClientes()) {
+            System.out.println(cl.toString());
+        }
 
+    }
+
+    /**
+     * Imprime la lista de clientes
+     * @param clientes Lista de clientes que se va a imprimir
+     */
+    public void imprimirListaClientes(List<Cliente> clientes) {
         if (clientes.size() != 0) {
             for (Cliente cl : clientes) {
-                System.out.println("----------------------------------------");
-                System.out.println("Nombre: " + cl.getNombre());
-                System.out.println("Apellidos: " + cl.getApellidos());
-                System.out.println("Identificador: " + cl.getId());
-                System.out.println("Telefonno: " + cl.getTelefono());
-                System.out.println("email: " + cl.getEmail());
-                System.out.println("Fidelidad(1-5): " + cl.getNivelFidelidad());
-                System.out.println("----------------------------------------");
-                System.out.println();
-                System.out.println();
+                System.out.println(cl.toString());
             }
-        } else {
-            throw new ErrorDatos("ERROR. No hay Clientes en la lista.");
+        }
+    }
+
+    /**
+     * Imprime Los Datos de una lista de pedidos
+     * @param pedidos Lista de Pedido que se va a imprimir
+     */
+    public void imprimirListaPedidos(List<Pedido> pedidos) {
+        if (pedidos == null || pedidos.isEmpty()) {
+            System.out.println("El Cliente no tiene Pedidos");
+            return;
         }
 
+        for (int i = 0; i < pedidos.size(); i++) {
+            Pedido p = pedidos.get(i);
+
+            try {
+                if (p.getLista() == null || p.getLista().isEmpty()) {
+                    System.out.println("Aviso: El Pedido ID " + i + " está vacío y será Borrado.");
+                    pedidos.remove(i--);
+                    continue;
+                }
+
+                System.out.print(p.toString());
+                System.out.println(p.toStringCabezera());
+
+                for (LineaPedido lp : p.getLista()) {
+                    System.out.println(lp.toString());
+                }
+                System.out.println("--------------------------------------------------");
+
+            } catch (Exception e) {
+                System.out.println("Error procesando un pedido: " + e.getMessage());
+            }
+        }
     }
-    
+
 }
