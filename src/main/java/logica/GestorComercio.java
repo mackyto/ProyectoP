@@ -362,6 +362,46 @@ public class GestorComercio implements LogicaNegocio {
         return result;
     }
 
+    public Cliente selecionarCliente (int id) throws Exception {
+        
+        for (Cliente cl : this.listarClientes()){
+            if (cl.getId() == id)
+                return cl;
+        }
+        throw new Exception("El id del Cliente no exixte");
+        
+    }
+    
+    
+    /**
+     * Crea una lista de clientes por coincidencia de nombre o apellidos.
+     *
+     * @param nombre de los clientes a buscar.
+     * @return lista de clientes con coincidencias.
+     */
+    public List<Articulo> buscarArticulos(String nombre) {
+        List<Articulo> result = new ArrayList<>();
+        for (Articulo ar : this.listarArticulos()) {
+            if (ar.getNombre().equalsIgnoreCase(nombre) || ar.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+                result.add(ar);
+            }
+        }
+        return result;
+    }
+    
+    public Articulo selecionarArticulo (int id) throws Exception {
+        
+        for (Articulo ar : this.listarArticulos()){
+            if (ar.getId() == id)
+                return ar;
+        }
+        throw new Exception("El id del Articulo no exixte");
+        
+    }
+    
+    
+    
+    
     public void imprimirClientes() throws ErrorDatos {
         for (Cliente cl: this.listarClientes())
             System.out.println(cl.toString());    
@@ -431,19 +471,6 @@ public class GestorComercio implements LogicaNegocio {
             throw new ErrorDatos("ERROR. No hay Clientes en la lista.");
         }
 
-    }
-
-    private void cargarDatosIniciales() {
-        try {
-
-//            this.articulos.addAll(pArticulo.recuperarTodos());
-            this.clientes.addAll(pClient.recuperarTodos());
-
-//            this.pedidos.addAll(pPedido.recuperarTodos());
-            System.out.println("Base de datos cargada correctamente.");
-        } catch (Exception e) {
-            System.err.println("Error al sincronizar con la base de datos: " + e.getMessage());
-        }
     }
 
 }

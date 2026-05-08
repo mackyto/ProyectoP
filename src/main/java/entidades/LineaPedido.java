@@ -84,5 +84,22 @@ public class LineaPedido {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
+    
+    public String toStringCabezera () {
+        
+        String mensaje = String.format("Cantidad  %50s %10s %10s ", " Nombre", "PrecioUnid", "Precio");
+        return mensaje;
+        
+    }
+    
+    @Override
+    public String toString () {
+        
+        String mensaje = String.format("%6d    %50s %10.2f %10.2f", this.getCantidad(), this.getArticulo().getNombre(), this.precioUnitarioFinal);
+        return mensaje;
+        
+    }
+    
+    
 
 }

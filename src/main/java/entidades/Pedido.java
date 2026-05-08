@@ -173,35 +173,10 @@ public class Pedido {
                 pedido.getFechaCreacion());
         System.out.println("______________________________________________________________________________");
         for (LineaPedido lp : pedido.getLista()) {
-            if (lp.getArticulo() instanceof ProductoFisico pf) {
-                System.out.printf("%s\t%s\t\t\t\t%s\t%s\t\t%s\t%s\n",
-                        this.tabuladorNumeros(lp.getCantidad()),
-                        pf.getNombre(),
-                        this.tabuladorNumeros(pf.getIva()),
-                        this.tabuladorNumeros(pf.getPrecioBase()),
-                        this.tabuladorNumeros(lp.getPrecioUnitarioFinal()),
-                        this.tabuladorNumeros(lp.getPrecioUnitarioFinal() * lp.getCantidad()));
-            }else if (lp.getArticulo() instanceof Servicio sr){
-                
-                String urge = "";
-                
-                if (sr.isUrgente()){
-                    urge = "Urgente";
-                }else{urge = "Normal";}
-                
-                System.out.printf("%s\t%s\t\t\t%s\t%s\t%s\t\t%s\t%s\n",
-                        this.tabuladorNumeros(sr.getMinutos()),
-                        sr.getNombre(),
-                        urge,
-                        this.tabuladorNumeros(sr.getIva()),
-                        this.tabuladorNumeros(sr.getPrecioBase()),
-                        this.tabuladorNumeros(lp.getPrecioUnitarioFinal()),
-                        this.tabuladorNumeros(lp.getPrecioUnitarioFinal() * lp.getCantidad()));
-                
-            }
+
         }
         System.out.println("______________________________________________________________________________");
-        System.out.printf("\t\t\t\t\t\t\t\t\t\t%s\n\n", this.tabuladorNumeros(this.calcularTotal()));
+        System.out.printf("\t\t\t\t\t\t\t\t\t\t%6s\n\n", (this.calcularTotal()));
     }
 
     /**
@@ -210,80 +185,35 @@ public class Pedido {
      * @throws ErrorDatos 
      */
     public void imprimirCabezeraPedido (Pedido pedido) throws ErrorDatos {
-        System.out.printf("Pedido Cliente:%s %s \t\tfecha: %s\t\t%s\n",
+        System.out.printf("Pedido Cliente:%s %s \t\tfecha: %s\t\t%6s\n",
             pedido.getCliente().getNombre(),
             pedido.getCliente().getApellidos(), 
             pedido.getFechaCreacion(),
-            this.tabuladorNumeros(pedido.calcularTotal()));    
+            (pedido.calcularTotal()));    
     }
-    
     
     /**
-     * Tabula números para imprimir
-     * @param numero version para numero entero
-     * @return cadena de texto con el valor de un numero siempre con la misma cantidad de caracteres
+     * Convierte los datos de cabezera del pedido en una linea imprimible
+     * @return String con los datos de pedido en una linea y un separador
+     * @throws ErrorDatos gestion de Execpciones de calcularTotal()
      */
-    private String tabuladorNumeros(int numero) {
-
-        String resul = String.format("%.2f", numero);
-        if (numero < 10) {
-            resul = " " + resul;
+    @Override
+    public String toString () {
+        
+        String mensaje = "";
+        try {
+            mensaje = String.format("Pedido Cliente:%-20s %-40s \tfecha: %s Total: %8.2f\n"
+                    + "==============================================================================\n",
+                    this.getCliente().getNombre(),
+                    this.getCliente().getApellidos(),
+                    this.getFechaCreacion(),
+                    this.calcularTotal());
+        } catch (ErrorDatos ex) {
+            ex.printStackTrace();
         }
-        if (numero < 100) {
-            resul = " " + resul;
-        }
-        if (numero < 1000) {
-            resul = " " + resul;
-        }
-        if (numero < 10000) {
-            resul = " " + resul;
-        }
-        if (numero < 100000) {
-            resul = " " + resul;
-        }
-        if (numero < 1000000) {
-            resul = " " + resul;
-        }
-        if (numero < 10000000) {
-            resul = " " + resul;
-        }
-
-        return resul;
-
+        return mensaje;
+        
     }
 
-     /**
-     * Tabula números para imprimir
-     * @param numero version para numero entero
-     * @return cadena de texto con el valor de un numero siempre con la misma cantidad de caracteres
-     */
-    private String tabuladorNumeros(double numero) {
-
-        String resul = String.format("%.2f", numero);
-        if (numero < 10) {
-            resul = " " + resul;
-        }
-        if (numero < 100) {
-            resul = " " + resul;
-        }
-        if (numero < 1000) {
-            resul = " " + resul;
-        }
-        if (numero < 10000) {
-            resul = " " + resul;
-        }
-        if (numero < 100000) {
-            resul = " " + resul;
-        }
-        if (numero < 1000000) {
-            resul = " " + resul;
-        }
-        if (numero < 10000000) {
-            resul = " " + resul;
-        }
-
-        return resul;
-
-    }
 
 }

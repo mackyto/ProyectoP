@@ -18,6 +18,7 @@ import java.util.Scanner;
 public class Main {
 
     public static Scanner kl = new Scanner(System.in);
+    public static GestorComercio gestor;
 
     /**
      * @param args the command line arguments
@@ -26,7 +27,7 @@ public class Main {
         //GeneradorArticulos generador = GeneradorArticulos.getInstancia();
         //GeneradorClientes generarCli = GeneradorClientes.getInstancia();
         LogicaNegocio comercio = GestorComercio.getInstance();
-        GestorComercio gestor = (GestorComercio) comercio;
+        gestor = (GestorComercio) comercio;
 
         String opcion = "";
 
@@ -39,7 +40,7 @@ public class Main {
                 System.out.println("2 - Listar Clientes");
                 System.out.println("3 - Crear Articulo");
                 System.out.println("4 - Listar Articulos");
-                System.out.println("5 -");
+                System.out.println("5 - Crear Pedido");
                 System.out.println("6 - ");
                 System.out.println("7 - ");
                 System.out.println("Q - Salir.");
@@ -49,13 +50,13 @@ public class Main {
                 switch (opcion) {
 
                     case "1":
-                        crearCliente(gestor);
+                        crearCliente();
                         break;
                     case "2":
                         gestor.imprimirClientes();
                         break;
                     case "3":
-                        crearArticulo(gestor);
+                        crearArticulo();
                         break;
                     case "4":
                         gestor.imprimirArticulos();
@@ -111,7 +112,7 @@ public class Main {
      * @param gestor
      * @return
      */
-    public static boolean crearCliente(GestorComercio gestor) throws SQLException {
+    public static boolean crearCliente() throws SQLException {
 
         try {
 
@@ -136,7 +137,7 @@ public class Main {
 
     }
 
-    public static boolean crearArticulo(GestorComercio gestor) throws SQLException {
+    public static boolean crearArticulo() throws SQLException {
 
         try {
 
@@ -193,6 +194,37 @@ public class Main {
 
         return true;
 
+    }
+    
+    public static void agregarPedido (){
+        String opcion;
+        
+        try  {
+            System.out.println("Nombre del cliente");
+            gestor.imprimirListaClientes(gestor.buscarClientes(kl.nextLine()));
+            
+            System.out.println("Introduce su Identificador");
+            gestor.iniciarPedido(gestor.selecionarCliente(Integer.parseInt(kl.nextLine())));        
+        
+            do {
+            System.out.println("nombre del Articulo");
+            System.out.println("Para Salir pulse q, para terminnar ENTER");
+            opcion = kl.nextLine();
+            gestor.imprimirListaArticulos(gestor.buscarArticulos(opcion));
+            System.out.println("Introduce su Identificador");
+            int articulo = Integer.parseInt(kl.nextLine());
+            System.out.println("Introduce la cantidad");
+            int cantidad = Integer.parseInt(kl.nextLine());
+            gestor.anadirLineaPedido(gestor.selecionarArticulo(articulo),cantidad);
+            
+            }while (!opcion.equalsIgnoreCase("q") || opcion.isEmpty());
+            
+            if (opcion.equalsIgnoreCase("q"))
+                gestor.cancelarPedido();
+            
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
