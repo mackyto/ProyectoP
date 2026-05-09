@@ -18,18 +18,31 @@ import java.util.Scanner;
  */
 public class Main {
 
-    public static Scanner kl = new Scanner(System.in);
+    public static Scanner kl;
     public static GestorComercio gestor;
 
+    public static void main (String[] args) {
+        LogicaNegocio comercio = GestorComercio.getInstance();
+        gestor = (GestorComercio) comercio;        
+        
+        
+       
+    }
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void oldmain(String[] args) {
         //GeneradorArticulos generador = GeneradorArticulos.getInstancia();
         //GeneradorClientes generarCli = GeneradorClientes.getInstancia();
         LogicaNegocio comercio = GestorComercio.getInstance();
         gestor = (GestorComercio) comercio;
 //        GestorComercio gestor = (GestorComercio) comercio;
+        kl = new Scanner(System.in);
 
         String opcion = "";
 
@@ -40,12 +53,16 @@ public class Main {
                 System.out.println("Menú");
                 System.out.println("1 - Crear Cliente.");
                 System.out.println("2 - Listar Clientes");
-                System.out.println("3 - Crear Articulo");
-                System.out.println("4 - Listar Articulos");
-                System.out.println("5 - Crear Pedido");
-                System.out.println("6 - Gestionar Pedido en Curso");
-                System.out.println("7 - Listar los Pedidos por Cliente");
+                System.out.println("3 - Seleccionar Cliente Actual");
+                System.out.println("4 - Crear Articulo");
+                System.out.println("5 - Listar Articulos");
+                System.out.println("6 - Crear Pedido");
+                System.out.println("7 - Gestionar Pedido en Curso");
+                System.out.println("8 - Listar los Pedidos del Cliente Seleccionado");
                 System.out.println("Q - Salir.");
+                if (gestor.getClienteActual() != null) {
+                    System.out.println("El cliente actual es" + gestor.getClienteActual().toString());
+                }
 
                 opcion = kl.nextLine();
 
@@ -58,18 +75,21 @@ public class Main {
                         gestor.imprimirClientes();
                         break;
                     case "3":
-                        crearArticulo();
+                        seleccionarClienteActual();
                         break;
                     case "4":
-                        gestor.imprimirArticulos();
+                        crearArticulo();
                         break;
                     case "5":
-                        agregarPedido();
+                        gestor.imprimirArticulos();
                         break;
                     case "6":
-                        gestionarPedidoCurso();
+                        agregarPedido();
                         break;
                     case "7":
+                        gestionarPedidoCurso();
+                        break;
+                    case "8":
                         listarPedidosCliente();
                         break;
 
@@ -201,19 +221,35 @@ public class Main {
 
     }
 
+    public static void seleccionarClienteActual() {
+        String opcion;
+
+        try {
+
+            System.out.println("Nombre del cliente:");
+            List<Cliente> lista = gestor.buscarClientes(kl.nextLine());
+            gestor.imprimirListaClientes(lista);
+            System.out.println("Introduce su Identificador:");
+            gestor.setClienteActual(gestor.selecionarCliente(lista, Integer.parseInt(kl.nextLine())));
+
+        } catch (NumberFormatException nfe) {
+            System.out.println("Error: Debes introducir un número válido para los IDs y cantidades.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
     public static void agregarPedido() {
         String opcion;
 
         try {
-            System.out.println("Nombre del cliente:");
-            List<Cliente> lista = gestor.buscarClientes(kl.nextLine());
-            gestor.imprimirListaClientes(lista);
+            if (gestor.getClienteActual() == null) {
+                seleccionarClienteActual();
+            }
 
-            System.out.println("Introduce su Identificador:");
-
-            Cliente cl = gestor.selecionarCliente(lista, Integer.parseInt(kl.nextLine()));
-
-            gestor.iniciarPedido(cl);
+            gestor.iniciarPedido(gestor.getClienteActual());
+            System.out.println(gestor.getClienteActual().toString());
 
             incluirLineas();
             gestionarPedidoCurso();
@@ -228,22 +264,20 @@ public class Main {
 
     public static void incluirLineas() throws ErrorDatos {
         String opcion;
+        List<Articulo> arti = null;
         while (true) {
             System.out.println("\n--- Añadir Artículo ---");
             System.out.println("Nombre del Articulo (o ENTER para finalizar, 'q' para cancelar):");
             opcion = kl.nextLine();
-
             if (opcion.isEmpty()) {
                 break;
             }
-
             if (opcion.equalsIgnoreCase("q")) {
                 gestor.cancelarPedido();
                 System.out.println("Pedido cancelado.");
                 return;
             }
-
-            List<Articulo> arti = gestor.buscarArticulos(opcion);
+            arti = gestor.buscarArticulos(opcion);
             gestor.imprimirListaArticulos(arti);
 
             System.out.println("Introduce el Identificador del artículo:");
@@ -263,6 +297,9 @@ public class Main {
         imprimirPedido(gestor.obtenerPedidoEnCurso());
         System.out.println();
         System.out.println();
+        if (gestor.getClienteActual() != null) {
+            System.out.println("Cliete Actual" + gestor.getClienteActual().getNombre() + " " + gestor.getClienteActual().getApellidos());
+        }
         System.out.println();
         System.out.println("-------------------------");
         System.out.println("B - Borra Pedido");
@@ -273,7 +310,7 @@ public class Main {
 
         try {
 
-            opcion = kl.nextLine();
+            opcion = kl.nextLine().toUpperCase();
 
             switch (opcion) {
 
@@ -282,7 +319,6 @@ public class Main {
                     break;
                 case "C":
                     gestor.confirmarPedido();
-                    gestor.cancelarPedido();
                     break;
                 case "E":
                     incluirLineas();
@@ -319,12 +355,10 @@ public class Main {
         String opcion;
 
         try {
-            System.out.println("Nombre del cliente:");
-            List<Cliente> lista = gestor.buscarClientes(kl.nextLine());
-            gestor.imprimirListaClientes(lista);
-            System.out.println("Introduce su Identificador:");
-            Cliente cl = gestor.selecionarCliente(lista, Integer.parseInt(kl.nextLine()));
-            gestor.imprimirListaPedidos(cl.listarPedidos());
+            if (gestor.getClienteActual() == null) {
+                seleccionarClienteActual();
+            }
+            gestor.imprimirListaPedidos(gestor.getClienteActual().listarPedidos());
 
         } catch (NumberFormatException nfe) {
             System.out.println("Error: Debes introducir un número válido para los IDs y cantidades.");

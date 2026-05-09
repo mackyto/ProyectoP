@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import persistencia.PersisArticulo;
 import persistencia.PersisClient;
+import persistencia.PersisPedido;
 
 public class GestorComercio implements LogicaNegocio {
 
@@ -37,16 +38,22 @@ public class GestorComercio implements LogicaNegocio {
     private Pedido pedidoEnCurso;
     private PersisClient pClient;
     private PersisArticulo pArticul;
-
+    private PersisPedido pPedido;
+    
+    
     private GestorComercio() {
 
         pClient = new PersisClient();
         pArticul = new PersisArticulo();
+        pPedido = new PersisPedido();
 
         this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
 
         this.articulos = (ArrayList<Articulo>) pArticul.recuperarTodo();
         pedidos = new ArrayList<>();
+        
+        for (Cliente cl: this.clientes)
+            pPedido.recuperarPedidos(cl, this.articulos);
 
         // Ajuste puntero clase Cliente para evitar colisiones
         int maxId = 0;
@@ -54,6 +61,8 @@ public class GestorComercio implements LogicaNegocio {
             if (c.getId() > maxId) {
                 maxId = c.getId();
             }
+        Persona.setPuntero(maxId + 1);
+//        System.out.println("puntero Clietes "  + Persona.getPuntero());
         }
         // Ajuste puntero clase Articulo para evitar colisiones        
         maxId = 0;
@@ -62,9 +71,7 @@ public class GestorComercio implements LogicaNegocio {
                 maxId = a.getId();
             }
         }
-
-        Persona.setPuntero(maxId + 1);
-
+        Articulo.setPuntero(maxId + 1);
     }
 
     /**
@@ -136,6 +143,18 @@ public class GestorComercio implements LogicaNegocio {
         return articulo;
     }
 
+    public Cliente getClienteActual() {
+        return clienteActual;
+    }
+
+    public void setClienteActual(Cliente clienteActual) {
+        this.clienteActual = clienteActual;
+    }
+
+    
+    
+    
+    
     /**
      * Crear Servicio. Llama a su constructor
      *
@@ -217,6 +236,7 @@ public class GestorComercio implements LogicaNegocio {
     public Pedido confirmarPedido() throws ErrorDatos {
         if (this.obtenerPedidoEnCurso().getLista().size() != 0) {
             this.clienteActual.añadirPedido(pedidoEnCurso);
+            pPedido.persistirPedido(pedidoEnCurso);
             return pedidoEnCurso;
         } else {
             throw new ErrorDatos("ERROR. El pedido en curso no se puede comfirmar, ya que no tiene lineas de pedido.");
@@ -230,6 +250,7 @@ public class GestorComercio implements LogicaNegocio {
     @Override
     public void cancelarPedido() {
         this.pedidoEnCurso = null;
+        this.clienteActual = null;
     }
 
     /**

@@ -206,7 +206,7 @@ public class Pedido {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String fechaFormateada = this.getFechaCreacion().format(formato);
 
-            mensaje = String.format("Pedido Cliente:%-20s %-40s \tfecha: %s Total: %8.2f\n",
+            mensaje = String.format("Pedido: %s %-39s fecha: %s Total: %8.2f\n",
                     this.getCliente().getNombre(),
                     this.getCliente().getApellidos(),
                     fechaFormateada,

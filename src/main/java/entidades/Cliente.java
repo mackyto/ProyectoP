@@ -19,6 +19,8 @@ public class Cliente extends Persona {
 
     public Cliente() throws ErrorDatos {
         super();
+        listaPedidos = new ArrayList<>(); 
+        
     }
 
     
@@ -239,7 +241,7 @@ public class Cliente extends Persona {
      */
     @Override
     public String toString() {
-        String linea = String.format("%5d\t%-20s %-25s\t%-10s\t%-30s\t%3d", super.getId(), super.getNombre(), super.getApellidos(), super.getTelefono(), this.email, this.nivelFidelidad);
+        String linea = String.format("%5d   %s %-40s %-10s %-30s %3d", super.getId(), super.getNombre(), super.getApellidos(), super.getTelefono(), this.email, this.nivelFidelidad);
         return linea;
     }
 

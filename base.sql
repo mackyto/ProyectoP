@@ -101,3 +101,20 @@ SELECT
     s.urgente
 FROM Articulo a
 JOIN Servicio s ON a.id = s.articulo_id;
+
+CREATE OR REPLACE VIEW v_pedidos AS
+SELECT 
+    lp.pedido_id,
+    lp.numero_linea,
+    p.fecha AS fecha_pedido,
+    per.nombre AS nombre_cliente,
+    per.apellidos AS apellidos_cliente,
+    a.nombre AS nombre_articulo,
+    lp.cantidad,
+    lp.precio_unitario AS precio_unidad,
+    (lp.cantidad * lp.precio_unitario) AS subtotal_linea
+FROM LineasPedido lp
+JOIN Pedido p ON lp.pedido_id = p.id
+JOIN Cliente c ON p.cliente_id = c.persona_id
+JOIN Persona per ON c.persona_id = per.id
+JOIN Articulo a ON lp.articulo_id = a.id;
