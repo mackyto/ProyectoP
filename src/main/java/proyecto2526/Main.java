@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import visual.FrmMenuPrincipal;
 
 /**
  *
@@ -24,7 +25,8 @@ public class Main {
     public static void main (String[] args) {
         LogicaNegocio comercio = GestorComercio.getInstance();
         gestor = (GestorComercio) comercio;        
-        
+        FrmMenuPrincipal menu = new FrmMenuPrincipal(gestor); // Se lo pasas al constructor
+        menu.setVisible(true);
         
        
     }

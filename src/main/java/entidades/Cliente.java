@@ -241,7 +241,8 @@ public class Cliente extends Persona {
      */
     @Override
     public String toString() {
-        String linea = String.format("%5d   %s %-40s %-10s %-30s %3d", super.getId(), super.getNombre(), super.getApellidos(), super.getTelefono(), this.email, this.nivelFidelidad);
+        String nombre = super.getNombre() + " " +  super.getApellidos();
+        String linea = String.format("%5d  %-45s %s %-30s %3d", super.getId(), nombre , super.getTelefono(), this.email, this.nivelFidelidad);
         return linea;
     }
 
