@@ -30,7 +30,6 @@ public class FrmArticulo extends javax.swing.JFrame {
     public FrmArticulo(GestorComercio gestor) {
         this.gestor = gestor;
         initComponents();
-        configurarTabla();
         DefaultTableCellRenderer renderizadorFilas = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -53,7 +52,8 @@ public class FrmArticulo extends javax.swing.JFrame {
                 return c;
             }
         };
-        actualizarTabla(""); 
+        actualizarTabla("");
+        configurarTabla();
         txtPatron.requestFocus();
     }
 
@@ -101,13 +101,14 @@ public class FrmArticulo extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblArticulo);
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         btnBack.setText("Volver Atras");
         btnBack.addActionListener(this::btnBackActionPerformed);
         jPanel1.add(btnBack);
 
         btnNewArticulo.setText("Nuevo Articulo");
+        btnNewArticulo.addActionListener(this::btnNewArticuloActionPerformed);
         jPanel1.add(btnNewArticulo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,6 +162,13 @@ public class FrmArticulo extends javax.swing.JFrame {
     private void txtPatronKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPatronKeyReleased
         actualizarTabla(txtPatron.getText().trim());
     }//GEN-LAST:event_txtPatronKeyReleased
+
+    private void btnNewArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewArticuloActionPerformed
+        FrmNuevoArticulo dialogo = new FrmNuevoArticulo(this, true, gestor, "PRODUCTO");
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
+        actualizarTabla("");
+    }//GEN-LAST:event_btnNewArticuloActionPerformed
 
     private void actualizarTabla(String patron) {
         String[] columnas = {"ID", "Tipo", "Nombre", "Precio Base", "IVA", "P. Final", "Stock/Min"};

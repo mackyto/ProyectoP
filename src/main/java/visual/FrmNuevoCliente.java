@@ -5,7 +5,10 @@
 package visual;
 
 import entidades.ErrorDatos;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import logica.GestorComercio;
 import static proyecto2526.Main.gestor;
 
@@ -33,6 +36,9 @@ public class FrmNuevoCliente extends javax.swing.JDialog {
         sldFidelidad.setSnapToTicks(false);
         sldFidelidad.setValue(1);
         this.setLocationRelativeTo(parent);
+        getRootPane().registerKeyboardAction(e -> {
+            this.dispose();
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     /**
