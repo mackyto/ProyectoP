@@ -179,8 +179,9 @@ public class FrmCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPatronKeyReleased
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
-        FrmNuevoCliente frmNuevo = new FrmNuevoCliente(gestor);
+        FrmNuevoCliente frmNuevo = new FrmNuevoCliente(this, true, gestor);
         frmNuevo.setVisible(true);
+        actualizarTabla("");
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
     private void txtPatronActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatronActionPerformed

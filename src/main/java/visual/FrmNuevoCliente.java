@@ -4,6 +4,8 @@
  */
 package visual;
 
+import entidades.ErrorDatos;
+import java.sql.SQLException;
 import logica.GestorComercio;
 import static proyecto2526.Main.gestor;
 
@@ -11,15 +13,26 @@ import static proyecto2526.Main.gestor;
  *
  * @author macky
  */
-public class FrmNuevoCliente extends javax.swing.JFrame {
-    
+public class FrmNuevoCliente extends javax.swing.JDialog {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmNuevoCliente.class.getName());
+    private static GestorComercio gestor;
 
     /**
      * Creates new form FrmNuevoCliente
      */
-    public FrmNuevoCliente(GestorComercio gestor) {
+    public FrmNuevoCliente(java.awt.Frame parent, boolean modal, GestorComercio gestor) {
+        super(parent, modal);
+        this.gestor = gestor;
         initComponents();
+        sldFidelidad.setMinimum(1);
+        sldFidelidad.setMaximum(5);
+        sldFidelidad.setMajorTickSpacing(1);
+        sldFidelidad.setPaintTicks(true);
+        sldFidelidad.setPaintLabels(true);
+        sldFidelidad.setSnapToTicks(false);
+        sldFidelidad.setValue(1);
+        this.setLocationRelativeTo(parent);
     }
 
     /**
@@ -46,9 +59,9 @@ public class FrmNuevoCliente extends javax.swing.JFrame {
         toMain = new javax.swing.JButton();
         btnCrearCliente = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         txtTitulo.setText("Nuevo Cliente");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel2.setText("Nombre:");
 
@@ -64,7 +77,7 @@ public class FrmNuevoCliente extends javax.swing.JFrame {
 
         txtNombre.addActionListener(this::txtNombreActionPerformed);
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         toMain.setText("Volver Atras");
         jPanel1.add(toMain);
@@ -98,18 +111,13 @@ public class FrmNuevoCliente extends javax.swing.JFrame {
                             .addComponent(txtTelefono)
                             .addComponent(txtNombre)
                             .addComponent(txtApellidos)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtTitulo)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -131,7 +139,7 @@ public class FrmNuevoCliente extends javax.swing.JFrame {
                     .addComponent(sldFidelidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,7 +154,17 @@ public class FrmNuevoCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnCrearClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearClienteActionPerformed
-        // TODO add your handling code here:
+
+        try {
+            gestor.crearCliente(txtNombre.getText().trim(), txtApellidos.getText().trim(), txtTelefono.getText().trim(), txtMail.getText().trim(), sldFidelidad.getValue());
+        } catch (SQLException ex) {
+            System.getLogger(FrmNuevoCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (ErrorDatos ex) {
+            System.getLogger(FrmNuevoCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
+        this.dispose();
+
     }//GEN-LAST:event_btnCrearClienteActionPerformed
 
     /**
@@ -171,7 +189,7 @@ public class FrmNuevoCliente extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmNuevoCliente(gestor).setVisible(true));
+        new FrmNuevoCliente(new javax.swing.JFrame(), true, null).setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
