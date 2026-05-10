@@ -151,7 +151,7 @@ public class Pedido {
 
             this.setTotal(linea.getPrecioUnitarioFinal() * linea.getCantidad() + this.getTotal());
         }
-
+        
         return total;
 
     }

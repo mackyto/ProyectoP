@@ -19,7 +19,7 @@ import logica.GestorComercio;
 public class FrmNuevoArticulo extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmNuevoArticulo.class.getName());
-    private static GestorComercio gestor;
+    private GestorComercio gestor;
     private String tipo;
     
 

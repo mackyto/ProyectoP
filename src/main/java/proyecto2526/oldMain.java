@@ -1,0 +1,355 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package proyecto2526;
+
+import interfaces.LogicaNegocio;
+import logica.GestorComercio;
+import entidades.*;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import static proyecto2526.Main.gestor;
+import static proyecto2526.Main.kl;
+
+import visual.FrmMenuPrincipal;
+
+  
+public class oldMain {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        //GeneradorArticulos generador = GeneradorArticulos.getInstancia();
+        //GeneradorClientes generarCli = GeneradorClientes.getInstancia();
+        LogicaNegocio comercio = GestorComercio.getInstance();
+        gestor = (GestorComercio) comercio;
+//        GestorComercio gestor = (GestorComercio) comercio;
+        kl = new Scanner(System.in);
+
+        String opcion = "";
+
+        do {
+
+            try {
+
+                System.out.println("Menú");
+                System.out.println("1 - Crear Cliente.");
+                System.out.println("2 - Listar Clientes");
+                System.out.println("3 - Seleccionar Cliente Actual");
+                System.out.println("4 - Crear Articulo");
+                System.out.println("5 - Listar Articulos");
+                System.out.println("6 - Crear Pedido");
+                System.out.println("7 - Gestionar Pedido en Curso");
+                System.out.println("8 - Listar los Pedidos del Cliente Seleccionado");
+                System.out.println("Q - Salir.");
+                if (gestor.getClienteActual() != null) {
+                    System.out.println("El cliente actual es" + gestor.getClienteActual().toString());
+                }
+
+                opcion = kl.nextLine();
+
+                switch (opcion) {
+
+                    case "1":
+                        crearCliente();
+                        break;
+                    case "2":
+                        gestor.imprimirClientes();
+                        break;
+                    case "3":
+                        seleccionarClienteActual();
+                        break;
+                    case "4":
+                        crearArticulo();
+                        break;
+                    case "5":
+                        gestor.imprimirArticulos();
+                        break;
+                    case "6":
+                        agregarPedido();
+                        break;
+                    case "7":
+                        gestionarPedidoCurso();
+                        break;
+                    case "8":
+                        listarPedidosCliente();
+                        break;
+
+                }
+
+//                generador.generarArticulos(comercio, 100, 70);
+//                generador.mostrarEstadisticas();
+//                generarCli.crearClientes(comercio, 80);
+//                gestor.imprimirListaClientes(gestor.buscarClientes("javier"));
+                //gestor.imprimirClientes();
+                //gestor.imprimirArticulos();
+            } catch (SQLException sql) {
+                System.out.println(sql.getMessage());
+            } catch (NoSuchElementException nse) {
+                System.out.println(nse.getMessage());
+            } catch (ErrorDatos er) {
+                System.out.println(er.getMessage());
+            }
+
+        } while (!opcion.equalsIgnoreCase("q"));
+
+    }
+
+    /**
+     * Imprime cantidad de articulos generados.
+     *
+     * @param generador instancia uníca generadora de articulos.
+     * @throws entidades.ErrorDatos
+     */
+    public static void listarArticulos(GeneradorArticulos generador) throws ErrorDatos {
+
+        // Obtener listas específicas
+        List<ProductoFisico> productos = generador.getProductosFisicos();
+        List<Servicio> servicios = generador.getServicios();
+
+        System.out.println("\nProductos físicos generados: " + productos.size());
+        System.out.println("Servicios generados: " + servicios.size());
+
+    }
+
+    /**
+     * Solicita datos de cliente
+     *
+     * @param gestor
+     * @return
+     */
+    public static boolean crearCliente() throws SQLException {
+
+        try {
+
+            System.out.print("Nombre: ");
+            String nombre = kl.nextLine();
+            System.out.print("Apellidos: ");
+            String apellidos = kl.nextLine();
+            System.out.print("telefono: ");
+            String telefono = kl.nextLine();
+            System.out.print("Fidelidad (1-5): ");
+            int fidelidad = Integer.parseInt(kl.nextLine());
+            System.out.print("email: ");
+            String email = kl.nextLine();
+
+            gestor.crearCliente(nombre, apellidos, telefono, email, fidelidad);
+
+        } catch (ErrorDatos ed) {
+            ed.printStackTrace();
+        }
+
+        return true;
+
+    }
+
+    public static boolean crearArticulo() throws SQLException {
+
+        try {
+
+            System.out.println("Tipo de Articulo");
+            System.out.println("-------------------------");
+            System.out.println("P - Producto.");
+            System.out.println("S - Servicio.");
+            System.out.println("Q - Volver al Menú.");
+            System.out.println("-------------------------");
+            char opcion = kl.nextLine().trim().toLowerCase().charAt(0);
+            if (opcion == 's') {
+                System.out.println("Servicio");
+            } else if (opcion == 'p') {
+                System.out.println("Producto Físico");
+            } else {
+                return false;
+            }
+            System.out.println("-------------------------");
+            System.out.print("Nombre: ");
+            String nombre = kl.nextLine();
+            System.out.print("Precio Base: ");
+            double precio = Double.parseDouble(kl.nextLine());
+            System.out.print("IVA aplicable ");
+            double iva = Double.parseDouble(kl.nextLine());
+
+            switch (opcion) {
+
+                case 'p': {
+                    System.out.print("Stock de Producto: ");
+                    int stock = Integer.parseInt(kl.nextLine());
+
+                    gestor.crearProductoFisico(nombre, precio, iva, stock);
+                }
+
+                break;
+                case 's': {
+                    System.out.print("Tiempo de ejecución (minutos): ");
+                    int minutos = Integer.parseInt(kl.nextLine());
+                    System.out.print("Es un Sericio Urgente (Y/N): ");
+                    char urgente = kl.nextLine().trim().toLowerCase().charAt(0);
+                    if (urgente == 'y') {
+                        gestor.crearServicio(nombre, precio, iva, minutos, true);
+                    } else {
+                        gestor.crearServicio(nombre, precio, iva, minutos, false);
+                    }
+                }
+
+                break;
+
+            }
+
+        } catch (ErrorDatos ed) {
+            ed.printStackTrace();
+        }
+
+        return true;
+
+    }
+
+    public static void seleccionarClienteActual() {
+        String opcion;
+
+        try {
+
+            System.out.println("Nombre del cliente:");
+            List<Cliente> lista = gestor.buscarClientes(kl.nextLine());
+            gestor.imprimirListaClientes(lista);
+            System.out.println("Introduce su Identificador:");
+            gestor.setClienteActual(gestor.selecionarCliente(lista, Integer.parseInt(kl.nextLine())));
+
+        } catch (NumberFormatException nfe) {
+            System.out.println("Error: Debes introducir un número válido para los IDs y cantidades.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    public static void agregarPedido() {
+        String opcion;
+
+        try {
+            if (gestor.getClienteActual() == null) {
+                seleccionarClienteActual();
+            }
+
+            gestor.iniciarPedido(gestor.getClienteActual());
+            System.out.println(gestor.getClienteActual().toString());
+
+            incluirLineas();
+            gestionarPedidoCurso();
+
+        } catch (NumberFormatException nfe) {
+            System.out.println("Error: Debes introducir un número válido para los IDs y cantidades.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    public static void incluirLineas() throws ErrorDatos {
+        String opcion;
+        List<Articulo> arti = null;
+        while (true) {
+            System.out.println("\n--- Añadir Artículo ---");
+            System.out.println("Nombre del Articulo (o ENTER para finalizar, 'q' para cancelar):");
+            opcion = kl.nextLine();
+            if (opcion.isEmpty()) {
+                break;
+            }
+            if (opcion.equalsIgnoreCase("q")) {
+                gestor.cancelarPedido();
+                System.out.println("Pedido cancelado.");
+                return;
+            }
+            arti = gestor.buscarArticulos(opcion);
+            gestor.imprimirListaArticulos(arti);
+
+            System.out.println("Introduce el Identificador del artículo:");
+            int idArt = Integer.parseInt(kl.nextLine());
+
+            System.out.println("Introduce la cantidad:");
+            int cantidad = Integer.parseInt(kl.nextLine());
+
+            gestor.anadirLineaPedido(gestor.selecionarArticulo(arti, idArt), cantidad);
+
+        }
+
+    }
+
+    public static void gestionarPedidoCurso() {
+        String opcion;
+        imprimirPedido(gestor.obtenerPedidoEnCurso());
+        System.out.println();
+        System.out.println();
+        if (gestor.getClienteActual() != null) {
+            System.out.println("Cliete Actual" + gestor.getClienteActual().getNombre() + " " + gestor.getClienteActual().getApellidos());
+        }
+        System.out.println();
+        System.out.println("-------------------------");
+        System.out.println("B - Borra Pedido");
+        System.out.println("C - Comfirmar Pedido");
+        System.out.println("E - Editar Pedido");
+        System.out.println("Q - Volver al Menú.");
+        System.out.println("-------------------------");
+
+        try {
+
+            opcion = kl.nextLine().toUpperCase();
+
+            switch (opcion) {
+
+                case "B":
+                    gestor.cancelarPedido();
+                    break;
+                case "C":
+                    gestor.confirmarPedido();
+                    break;
+                case "E":
+                    incluirLineas();
+                    break;
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void imprimirPedido(Pedido p) {
+
+        try {
+            if (p.getLista() == null || p.getLista().isEmpty()) {
+                throw new IndexOutOfBoundsException("La lista de lineas de pedido esta vacía");
+            }
+            System.out.println(p.toString());
+            System.out.println(p.toStringCabezera());
+            for (LineaPedido lp : p.getLista()) {
+                System.out.println(lp.toString());
+            }
+
+        } catch (IndexOutOfBoundsException ioe) {
+            System.out.println(ioe.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public static void listarPedidosCliente() {
+        String opcion;
+
+        try {
+            if (gestor.getClienteActual() == null) {
+                seleccionarClienteActual();
+            }
+            gestor.imprimirListaPedidos(gestor.getClienteActual().listarPedidos());
+
+        } catch (NumberFormatException nfe) {
+            System.out.println("Error: Debes introducir un número válido para los IDs y cantidades.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}

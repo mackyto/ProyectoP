@@ -99,12 +99,12 @@ public class PersisPedido extends ConexionBase implements InPedido {
                 while (rsP.next()) {
                     int idPedBD = rsP.getInt("id");
                     LocalDateTime fecha = rsP.getTimestamp("fecha").toLocalDateTime();
-
+                    double precioBD = rsP.getDouble("precio_total");
                     try {
 
                         Pedido pedido = new Pedido(cliente);
                         pedido.setFechaCreacion(fecha);
-
+                        pedido.setTotal(precioBD);
                         cargarLineas(idPedBD, pedido, ar, conn);
 
                         cliente.listarPedidos().add(pedido);

@@ -1,5 +1,6 @@
 package visual;
 
+import javax.swing.JOptionPane;
 import logica.GestorComercio;
 import static proyecto2526.Main.gestor;
 
@@ -15,6 +16,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName());
     private static GestorComercio gestor;
+
     /**
      * Creates new form FrmMenuPrincipal
      */
@@ -52,6 +54,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         jPanelGeneral.add(btnArticulos);
 
         btnPedidos.setText("Pedidos");
+        btnPedidos.addActionListener(this::btnPedidosActionPerformed);
         jPanelGeneral.add(btnPedidos);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -74,11 +77,27 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArticulosActionPerformed
-    FrmArticulo ventanaArticulos = new FrmArticulo(gestor);
-    ventanaArticulos.setLocationRelativeTo(null);
-    ventanaArticulos.setVisible(true);
-    this.dispose();
+        FrmArticulo ventanaArticulos = new FrmArticulo(gestor);
+        ventanaArticulos.setLocationRelativeTo(null);
+        ventanaArticulos.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnArticulosActionPerformed
+
+    private void btnPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidosActionPerformed
+        if (gestor.getClienteActual() == null) {
+            JOptionPane.showMessageDialog(this,
+                "Para gestionar pedidos, primero debes seleccionar un Cliente en la sección de Clientes.",
+                "Cliente no seleccionado",
+                JOptionPane.WARNING_MESSAGE);
+            FrmCliente ventanaClientes = new FrmCliente(gestor);
+            ventanaClientes.setVisible(true);
+            this.dispose();
+        } else {
+            FrmPedido ventanaPedidos = new FrmPedido(gestor);
+            ventanaPedidos.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnPedidosActionPerformed
 
     /**
      * @param args the command line arguments
