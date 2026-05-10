@@ -14,11 +14,12 @@ import static proyecto2526.Main.gestor;
 public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName());
-
+    private static GestorComercio gestor;
     /**
      * Creates new form FrmMenuPrincipal
      */
     public FrmMenuPrincipal(GestorComercio gestor) {
+        this.gestor = gestor;
         initComponents();
     }
 
@@ -40,13 +41,14 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanelGeneral.setLayout(new java.awt.GridLayout());
+        jPanelGeneral.setLayout(new java.awt.GridLayout(1, 0));
 
         btnClientes.setText("Clientes");
         btnClientes.addActionListener(this::btnClientesActionPerformed);
         jPanelGeneral.add(btnClientes);
 
         btnArticulos.setText("Articulos");
+        btnArticulos.addActionListener(this::btnArticulosActionPerformed);
         jPanelGeneral.add(btnArticulos);
 
         btnPedidos.setText("Pedidos");
@@ -70,6 +72,13 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         vCliente.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnClientesActionPerformed
+
+    private void btnArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArticulosActionPerformed
+    FrmArticulo ventanaArticulos = new FrmArticulo(gestor);
+    ventanaArticulos.setLocationRelativeTo(null);
+    ventanaArticulos.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnArticulosActionPerformed
 
     /**
      * @param args the command line arguments
