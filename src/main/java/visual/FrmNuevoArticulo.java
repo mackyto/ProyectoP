@@ -21,7 +21,6 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmNuevoArticulo.class.getName());
     private GestorComercio gestor;
     private String tipo;
-    
 
     /**
      * Creates new form FrmNuevoArticulo
@@ -42,6 +41,7 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
         rbProducto.addActionListener(e -> actualizarCamposSegunTipo());
         rbServicio.addActionListener(e -> actualizarCamposSegunTipo());
         actualizarCamposSegunTipo();
+        this.setLocationRelativeTo(parent);
 
     }
 
@@ -257,8 +257,6 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
 
         return 0.0; // Por defecto 0%
     }
-
-
 
     private void actualizarCamposSegunTipo() {
         // Si el radio button de producto está marcado, esto será true

@@ -147,12 +147,12 @@ public class Pedido {
      */
     public double calcularTotal() throws ErrorDatos {
 
+        double acumulador = 0;
         for (LineaPedido linea : this.getLista()) {
-
-            this.setTotal(linea.getPrecioUnitarioFinal() * linea.getCantidad() + this.getTotal());
+            acumulador += (linea.getPrecioUnitarioFinal() * linea.getCantidad());
         }
-        
-        return total;
+
+        return acumulador;
 
     }
 

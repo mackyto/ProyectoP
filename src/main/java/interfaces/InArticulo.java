@@ -16,6 +16,7 @@ import java.util.List;
 public interface InArticulo {
     public boolean persistirProducto(ProductoFisico pf );
     public boolean persistirServicio(Servicio s);
+    public boolean actualizarStock(ProductoFisico p);
     public List<Articulo> recuperarTodo();
     
 }

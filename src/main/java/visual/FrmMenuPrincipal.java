@@ -23,6 +23,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     public FrmMenuPrincipal(GestorComercio gestor) {
         this.gestor = gestor;
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -86,9 +87,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void btnPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidosActionPerformed
         if (gestor.getClienteActual() == null) {
             JOptionPane.showMessageDialog(this,
-                "Para gestionar pedidos, primero debes seleccionar un Cliente en la sección de Clientes.",
-                "Cliente no seleccionado",
-                JOptionPane.WARNING_MESSAGE);
+                    "Para gestionar pedidos, primero debes seleccionar un Cliente en la sección de Clientes.",
+                    "Cliente no seleccionado",
+                    JOptionPane.WARNING_MESSAGE);
             FrmCliente ventanaClientes = new FrmCliente(gestor);
             ventanaClientes.setVisible(true);
             this.dispose();

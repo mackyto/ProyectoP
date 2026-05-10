@@ -233,15 +233,38 @@ public class GestorComercio implements LogicaNegocio {
      * @throws ErrorDatos
      */
     @Override
-    public Pedido confirmarPedido() throws ErrorDatos {
-        if (this.obtenerPedidoEnCurso().getLista().size() != 0) {
-            this.clienteActual.añadirPedido(pedidoEnCurso);
-            pPedido.persistirPedido(pedidoEnCurso);
-            return pedidoEnCurso;
-        } else {
-            throw new ErrorDatos("ERROR. El pedido en curso no se puede comfirmar, ya que no tiene lineas de pedido.");
+public Pedido confirmarPedido() throws ErrorDatos {
+    if (this.obtenerPedidoEnCurso().getLista().size() != 0) {
+        pedidoEnCurso.setTotal(pedidoEnCurso.calcularTotal());
+        // --- ACTUALIZACIÓN DE STOCK ---
+        for (LineaPedido linea : pedidoEnCurso.getLista()) {
+            Articulo art = linea.getArticulo();
+            
+            if (art instanceof ProductoFisico) {
+                ProductoFisico prod = (ProductoFisico) art;
+                int nuevoStock = prod.getStock() - linea.getCantidad();
+                
+                // Si el stock puede ser negativo, lanzamos error antes de guardar nada
+                if (nuevoStock < 0) {
+                    throw new ErrorDatos("ERROR. No hay stock suficiente para: " + prod.getNombre());
+                }
+                
+                prod.setStock(nuevoStock);
+                pArticul.actualizarStock(prod);
+            }
         }
+        // ------------------------------
+
+        this.clienteActual.añadirPedido(pedidoEnCurso);
+        pPedido.persistirPedido(pedidoEnCurso);
+        
+        Pedido aux = pedidoEnCurso;
+        this.pedidoEnCurso = null; 
+        return aux;
+    } else {
+        throw new ErrorDatos("ERROR. El pedido en curso no se puede confirmar, ya que no tiene líneas.");
     }
+}
 
     /**
      * Borra el pedido actual las lineas se borran automaticamente al perder la
@@ -250,7 +273,6 @@ public class GestorComercio implements LogicaNegocio {
     @Override
     public void cancelarPedido() {
         this.pedidoEnCurso = null;
-        this.clienteActual = null;
     }
 
     /**

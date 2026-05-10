@@ -55,6 +55,7 @@ public class FrmArticulo extends javax.swing.JFrame {
         actualizarTabla("");
         configurarTabla();
         txtPatron.requestFocus();
+        this.setLocationRelativeTo(null);
     }
 
     /**

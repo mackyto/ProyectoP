@@ -27,9 +27,9 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
     private static final String INSERTAR_ARTICULO = "INSERT INTO Articulo (id, nombre, precio_base, iva) VALUES (?, ?, ?, ?)";
     private static final String INSERTAR_SERVICIO = "INSERT INTO Servicio (articulo_id, minutos, urgente) VALUES (?, ?, ?)";
     private static final String INSERTAR_PFISICO = "INSERT INTO ProductoFisico (articulo_id, stock) VALUES (?, ?)";
+    private static final String UPDATE_STOCK = "UPDATE ProductoFisico SET stock = ? WHERE articulo_id = ?";
     private static final String SQL_SELECT_SERVICIOS = "SELECT * FROM `v_artiservicio`";
     private static final String SQL_SELECT_PFISICOS = "SELECT * FROM `v_artifisico`";
-
 
     @Override
     public boolean persistirProducto(ProductoFisico p) {
@@ -86,14 +86,28 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
     }
 
     @Override
+    public boolean actualizarStock(ProductoFisico p) {
+        try (Connection conn = conexionDB(); PreparedStatement pps = conn.prepareStatement(UPDATE_STOCK)) {
+
+            pps.setInt(1, p.getStock());
+            pps.setInt(2, p.getId());
+
+            int filasAfectadas = pps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
     public List<Articulo> recuperarTodo() {
 
         List<Articulo> lista = new ArrayList<>();
 
         try {
-            try (Connection conn = conexionDB(); 
-            PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); 
-            ResultSet rs = ps.executeQuery()) {
+            try (Connection conn = conexionDB(); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     Servicio s = new Servicio();
@@ -108,9 +122,7 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
 
             }
 
-            try (Connection conn = conexionDB(); 
-            PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS); 
-            ResultSet rs = ps.executeQuery()) {
+            try (Connection conn = conexionDB(); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS); ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     ProductoFisico pf = new ProductoFisico();
