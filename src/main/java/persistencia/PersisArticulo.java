@@ -74,7 +74,7 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
         }
     }
 
-// Este es el método que ambos comparten, pero recibe la conexión abierta
+    
     private void insertarArticuloBase(Articulo a, Connection conn) throws SQLException {
         try (PreparedStatement aps = conn.prepareStatement(INSERTAR_ARTICULO)) {
             aps.setInt(1, a.getId());
