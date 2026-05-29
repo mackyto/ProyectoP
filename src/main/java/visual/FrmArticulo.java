@@ -10,6 +10,7 @@ import entidades.Servicio;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ public class FrmArticulo extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmArticulo.class.getName());
     private static GestorComercio gestor;
+    //private boolean productosSi, serviciosSi;
 
     /**
      * Creates new form FrmArticulo
@@ -30,28 +32,12 @@ public class FrmArticulo extends javax.swing.JFrame {
     public FrmArticulo(GestorComercio gestor) {
         this.gestor = gestor;
         initComponents();
-        DefaultTableCellRenderer renderizadorFilas = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
 
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                String tipo = table.getValueAt(row, 1).toString();
-                String infoExtra = table.getValueAt(row, 6).toString();
+        productosSi.setSelected(true);
+        serviciosSi.setSelected(true);
+        productosSi.addActionListener(e -> actualizarTabla(txtPatron.getText().trim()));
+        serviciosSi.addActionListener(e -> actualizarTabla(txtPatron.getText().trim()));
 
-                if (tipo.equals("Servicio") && infoExtra.contains("min")) {
-
-                    c.setBackground(new Color(255, 230, 230));
-                    c.setForeground(Color.RED);
-                } else {
-
-                    c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
-                    c.setForeground(isSelected ? table.getSelectionForeground() : Color.BLACK);
-                }
-
-                return c;
-            }
-        };
         actualizarTabla("");
         configurarTabla();
         txtPatron.requestFocus();
@@ -75,11 +61,13 @@ public class FrmArticulo extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnBack = new javax.swing.JButton();
         btnNewArticulo = new javax.swing.JButton();
+        productosSi = new javax.swing.JCheckBox();
+        serviciosSi = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 400));
 
-        jLabel1.setText("Articulo");
+        jLabel1.setText("Articulos");
 
         jLabel2.setText("Buscarf");
 
@@ -91,15 +79,28 @@ public class FrmArticulo extends javax.swing.JFrame {
 
         tblArticulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "Tipo", "Nombre", "Precio", "IVA", "PrecioIVA", "Stock/Minutos"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblArticulo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblArticuloMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblArticulo);
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
@@ -112,15 +113,22 @@ public class FrmArticulo extends javax.swing.JFrame {
         btnNewArticulo.addActionListener(this::btnNewArticuloActionPerformed);
         jPanel1.add(btnNewArticulo);
 
+        productosSi.setText("Productos");
+        productosSi.addActionListener(this::productosSiActionPerformed);
+
+        serviciosSi.setText("Servicios");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(159, 159, 159)
                         .addComponent(jLabel1)
@@ -129,10 +137,11 @@ public class FrmArticulo extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPatron))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtPatron)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(productosSi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(serviciosSi)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,7 +151,9 @@ public class FrmArticulo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtPatron, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPatron, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(productosSi)
+                    .addComponent(serviciosSi))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -171,100 +182,130 @@ public class FrmArticulo extends javax.swing.JFrame {
         actualizarTabla("");
     }//GEN-LAST:event_btnNewArticuloActionPerformed
 
-    private void actualizarTabla(String patron) {
-        String[] columnas = {"ID", "Tipo", "Nombre", "Precio Base", "IVA", "P. Final", "Stock/Min"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+    private void productosSiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosSiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_productosSiActionPerformed
 
-        for (Articulo a : gestor.buscarArticulos(patron)) {
+    private void tblArticuloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblArticuloMouseClicked
+        // Revisamos que sea doble clic y que realmente haya una fila seleccionada
+        if (evt.getClickCount() == 2 && tblArticulo.getSelectedRow() != -1) {
+
+            // Si la tabla intentó activar la edición de texto por defecto, la cancelamos
+            if (tblArticulo.isEditing()) {
+                tblArticulo.getCellEditor().cancelCellEditing();
+            }
+
+            int filaSeleccionada = tblArticulo.getSelectedRow();
+
+            // 1. Tomamos el ID de la columna 0 (asegúrate de que en tu tabla el ID sea la primera columna)
+            int idArticulo = (int) tblArticulo.getValueAt(filaSeleccionada, 0);
+
+            // 2. Buscamos el artículo en el gestor por su ID
+            Articulo articuloAEditar = gestor.selecionarArticulo(idArticulo);
+
+            if (articuloAEditar != null) {
+                // 3. Abrimos el JDialog pasando el objeto que apunta a la memoria
+                FrmNuevoArticulo dialogo = new FrmNuevoArticulo(this, true, gestor, articuloAEditar);
+                dialogo.setVisible(true);
+
+                // 4. Al cerrar el diálogo, refrescamos la tabla con los datos que ya cambiaron en memoria
+                actualizarTabla(txtPatron.getText().trim());
+            }
+        }
+
+    }//GEN-LAST:event_tblArticuloMouseClicked
+
+        private void actualizarTabla(String patron) {
+            String[] columnas = {"ID", "Tipo", "Nombre", "Precio Base", "IVA", "P. Final", "Stock/Min"};
+
+            DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            boolean mostrarFisicos = productosSi.isSelected();
+            boolean mostrarServicios = serviciosSi.isSelected();
+
+            for (Articulo a : gestor.buscarArticulos(patron)) {
+
+                // Switch de expresión con Pattern Matching de Java 24
+                Object[] fila = switch (a) {
+                    case ProductoFisico p when mostrarFisicos -> {
+                        Object[] f = crearFilaBase(p, "Producto");
+                        f[6] = p.getStock() + " uds";
+                        yield f;
+                    }
+                    case Servicio s when mostrarServicios -> {
+                        Object[] f = crearFilaBase(s, "Servicio");
+                        String urgenteStr = s.isUrgente() ? " URGENTE" : "";
+                        f[6] = s.getMinutos() + " min" + urgenteStr; // Corregido a s.getMinutos()
+                        yield f;
+                    }
+                    default ->
+                        null;
+                };
+
+                if (fila != null) {
+                    modelo.addRow(fila);
+                }
+            }
+
+            tblArticulo.setModel(modelo);
+
+            // Renderizador para pintar las celdas de servicios urgentes
+            DefaultTableCellRenderer renderizadorFilas = new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                        boolean isSelected, boolean hasFocus, int row, int column) {
+
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                    Object valorUrgencia = table.getValueAt(row, 6);
+                    boolean esUrgente = valorUrgencia != null && valorUrgencia.toString().contains("URGENTE");
+
+                    if (esUrgente) {
+                        c.setBackground(new Color(255, 200, 200));
+                        c.setForeground(Color.RED);
+                        c.setFont(c.getFont().deriveFont(Font.BOLD));
+                    } else {
+                        c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
+                        c.setForeground(isSelected ? table.getSelectionForeground() : Color.BLACK);
+                        c.setFont(c.getFont().deriveFont(Font.PLAIN));
+                    }
+                    return c;
+                }
+            };
+
+            for (int i = 0; i < tblArticulo.getColumnCount(); i++) {
+                tblArticulo.getColumnModel().getColumn(i).setCellRenderer(renderizadorFilas);
+            }
+
+            tblArticulo.getColumnModel().getColumn(2).setPreferredWidth(350);
+            tblArticulo.getColumnModel().getColumn(0).setPreferredWidth(50);
+        }
+
+        private void configurarTabla() {
+            javax.swing.table.TableColumnModel columnModel = tblArticulo.getColumnModel();
+            columnModel.getColumn(1).setPreferredWidth(350);
+            columnModel.getColumn(0).setPreferredWidth(50);
+            columnModel.getColumn(2).setPreferredWidth(80);
+            columnModel.getColumn(6).setPreferredWidth(100);
+        }
+
+        private Object[] crearFilaBase(Articulo a, String tipo) {
             Object[] fila = new Object[7];
             fila[0] = a.getId();
-            fila[1] = (a instanceof ProductoFisico) ? "Producto" : "Servicio"; // Tipo
+            fila[1] = tipo;
             fila[2] = a.getNombre();
             fila[3] = a.getPrecioBase();
             fila[4] = a.getIva() + "%";
 
             double pFinal = a.getPrecioBase() * (1 + (a.getIva() / 100.0));
             fila[5] = String.format("%.2f €", pFinal);
-
-            if (a instanceof ProductoFisico) {
-                fila[6] = ((ProductoFisico) a).getStock() + " uds";
-            } else if (a instanceof Servicio) {
-                Servicio s = (Servicio) a;
-                String urgenteStr = s.isUrgente() ? " URGENTE" : "";
-                fila[6] = s.getMinutos() + " min" + urgenteStr;
-            }
-            modelo.addRow(fila);
+            return fila;
         }
-
-        tblArticulo.setModel(modelo);
-
-        DefaultTableCellRenderer renderizadorFilas = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-                Object valorUrgencia = table.getValueAt(row, 6);
-                boolean esUrgente = valorUrgencia != null && valorUrgencia.toString().contains("URGENTE");
-
-                if (esUrgente) {
-                    c.setBackground(new Color(255, 200, 200));
-                    c.setForeground(Color.RED);
-                    c.setFont(c.getFont().deriveFont(Font.BOLD));
-                } else {
-                    c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
-                    c.setForeground(isSelected ? table.getSelectionForeground() : Color.BLACK);
-                    c.setFont(c.getFont().deriveFont(Font.PLAIN));
-                }
-                return c;
-            }
-        };
-
-        for (int i = 0; i < tblArticulo.getColumnCount(); i++) {
-            tblArticulo.getColumnModel().getColumn(i).setCellRenderer(renderizadorFilas);
-        }
-
-        tblArticulo.getColumnModel().getColumn(2).setPreferredWidth(350);
-        tblArticulo.getColumnModel().getColumn(0).setPreferredWidth(50);
-        //tblArticulo.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-    }
-
-    private void configurarTabla() {
-
-        javax.swing.table.TableColumnModel columnModel = tblArticulo.getColumnModel();
-
-        columnModel.getColumn(1).setPreferredWidth(350);
-        columnModel.getColumn(0).setPreferredWidth(50);
-        columnModel.getColumn(2).setPreferredWidth(80);
-        columnModel.getColumn(6).setPreferredWidth(100);
-
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmArticulo(gestor).setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -273,6 +314,8 @@ public class FrmArticulo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JCheckBox productosSi;
+    private javax.swing.JCheckBox serviciosSi;
     private javax.swing.JTable tblArticulo;
     private javax.swing.JTextField txtPatron;
     // End of variables declaration//GEN-END:variables

@@ -4,7 +4,10 @@
  */
 package visual;
 
+import entidades.Articulo;
 import entidades.ErrorDatos;
+import entidades.ProductoFisico;
+import entidades.Servicio;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JComponent;
@@ -21,6 +24,7 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmNuevoArticulo.class.getName());
     private GestorComercio gestor;
     private String tipo;
+    private Articulo articuloEditar;
 
     /**
      * Creates new form FrmNuevoArticulo
@@ -30,19 +34,82 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
         this.gestor = gestor;
         initComponents();
         this.tipo = tipo;
-        getRootPane().registerKeyboardAction(e -> {
-            this.dispose();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        initComportamientoComun(parent);
+
         if (tipo.equals("PRODUCTO")) {
             rbProducto.setSelected(true);
         } else {
             rbServicio.setSelected(true);
         }
+        actualizarCamposSegunTipo();
+    }
+
+    public FrmNuevoArticulo(java.awt.Frame parent, boolean modal, GestorComercio gestor, Articulo articulo) {
+        super(parent, modal);
+        this.gestor = gestor;
+        this.articuloEditar = articulo;
+        initComponents();
+
+        initComportamientoComun(parent);
+
+        // Ajustamos los textos visuales para el modo edición
+        jLabel1.setText("Modificar Artículo (ID: " + articulo.getId() + ")");
+        btnNuevoArticulo.setText("Guardar Cambios");
+
+        // Impedimos cambiar el tipo de un artículo ya existente
+        rbProducto.setEnabled(false);
+        rbServicio.setEnabled(false);
+
+        // Cargamos los datos comunes
+        txtNombre.setText(articulo.getNombre());
+        txtPrecio.setText(String.valueOf(articulo.getPrecioBase()));
+        seleccionarIvaEnCombo(articulo.getIva());
+
+        // Switch moderno de Java 24 para extraer los atributos específicos
+        switch (articulo) {
+            case ProductoFisico p -> {
+                rbProducto.setSelected(true);
+                lblStock.setText(String.valueOf(p.getStock()));
+            }
+            case Servicio s -> {
+                rbServicio.setSelected(true);
+                lblMinutos.setText(String.valueOf(s.getMinutos()));
+                chkUrgente.setSelected(s.isUrgente());
+            }
+            case null, default -> {
+            }
+        }
+        actualizarCamposSegunTipo();
+    }
+
+    /**
+     * Método auxiliar para no duplicar la configuración del comportamiento
+     * inicial
+     */
+    private void initComportamientoComun(java.awt.Frame parent) {
+        getRootPane().registerKeyboardAction(e -> {
+            this.dispose();
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+
         rbProducto.addActionListener(e -> actualizarCamposSegunTipo());
         rbServicio.addActionListener(e -> actualizarCamposSegunTipo());
-        actualizarCamposSegunTipo();
         this.setLocationRelativeTo(parent);
+    }
 
+    /**
+     * Método auxiliar para preseleccionar el IVA correcto en el ComboBox
+     */
+    private void seleccionarIvaEnCombo(double iva) {
+        if (iva == 21.0) {
+            cmbIVA.setSelectedIndex(0);
+        } else if (iva == 10.0) {
+            cmbIVA.setSelectedIndex(1);
+        } else if (iva == 4.0) {
+            cmbIVA.setSelectedIndex(2);
+        } else {
+            cmbIVA.setSelectedIndex(3);
+        }
     }
 
     /**
@@ -192,37 +259,55 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
 
     private void btnNuevoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoArticuloActionPerformed
         try {
-            // Campos comunes
-            String nombre = txtNombre.getText();
+            String nombre = txtNombre.getText().trim();
             double precioBase = Double.parseDouble(txtPrecio.getText());
             double iva = obtenerIVA();
 
-            if (rbProducto.isSelected()) {
-                // Lógica Producto Físico
-                int stock = Integer.parseInt(lblStock.getText());
-                gestor.crearProductoFisico(nombre, precioBase, iva, stock);
-
+            if (articuloEditar == null) {
+                // --- MODO CREAR --- (Nace un objeto nuevo)
+                if (rbProducto.isSelected()) {
+                    int stock = Integer.parseInt(lblStock.getText());
+                    gestor.crearProductoFisico(nombre, precioBase, iva, stock);
+                } else {
+                    int minutos = Integer.parseInt(lblMinutos.getText());
+                    boolean urgente = chkUrgente.isSelected();
+                    gestor.crearServicio(nombre, precioBase, iva, minutos, urgente);
+                }
             } else {
-                // Lógica Servicio
-                int minutos = Integer.parseInt(lblMinutos.getText());
-                boolean urgente = chkUrgente.isSelected();
-                gestor.crearServicio(nombre, precioBase, iva, minutos, urgente);
+
+                articuloEditar.setNombre(nombre);
+                articuloEditar.setPrecioBase(precioBase);
+                articuloEditar.setIva(iva);
+
+                switch (articuloEditar) {
+                    case ProductoFisico p -> {
+                        int stock = Integer.parseInt(lblStock.getText());
+                        p.setStock(stock); // Cambia el stock directamente en memoria
+                    }
+                    case Servicio s -> {
+                        int minutos = Integer.parseInt(lblMinutos.getText());
+                        boolean urgente = chkUrgente.isSelected();
+                        s.setMinutos(minutos);
+                        s.setUrgente(urgente);
+                    }
+                    case null, default -> {
+                    }
+                }
+
+                gestor.actualizarArticulo(articuloEditar);
             }
 
-            // Si llegamos aquí, todo ha ido bien
             this.dispose();
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor, revisa que el precio y los minutos sean números válidos.");
-        } catch (SQLException ex) {
-            System.getLogger(FrmNuevoArticulo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (ErrorDatos ex) {
-            System.getLogger(FrmNuevoArticulo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            JOptionPane.showMessageDialog(this, "Por favor, revisa que los campos numéricos sean válidos.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al procesar el artículo: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnNuevoArticuloActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        if (!txtNombre.getText().isEmpty()) {
+        if (!txtNombre.getText().isEmpty() && articuloEditar == null) {
             int respuesta = JOptionPane.showConfirmDialog(this,
                     "¿Seguro que quieres salir? Se perderán los datos introducidos.",
                     "Confirmar salida",
@@ -259,19 +344,12 @@ public class FrmNuevoArticulo extends javax.swing.JDialog {
     }
 
     private void actualizarCamposSegunTipo() {
-        // Si el radio button de producto está marcado, esto será true
         boolean esProducto = rbProducto.isSelected();
 
-        // --- CAMPOS DE PRODUCTO ---
         lblStock.setEnabled(esProducto);
-        lblStock.setEnabled(esProducto);
-
-        // --- CAMPOS DE SERVICIO ---
-        lblMinutos.setEnabled(!esProducto);
         lblMinutos.setEnabled(!esProducto);
         chkUrgente.setEnabled(!esProducto);
 
-        // Limpiamos datos para evitar errores ocultos
         if (!esProducto) {
             lblStock.setText("0");
         } else {
