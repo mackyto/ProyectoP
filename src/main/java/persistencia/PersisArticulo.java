@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package persistencia;
 
 import entidades.Articulo;
@@ -27,9 +28,15 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
     private static final String INSERTAR_ARTICULO = "INSERT INTO Articulo (id, nombre, precio_base, iva) VALUES (?, ?, ?, ?)";
     private static final String INSERTAR_SERVICIO = "INSERT INTO Servicio (articulo_id, minutos, urgente) VALUES (?, ?, ?)";
     private static final String INSERTAR_PFISICO = "INSERT INTO ProductoFisico (articulo_id, stock) VALUES (?, ?)";
-    private static final String UPDATE_STOCK = "UPDATE ProductoFisico SET stock = ? WHERE articulo_id = ?";
+
     private static final String SQL_SELECT_SERVICIOS = "SELECT * FROM `v_artiservicio`";
     private static final String SQL_SELECT_PFISICOS = "SELECT * FROM `v_artifisico`";
+
+    private static final String UPDATE_STOCK = "UPDATE ProductoFisico SET stock = ? WHERE articulo_id = ?";
+    
+    private static final String UPDATE_ARTICULO = "UPDATE Articulo SET nombre = ?, precio_base = ?, iva = ? WHERE id = ?";
+    private static final String UPDATE_SERVICIO = "UPDATE Servicio SET minutos = ?, urgente = ? WHERE articulo_id = ?";
+    private static final String UPDATE_PFISICO = "UPDATE ProductoFisico SET stock = ? WHERE articulo_id = ?";
 
     @Override
     public boolean persistirProducto(ProductoFisico p) {
@@ -46,7 +53,6 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
             conn.commit();
             return true;
         } catch (SQLException sqle) {
-            // Si algo falla, aquí no se guarda nada
             sqle.printStackTrace();
             return false;
         }
@@ -74,7 +80,6 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
         }
     }
 
-    
     private void insertarArticuloBase(Articulo a, Connection conn) throws SQLException {
         try (PreparedStatement aps = conn.prepareStatement(INSERTAR_ARTICULO)) {
             aps.setInt(1, a.getId());
@@ -84,6 +89,65 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
             aps.executeUpdate();
         }
     }
+
+
+    private void actualizarArticuloBase(Articulo a, Connection conn) throws SQLException {
+        try (PreparedStatement aps = conn.prepareStatement(UPDATE_ARTICULO)) {
+            aps.setString(1, a.getNombre());
+            aps.setDouble(2, a.getPrecioBase());
+            aps.setDouble(3, a.getIva());
+            aps.setInt(4, a.getId());
+            aps.executeUpdate();
+        }
+    }
+
+    @Override
+    public boolean actualizarProducto(ProductoFisico p) {
+        try (Connection conn = conexionDB()) {
+            conn.setAutoCommit(false);
+
+
+            actualizarArticuloBase(p, conn);
+
+
+            try (PreparedStatement pps = conn.prepareStatement(UPDATE_PFISICO)) {
+                pps.setInt(1, p.getStock());
+                pps.setInt(2, p.getId());
+                pps.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarServicio(Servicio s) {
+        try (Connection conn = conexionDB()) {
+            conn.setAutoCommit(false);
+
+
+            actualizarArticuloBase(s, conn);
+
+
+            try (PreparedStatement sps = conn.prepareStatement(UPDATE_SERVICIO)) {
+                sps.setInt(1, s.getMinutos());
+                sps.setBoolean(2, s.isUrgente());
+                sps.setInt(3, s.getId());
+                sps.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return false;
+        }
+    }
+
 
     @Override
     public boolean actualizarStock(ProductoFisico p) {
@@ -103,12 +167,10 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
 
     @Override
     public List<Articulo> recuperarTodo() {
-
         List<Articulo> lista = new ArrayList<>();
 
         try {
             try (Connection conn = conexionDB(); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_SERVICIOS); ResultSet rs = ps.executeQuery()) {
-
                 while (rs.next()) {
                     Servicio s = new Servicio();
                     s.setId(rs.getInt("articulo_id"));
@@ -119,11 +181,9 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
                     s.setUrgente(rs.getBoolean("urgente"));
                     lista.add(s);
                 }
-
             }
 
             try (Connection conn = conexionDB(); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_PFISICOS); ResultSet rs = ps.executeQuery()) {
-
                 while (rs.next()) {
                     ProductoFisico pf = new ProductoFisico();
                     pf.setId(rs.getInt("articulo_id"));
@@ -137,10 +197,9 @@ public class PersisArticulo extends ConexionBase implements InArticulo {
         } catch (SQLException e) {
             System.err.println("Error al recuperar clientes: " + e.getMessage());
         } catch (ErrorDatos ex) {
-            System.getLogger(PersisClient.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(PersisArticulo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
 
         return lista;
     }
-
 }

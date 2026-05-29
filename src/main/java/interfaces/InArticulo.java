@@ -14,9 +14,15 @@ import java.util.List;
  * @author 29160712r
  */
 public interface InArticulo {
+    
     public boolean persistirProducto(ProductoFisico pf );
     public boolean persistirServicio(Servicio s);
+    
     public boolean actualizarStock(ProductoFisico p);
+    
+    public boolean actualizarProducto(ProductoFisico p);    
+    public boolean actualizarServicio(Servicio s);
+    
     public List<Articulo> recuperarTodo();
     
 }
