@@ -215,97 +215,113 @@ public class FrmArticulo extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tblArticuloMouseClicked
 
-        private void actualizarTabla(String patron) {
-            String[] columnas = {"ID", "Tipo", "Nombre", "Precio Base", "IVA", "P. Final", "Stock/Min"};
+    private void actualizarTabla(String patron) {
+        String[] columnas = {"ID", "Tipo", "Nombre", "Precio Base", "IVA", "P. Final", "Stock/Min"};
 
-            DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        boolean mostrarFisicos = productosSi.isSelected();
+        boolean mostrarServicios = serviciosSi.isSelected();
+
+        for (Articulo a : gestor.buscarArticulos(patron)) {
+
+            // Switch de expresión con Pattern Matching de Java 24
+            Object[] fila = switch (a) {
+                case ProductoFisico p when mostrarFisicos -> {
+                    Object[] f = crearFilaBase(p, "Producto");
+                    f[6] = p.getStock() + " uds";
+                    yield f;
                 }
+                case Servicio s when mostrarServicios -> {
+                    Object[] f = crearFilaBase(s, "Servicio");
+                    String urgenteStr = s.isUrgente() ? " URGENTE" : "";
+                    f[6] = s.getMinutos() + " min" + urgenteStr; // Corregido a s.getMinutos()
+                    yield f;
+                }
+                default ->
+                    null;
             };
 
-            boolean mostrarFisicos = productosSi.isSelected();
-            boolean mostrarServicios = serviciosSi.isSelected();
-
-            for (Articulo a : gestor.buscarArticulos(patron)) {
-
-                // Switch de expresión con Pattern Matching de Java 24
-                Object[] fila = switch (a) {
-                    case ProductoFisico p when mostrarFisicos -> {
-                        Object[] f = crearFilaBase(p, "Producto");
-                        f[6] = p.getStock() + " uds";
-                        yield f;
-                    }
-                    case Servicio s when mostrarServicios -> {
-                        Object[] f = crearFilaBase(s, "Servicio");
-                        String urgenteStr = s.isUrgente() ? " URGENTE" : "";
-                        f[6] = s.getMinutos() + " min" + urgenteStr; // Corregido a s.getMinutos()
-                        yield f;
-                    }
-                    default ->
-                        null;
-                };
-
-                if (fila != null) {
-                    modelo.addRow(fila);
-                }
+            if (fila != null) {
+                modelo.addRow(fila);
             }
+        }
 
-            tblArticulo.setModel(modelo);
+        tblArticulo.setModel(modelo);
 
-            // Renderizador para pintar las celdas de servicios urgentes
-            DefaultTableCellRenderer renderizadorFilas = new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(JTable table, Object value,
-                        boolean isSelected, boolean hasFocus, int row, int column) {
+        // Renderizador para pintar las celdas de servicios urgentes
+        DefaultTableCellRenderer renderizadorFilas = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
 
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                    Object valorUrgencia = table.getValueAt(row, 6);
-                    boolean esUrgente = valorUrgencia != null && valorUrgencia.toString().contains("URGENTE");
+                Object valorUrgencia = table.getValueAt(row, 6);
+                boolean esUrgente = valorUrgencia != null && valorUrgencia.toString().contains("URGENTE");
 
-                    if (esUrgente) {
-                        c.setBackground(new Color(255, 200, 200));
-                        c.setForeground(Color.RED);
-                        c.setFont(c.getFont().deriveFont(Font.BOLD));
-                    } else {
-                        c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
-                        c.setForeground(isSelected ? table.getSelectionForeground() : Color.BLACK);
-                        c.setFont(c.getFont().deriveFont(Font.PLAIN));
-                    }
-                    return c;
+                if (esUrgente) {
+                    c.setBackground(new Color(255, 200, 200));
+                    c.setForeground(Color.RED);
+                    c.setFont(c.getFont().deriveFont(Font.BOLD));
+                } else {
+                    c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
+                    c.setForeground(isSelected ? table.getSelectionForeground() : Color.BLACK);
+                    c.setFont(c.getFont().deriveFont(Font.PLAIN));
                 }
-            };
-
-            for (int i = 0; i < tblArticulo.getColumnCount(); i++) {
-                tblArticulo.getColumnModel().getColumn(i).setCellRenderer(renderizadorFilas);
+                return c;
             }
+        };
 
-            tblArticulo.getColumnModel().getColumn(2).setPreferredWidth(350);
-            tblArticulo.getColumnModel().getColumn(0).setPreferredWidth(50);
+        for (int i = 0; i < tblArticulo.getColumnCount(); i++) {
+            tblArticulo.getColumnModel().getColumn(i).setCellRenderer(renderizadorFilas);
         }
 
-        private void configurarTabla() {
-            javax.swing.table.TableColumnModel columnModel = tblArticulo.getColumnModel();
-            columnModel.getColumn(1).setPreferredWidth(350);
-            columnModel.getColumn(0).setPreferredWidth(50);
-            columnModel.getColumn(2).setPreferredWidth(80);
-            columnModel.getColumn(6).setPreferredWidth(100);
-        }
+        tblArticulo.getColumnModel().getColumn(2).setPreferredWidth(350);
+        tblArticulo.getColumnModel().getColumn(0).setPreferredWidth(50);
+    }
 
-        private Object[] crearFilaBase(Articulo a, String tipo) {
-            Object[] fila = new Object[7];
-            fila[0] = a.getId();
-            fila[1] = tipo;
-            fila[2] = a.getNombre();
-            fila[3] = a.getPrecioBase();
-            fila[4] = a.getIva() + "%";
+    private void configurarTabla() {
+        javax.swing.table.TableColumnModel columnModel = tblArticulo.getColumnModel();
+        columnModel.getColumn(1).setPreferredWidth(350);
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(2).setPreferredWidth(80);
+        columnModel.getColumn(6).setPreferredWidth(100);
+    }
 
-            double pFinal = a.getPrecioBase() * (1 + (a.getIva() / 100.0));
-            fila[5] = String.format("%.2f €", pFinal);
-            return fila;
+    private Object[] crearFilaBase(Articulo a, String tipo) {
+        Object[] fila = new Object[7];
+        fila[0] = a.getId();
+        fila[1] = tipo;
+        fila[2] = a.getNombre();
+        fila[3] = a.getPrecioBase();
+        fila[4] = a.getIva() + "%";
+
+        double pFinal = a.getPrecioBase() * (1 + (a.getIva() / 100.0));
+        fila[5] = String.format("%.2f €", pFinal);
+        return fila;
+    }
+
+    public void cargarArticuloParaEditar(entidades.Articulo articulo) {
+        if (articulo != null) {
+            // 1. Ponemos el nombre del artículo en tu buscador txtPatron
+            txtPatron.setText(articulo.getNombre());
+
+            // 2. Ejecutamos tu método de actualizar para que la tabla solo muestre este artículo
+            actualizarTabla(articulo.getNombre().trim());
+
+            // 3. Opcional: Seleccionamos la primera fila (que será nuestro artículo filtrado)
+            if (tblArticulo.getRowCount() > 0) {
+                tblArticulo.setRowSelectionInterval(0, 0);
+            }
         }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;

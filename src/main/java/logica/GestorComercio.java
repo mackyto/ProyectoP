@@ -193,6 +193,7 @@ public class GestorComercio implements LogicaNegocio {
                 break;
             case ProductoFisico p:
                 pArticul.actualizarProducto(p);
+                this.actualizarAlerta();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + articuloEditado);
@@ -257,6 +258,7 @@ public class GestorComercio implements LogicaNegocio {
      */
     @Override
     public Pedido confirmarPedido() throws ErrorDatos {
+        
         if (this.obtenerPedidoEnCurso().getLista().size() != 0) {
             pedidoEnCurso.setTotal(pedidoEnCurso.calcularTotal());
             // --- ACTUALIZACIÓN DE STOCK ---
@@ -274,6 +276,8 @@ public class GestorComercio implements LogicaNegocio {
 
                     prod.setStock(nuevoStock);
                     pArticul.actualizarStock(prod);
+                    this.actualizarAlerta();
+                    
                 }
             }
             // ------------------------------
@@ -516,7 +520,7 @@ public class GestorComercio implements LogicaNegocio {
 
     public int countStockCero (){
         if (!this.alertaStock.isEmpty())
-            return this.alertaStock.size();
+            return this.stockCero().size();
         
         return 0;
         
@@ -537,6 +541,25 @@ public class GestorComercio implements LogicaNegocio {
     public boolean estadoVerde (){
         
         return this.alertaStock.isEmpty();
+        
+    }
+    
+    public void actualizarAlerta (int id){
+        
+                AlertaStock productoAlerta = pAlerta.recuperarAlertaByID(id);
+                if (productoAlerta != null)
+                    this.alertaStock.add(productoAlerta);
+                else 
+                    for (AlertaStock as: this.alertaStock)
+                        if(as.getId() == id)
+                            this.alertaStock.remove(as);
+        
+    }
+    
+    public void actualizarAlerta (){
+        
+        this.alertaStock.clear();
+        this.alertaStock = pAlerta.recuperarTodas();
         
     }
     

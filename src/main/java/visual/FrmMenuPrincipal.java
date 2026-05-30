@@ -24,10 +24,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     public FrmMenuPrincipal(GestorComercio gestor) {
         this.gestor = gestor;
         initComponents();
-        
+
         actualizarColorBotonEstado();
         btnEstado.addActionListener(e -> mostrarInformacionEstado());
-        
+
         this.setLocationRelativeTo(null);
     }
 
@@ -55,7 +55,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         Título = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(50, 50, 50));
+        setBackground(new java.awt.Color(0, 0, 0));
+
+        jPanelGeneral.setForeground(new java.awt.Color(250, 45, 0));
 
         btnClientes.setText("Clientes");
         btnClientes.addActionListener(this::btnClientesActionPerformed);
@@ -95,11 +97,16 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        Logo.setIcon(new javax.swing.ImageIcon("/Users/29160712r/NetBeansProjects/UD08/ProyectoP/logo.png")); // NOI18N
+        Logo.setBackground(new java.awt.Color(0, 0, 0));
+        Logo.setForeground(new java.awt.Color(255, 0, 0));
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
 
         btnEstado.setText("Estado del Stock");
+        btnEstado.addActionListener(this::btnEstadoActionPerformed);
 
+        Título.setBackground(new java.awt.Color(35, 35, 50));
         Título.setFont(new java.awt.Font("Helvetica Neue", 1, 48)); // NOI18N
+        Título.setForeground(new java.awt.Color(250, 45, 0));
         Título.setText("Mazcu.fit");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -171,12 +178,15 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPedidosActionPerformed
 
+    private void btnEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEstadoActionPerformed
 
     private void actualizarColorBotonEstado() {
         btnEstado.setFocusPainted(false); // Elimina el recuadro de enfoque estético
-        
+
         // Importante en JToggleButton para evitar que cambie drásticamente al hacer clic
-        btnEstado.setContentAreaFilled(true); 
+        btnEstado.setContentAreaFilled(true);
         btnEstado.setOpaque(true);
 
         if (gestor.estadoRojo()) {
@@ -193,32 +203,58 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             btnEstado.setForeground(Color.WHITE);
         }
     }
-    
+
+    /**
+     * Lanza el JOptionPane informando la situación detallada del stock
+     */
     private void mostrarInformacionEstado() {
-        String mensaje;
+        int productosBajos = gestor.getAlertaStock().size();
+        int productosA_Cero = gestor.countStockCero();
+
+        StringBuilder mensaje = new StringBuilder();
+        String titulo = "Detalle de Alertas - Mazcu.fit";
 
         if (gestor.estadoRojo()) {
-            mensaje = "Estado ROJO: El stock está críticamente bajo. Requiere reposición inmediata.";
+            mensaje.append("🔴 ESTADO CRÍTICO (ROJO)\n\n");
+            mensaje.append("• Productos con bajo stock: ").append(productosBajos).append("\n");
+            mensaje.append("• ¡Productos agotados (Stock 0)!: ").append(productosA_Cero);
         } else if (gestor.estadoAmbar()) {
-            mensaje = "Estado ÁMBAR: Algunos artículos están llegando al límite mínimo establecido.";
-        } else if (gestor.estadoVerde()) {
-            mensaje = "Estado VERDE: Los niveles de stock son óptimos.";
+            mensaje.append("🟡 ESTADO DE ADVERTENCIA (ÁMBAR)\n\n");
+            mensaje.append("• Productos con bajo stock: ").append(productosBajos).append("\n");
+            mensaje.append("• Productos agotados (Stock 0): ").append(productosA_Cero);
         } else {
-            mensaje = "No se ha podido determinar el estado actual del inventario.";
+            mensaje.append("🟢 ESTADO ÓPTIMO (VERDE)\n\nEl inventario se encuentra en niveles correctos.");
+            // Si todo está OK, un mensaje simple normal es suficiente
+            JOptionPane.showMessageDialog(this, mensaje.toString(), titulo, JOptionPane.INFORMATION_MESSAGE);
+            btnEstado.setSelected(false);
+            return;
         }
 
-        JOptionPane.showMessageDialog(
-                this, 
-                mensaje, 
-                "Estado del Stock - Mazcu.fit", 
-                JOptionPane.INFORMATION_MESSAGE
+        // --- BOTONES PERSONALIZADOS ---
+        // Definimos las opciones que verá el usuario
+        Object[] opciones = {"Ver Alertas", "Cerrar"};
+
+        int seleccion = JOptionPane.showOptionDialog(
+                this,
+                mensaje.toString(),
+                titulo,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null, // Icono por defecto del sistema
+                opciones, // Array con nuestros botones
+                opciones[0] // Botón enfocado por defecto
         );
-        
-        // Opcional: Como es un JToggleButton, tras hacer clic y cerrar el cuadro de diálogo
-        // solemos querer que el botón no se quede "hundido". Esto lo deselecciona:
+
+        // Si pulsa "Ver Alertas" (posición 0 del array)
+        if (seleccion == JOptionPane.YES_OPTION) {
+            FrmAlertasStock vAlertas = new FrmAlertasStock(gestor);
+            vAlertas.setVisible(true);
+            this.dispose(); // Cerramos el menú principal
+        }
+
         btnEstado.setSelected(false);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
     private javax.swing.JLabel Título;

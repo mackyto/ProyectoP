@@ -144,13 +144,13 @@ FOR EACH ROW
 BEGIN
     DECLARE var_nombre_articulo VARCHAR(255);
 
-    IF NEW.stock < 3 AND OLD.stock >= 3 THEN
+    IF NEW.stock < 3 THEN
         
         SELECT nombre INTO var_nombre_articulo 
         FROM Articulo 
         WHERE id = NEW.articulo_id;
         
-        REPLACE INTO AlertasStock (articulo_id, nombre_articulo, stock_actual, fecha_alerta)
+        REPLACE INTO AlertaStock (articulo_id, nombre_articulo, stock_actual, fecha_alerta)
         VALUES (NEW.articulo_id, var_nombre_articulo, NEW.stock, NOW());
         
     END IF;
@@ -168,7 +168,7 @@ BEGIN
 
     IF NEW.stock >= 3 AND OLD.stock < 3 THEN
         
-        DELETE FROM AlertasStock 
+        DELETE FROM AlertaStock 
         WHERE articulo_id = NEW.articulo_id;
         
     END IF;
