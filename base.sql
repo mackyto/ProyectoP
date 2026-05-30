@@ -1,12 +1,14 @@
 CREATE DATABASE IF NOT EXISTS ProyectoP;
 USE ProyectoP;
 
+
 CREATE TABLE IF NOT EXISTS Persona (
     id INT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
     telefono VARCHAR(20)
 );
+
 
 CREATE TABLE IF NOT EXISTS Articulo (
     id INT PRIMARY KEY,
@@ -67,6 +69,17 @@ CREATE TABLE IF NOT EXISTS LineasPedido (
 );
 
 
+CREATE TABLE IF NOT EXISTS AlertaStock (
+    articulo_id INT PRIMARY KEY,
+    nombre_articulo VARCHAR(255),
+    stock_actual INT,
+    fecha_alerta DATETIME,
+    CONSTRAINT fk_alerta_articulo FOREIGN KEY (articulo_id) 
+        REFERENCES Articulo(id) ON DELETE CASCADE
+);
+
+
+
 
 CREATE OR REPLACE VIEW v_cliente AS
 SELECT 
@@ -102,6 +115,7 @@ SELECT
 FROM Articulo a
 JOIN Servicio s ON a.id = s.articulo_id;
 
+
 CREATE OR REPLACE VIEW v_pedidos AS
 SELECT 
     lp.pedido_id,
@@ -118,3 +132,46 @@ JOIN Pedido p ON lp.pedido_id = p.id
 JOIN Cliente c ON p.cliente_id = c.persona_id
 JOIN Persona per ON c.persona_id = per.id
 JOIN Articulo a ON lp.articulo_id = a.id;
+
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER t_stock_bajo
+AFTER UPDATE ON ProductoFisico
+FOR EACH ROW
+BEGIN
+    DECLARE var_nombre_articulo VARCHAR(255);
+
+    IF NEW.stock < 3 AND OLD.stock >= 3 THEN
+        
+        SELECT nombre INTO var_nombre_articulo 
+        FROM Articulo 
+        WHERE id = NEW.articulo_id;
+        
+        REPLACE INTO AlertasStock (articulo_id, nombre_articulo, stock_actual, fecha_alerta)
+        VALUES (NEW.articulo_id, var_nombre_articulo, NEW.stock, NOW());
+        
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER t_stock_repuesto
+AFTER UPDATE ON ProductoFisico
+FOR EACH ROW
+BEGIN
+
+    IF NEW.stock >= 3 AND OLD.stock < 3 THEN
+        
+        DELETE FROM AlertasStock 
+        WHERE articulo_id = NEW.articulo_id;
+        
+    END IF;
+END$$
+
+DELIMITER ;

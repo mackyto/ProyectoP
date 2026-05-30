@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import persistencia.PersisAlerta;
 import persistencia.PersisArticulo;
 import persistencia.PersisClient;
 import persistencia.PersisPedido;
@@ -35,22 +36,28 @@ public class GestorComercio implements LogicaNegocio {
     private List<Articulo> articulos;
     private List<Servicio> servicios;
     private List<Pedido> pedidos;
+    private List<AlertaStock> alertaStock;
     private Cliente clienteActual;
     private Pedido pedidoEnCurso;
     private PersisClient pClient;
     private PersisArticulo pArticul;
     private PersisPedido pPedido;
+    private PersisAlerta pAlerta;
 
     private GestorComercio() {
 
         pClient = new PersisClient();
         pArticul = new PersisArticulo();
         pPedido = new PersisPedido();
+        pAlerta = new PersisAlerta();
 
-        this.clientes = (ArrayList<Cliente>) pClient.recuperarTodos();
+        this.clientes = pClient.recuperarTodos();
 
-        this.articulos = (ArrayList<Articulo>) pArticul.recuperarTodo();
-        pedidos = new ArrayList<>();
+        this.articulos = pArticul.recuperarTodo();
+
+        this.alertaStock = pAlerta.recuperarTodas();
+
+        this.pedidos = new ArrayList<>();
 
         for (Cliente cl : this.clientes) {
             pPedido.recuperarPedidos(cl, this.articulos);
@@ -85,6 +92,10 @@ public class GestorComercio implements LogicaNegocio {
             INSTANCE = new GestorComercio();
         }
         return INSTANCE;
+    }
+
+    public List<AlertaStock> getAlertaStock() {
+        return alertaStock;
     }
 
     /**
@@ -173,19 +184,21 @@ public class GestorComercio implements LogicaNegocio {
         articulos.add(servicio);
         return servicio;
     }
-    
-    public void actualizarArticulo(Articulo articuloEditado){
-        
-        switch (articuloEditado){
-            case Servicio s: pArticul.actualizarServicio(s);break;
-            case ProductoFisico p: pArticul.actualizarProducto(p);break;
+
+    public void actualizarArticulo(Articulo articuloEditado) {
+
+        switch (articuloEditado) {
+            case Servicio s:
+                pArticul.actualizarServicio(s);
+                break;
+            case ProductoFisico p:
+                pArticul.actualizarProducto(p);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + articuloEditado);
         }
-        
+
     }
-    
-    
 
     /**
      * Getter Lista de Articulos
@@ -486,6 +499,39 @@ public class GestorComercio implements LogicaNegocio {
                 System.out.println("Error procesando un pedido: " + e.getMessage());
             }
         }
+        
+    }
+
+    public List<AlertaStock> stockCero() {
+        List<AlertaStock> articulos = new ArrayList<>();
+        if (!this.alertaStock.isEmpty())
+        for (AlertaStock aS: this.alertaStock){
+            
+            if (aS.getStockActual() == 0)
+                articulos.add(aS);
+    
+        }
+        return articulos;  
+    }
+
+    public int countStockCero (){
+        if (!this.alertaStock.isEmpty())
+            return this.alertaStock.size();
+        
+        return 0;
+        
+    }    
+    
+    public boolean estadoRojo (){
+        
+        return (!stockCero().isEmpty()); 
+        
+    }
+    
+    public boolean estadoAmbar (){
+        
+        return (stockCero().isEmpty()) && !this.alertaStock.isEmpty();
+        
     }
 
 }
