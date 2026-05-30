@@ -4,7 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-      <Color blue="0" green="32" red="fa" type="rgb"/>
+      <Color blue="32" green="32" red="32" type="rgb"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -26,14 +26,29 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSeparator1" alignment="1" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanelGeneral" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" pref="100" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jPanelGeneral" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="Logo" min="-2" pref="100" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="Título" min="-2" pref="239" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnEstado" min="-2" pref="204" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
               </Group>
-              <EmptySpace pref="84" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -41,12 +56,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" pref="100" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-              <Component id="jSeparator1" min="-2" pref="26" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="Título" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnEstado" pref="35" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="Logo" min="-2" pref="100" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanelGeneral" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -117,25 +136,28 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JSeparator" name="jSeparator1">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="40" red="f2" type="rgb"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="Logo">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="/Users/29160712r/NetBeansProjects/UD08/ProyectoP/escudo.png"/>
+          <Image iconType="2" name="/Users/29160712r/NetBeansProjects/UD08/ProyectoP/logo.png"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="if (jLabel1.getIcon() != null) {&#xa;    java.awt.Image img = ((javax.swing.ImageIcon)jLabel1.getIcon()).getImage();&#xa;    java.awt.Image newImg = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);&#xa;    jLabel1.setIcon(new javax.swing.ImageIcon(newImg));&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="if (Logo.getIcon() != null) {&#xa;    java.awt.Image img = ((javax.swing.ImageIcon)Logo.getIcon()).getImage();&#xa;    java.awt.Image newImg = img.getScaledInstance(Logo.getWidth(), Logo.getHeight(), java.awt.Image.SCALE_SMOOTH);&#xa;    Logo.setIcon(new javax.swing.ImageIcon(newImg));&#xa;}"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="btnEstado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Estado del Stock"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="T&#xed;tulo">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Helvetica Neue" size="48" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Mazcu.fit"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

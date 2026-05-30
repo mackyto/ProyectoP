@@ -534,4 +534,11 @@ public class GestorComercio implements LogicaNegocio {
         
     }
 
+    public boolean estadoVerde (){
+        
+        return this.alertaStock.isEmpty();
+        
+    }
+    
+    
 }

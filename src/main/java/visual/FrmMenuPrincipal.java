@@ -1,5 +1,6 @@
 package visual;
 
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import logica.GestorComercio;
 import static proyecto2526.Main.gestor;
@@ -23,6 +24,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     public FrmMenuPrincipal(GestorComercio gestor) {
         this.gestor = gestor;
         initComponents();
+        
+        actualizarColorBotonEstado();
+        btnEstado.addActionListener(e -> mostrarInformacionEstado());
+        
         this.setLocationRelativeTo(null);
     }
 
@@ -40,16 +45,17 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         btnArticulos = new javax.swing.JButton();
         btnPedidos = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
-        if (jLabel1.getIcon() != null) {
-            java.awt.Image img = ((javax.swing.ImageIcon)jLabel1.getIcon()).getImage();
-            java.awt.Image newImg = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);
-            jLabel1.setIcon(new javax.swing.ImageIcon(newImg));
+        Logo = new javax.swing.JLabel();
+        if (Logo.getIcon() != null) {
+            java.awt.Image img = ((javax.swing.ImageIcon)Logo.getIcon()).getImage();
+            java.awt.Image newImg = img.getScaledInstance(Logo.getWidth(), Logo.getHeight(), java.awt.Image.SCALE_SMOOTH);
+            Logo.setIcon(new javax.swing.ImageIcon(newImg));
         }
+        btnEstado = new javax.swing.JToggleButton();
+        Título = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(250, 50, 0));
+        setBackground(new java.awt.Color(50, 50, 50));
 
         btnClientes.setText("Clientes");
         btnClientes.addActionListener(this::btnClientesActionPerformed);
@@ -89,33 +95,47 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jSeparator1.setBackground(new java.awt.Color(242, 64, 0));
-        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setIcon(new javax.swing.ImageIcon("/Users/29160712r/NetBeansProjects/UD08/ProyectoP/logo.png")); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/29160712r/NetBeansProjects/UD08/ProyectoP/escudo.png")); // NOI18N
+        btnEstado.setText("Estado del Stock");
+
+        Título.setFont(new java.awt.Font("Helvetica Neue", 1, 48)); // NOI18N
+        Título.setText("Mazcu.fit");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(84, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanelGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 6, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(Título, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addComponent(jPanelGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Título)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
+                    .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -151,38 +171,62 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPedidosActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+
+    private void actualizarColorBotonEstado() {
+        btnEstado.setFocusPainted(false); // Elimina el recuadro de enfoque estético
+        
+        // Importante en JToggleButton para evitar que cambie drásticamente al hacer clic
+        btnEstado.setContentAreaFilled(true); 
+        btnEstado.setOpaque(true);
+
+        if (gestor.estadoRojo()) {
+            btnEstado.setBackground(Color.RED);
+            btnEstado.setForeground(Color.WHITE);
+        } else if (gestor.estadoAmbar()) {
+            btnEstado.setBackground(Color.ORANGE);
+            btnEstado.setForeground(Color.BLACK);
+        } else if (gestor.estadoVerde()) {
+            btnEstado.setBackground(Color.GREEN);
+            btnEstado.setForeground(Color.BLACK);
+        } else {
+            btnEstado.setBackground(Color.GRAY);
+            btnEstado.setForeground(Color.WHITE);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmMenuPrincipal(gestor).setVisible(true));
     }
+    
+    private void mostrarInformacionEstado() {
+        String mensaje;
 
+        if (gestor.estadoRojo()) {
+            mensaje = "Estado ROJO: El stock está críticamente bajo. Requiere reposición inmediata.";
+        } else if (gestor.estadoAmbar()) {
+            mensaje = "Estado ÁMBAR: Algunos artículos están llegando al límite mínimo establecido.";
+        } else if (gestor.estadoVerde()) {
+            mensaje = "Estado VERDE: Los niveles de stock son óptimos.";
+        } else {
+            mensaje = "No se ha podido determinar el estado actual del inventario.";
+        }
+
+        JOptionPane.showMessageDialog(
+                this, 
+                mensaje, 
+                "Estado del Stock - Mazcu.fit", 
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Opcional: Como es un JToggleButton, tras hacer clic y cerrar el cuadro de diálogo
+        // solemos querer que el botón no se quede "hundido". Esto lo deselecciona:
+        btnEstado.setSelected(false);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo;
+    private javax.swing.JLabel Título;
     private javax.swing.JButton btnArticulos;
     private javax.swing.JButton btnClientes;
+    private javax.swing.JToggleButton btnEstado;
     private javax.swing.JButton btnPedidos;
     private javax.swing.JButton btnPersonal;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanelGeneral;
-    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

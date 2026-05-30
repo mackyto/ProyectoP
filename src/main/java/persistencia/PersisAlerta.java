@@ -22,9 +22,9 @@ import java.util.List;
 public class PersisAlerta extends ConexionBase implements InAlerta {
 
     
-    private static final String SQL_REPLACE_ALERTA = "REPLACE INTO AlertasStock (articulo_id, nombre_articulo, stock_actual, fecha_alerta) VALUES (?, ?, ?, ?)";
-    private static final String SQL_SELECT_ALL = "SELECT * FROM AlertasStock ORDER BY fecha_alerta DESC";
-    private static final String SQL_SELECT_BY_ID = "SELECT * FROM AlertasStock WHERE articulo_id = ?";
+    private static final String SQL_REPLACE_ALERTA = "REPLACE INTO AlertaStock (articulo_id, nombre_articulo, stock_actual, fecha_alerta) VALUES (?, ?, ?, ?)";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM AlertaStock ORDER BY fecha_alerta DESC";
+    private static final String SQL_SELECT_BY_ID = "SELECT * FROM AlertaStock WHERE articulo_id = ?";
 
     /**
      * Guarda o actualiza una alerta en la base de datos,
