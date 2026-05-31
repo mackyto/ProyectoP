@@ -79,6 +79,40 @@ CREATE TABLE IF NOT EXISTS AlertaStock (
 );
 
 
+CREATE TABLE IF NOT EXISTS Empleado (
+    persona_id INT PRIMARY KEY,
+    
+    dni VARCHAR(20) NOT NULL UNIQUE,
+    nss VARCHAR(20),
+    puesto VARCHAR(100),
+    calle VARCHAR(150),
+    numero VARCHAR(10),
+    ciudad VARCHAR(100),
+    provincia VARCHAR(100),
+    cp VARCHAR(10),
+    
+    categoria INT,
+    grupo INT,
+    nivel INT,
+    
+    fecha_contrato DATE,
+    antiguedad_anterior DATE,
+    
+    FOREIGN KEY (persona_id) REFERENCES Cliente(persona_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS Horas_Mensuales (
+    persona_id INT,
+    anio INT NOT NULL,
+    mes INT NOT NULL,
+    horas_trabajadas DECIMAL(5,2) DEFAULT 0.00,
+    
+    PRIMARY KEY (persona_id, anio, mes),
+    FOREIGN KEY (persona_id) REFERENCES Empleado(persona_id) ON DELETE CASCADE
+);
+
+
 
 
 CREATE OR REPLACE VIEW v_cliente AS
@@ -91,6 +125,20 @@ SELECT
     c.email
 FROM Persona p
 JOIN Cliente c ON p.id = c.persona_id;
+
+
+CREATE OR REPLACE VIEW v_cliente_only AS
+SELECT 
+    p.id AS cliente_id,
+    p.nombre,
+    p.apellidos,
+    p.telefono,
+    c.fidelidad,
+    c.email
+FROM Persona p
+JOIN Cliente c ON p.id = c.persona_id
+LEFT JOIN Empleado e ON c.persona_id = e.persona_id
+WHERE e.persona_id IS NULL;
 
 
 CREATE OR REPLACE VIEW v_artifisico AS
@@ -133,6 +181,35 @@ JOIN Cliente c ON p.cliente_id = c.persona_id
 JOIN Persona per ON c.persona_id = per.id
 JOIN Articulo a ON lp.articulo_id = a.id;
 
+
+CREATE OR REPLACE VIEW v_empleado AS
+SELECT 
+    -- Datos personales (de la tabla Persona)
+    p.id AS empleado_id,
+    p.nombre,
+    p.apellidos,
+    p.telefono,
+    
+    -- Datos de contacto extra (de la tabla Cliente)
+    c.email,
+    
+    -- Datos laborales y de ubicación (de la tabla Empleado)
+    e.dni,
+    e.nss,
+    e.puesto,
+    e.calle,
+    e.numero,
+    e.ciudad,
+    e.provincia,
+    e.cp,
+    e.categoria,
+    e.grupo,
+    e.nivel,
+    e.fecha_contrato,
+    e.antiguedad_anterior
+FROM Persona p
+JOIN Cliente c ON p.id = c.persona_id
+JOIN Empleado e ON c.persona_id = e.persona_id;
 
 
 

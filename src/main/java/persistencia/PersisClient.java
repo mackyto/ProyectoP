@@ -23,7 +23,7 @@ public class PersisClient extends ConexionBase implements InClient {
 
     private static final String INSERT_PERSONA = "INSERT INTO Persona (id, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
     private static final String INSERT_CLIENTE = "INSERT INTO Cliente (persona_id, fidelidad, email) VALUES (?, ?, ?)";
-    private static final String SQL_SELECT_ALL = "SELECT * FROM `v_cliente`";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM `v_cliente_only`";
         
     /**
      * Guarda los datos de un cliente en la base de datos

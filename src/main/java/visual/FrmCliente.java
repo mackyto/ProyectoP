@@ -97,9 +97,14 @@ public class FrmCliente extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClienteMouseClicked(evt);
+            }
+        });
         scpCliente.setViewportView(tblCliente);
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         btnVolverAtras.setText("Volver Atras");
         btnVolverAtras.addActionListener(this::btnVolverAtrasActionPerformed);
@@ -189,27 +194,7 @@ public class FrmCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPatronActionPerformed
 
     private void btnDesignadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesignadoActionPerformed
-        int fila = tblCliente.getSelectedRow();
-
-        if (fila != -1) {
-            // 1. Sacamos el ID de la tabla (Columna 0)
-            int idCliente = (int) tblCliente.getValueAt(fila, 0);
-
-            // 2. Obtenemos la lista actual (usando el patrón que hay en el buscador)
-            String patron = txtPatron.getText();
-            List<Cliente> listaActual = gestor.buscarClientes(patron);
-
-            // 3. Usamos TU método optimizado
-            Cliente seleccionado = gestor.selecionarCliente(listaActual, idCliente);
-
-            // 4. Lo guardamos en el gestor
-            if (seleccionado != null) {
-                gestor.setClienteActual(seleccionado);
-                JOptionPane.showMessageDialog(this, "Cliente designado: " + seleccionado.getNombre());
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un cliente de la tabla.");
-        }
+        clienteDesignado();
     }//GEN-LAST:event_btnDesignadoActionPerformed
 
     private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
@@ -218,6 +203,10 @@ public class FrmCliente extends javax.swing.JFrame {
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
     }//GEN-LAST:event_btnVolverAtrasActionPerformed
+
+    private void tblClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseClicked
+        clienteDesignado();
+    }//GEN-LAST:event_tblClienteMouseClicked
 
     private void actualizarTabla(String patron) {
         // Definimos las columnas
@@ -241,6 +230,30 @@ public class FrmCliente extends javax.swing.JFrame {
         }
         tblCliente.setModel(modelo);
     }
+    
+    private void clienteDesignado() {
+    int fila = tblCliente.getSelectedRow();
+
+    if (fila != -1) {
+        // 1. Sacamos el ID de la tabla (Columna 0)
+        int idCliente = (int) tblCliente.getValueAt(fila, 0);
+
+        // 2. Obtenemos la lista actual (usando el patrón que hay en el buscador)
+        String patron = txtPatron.getText();
+        List<entidades.Cliente> listaActual = gestor.buscarClientes(patron);
+
+        // 3. Usamos TU método optimizado
+        entidades.Cliente seleccionado = gestor.selecionarCliente(listaActual, idCliente);
+
+        // 4. Lo guardamos en el gestor
+        if (seleccionado != null) {
+            gestor.setClienteActual(seleccionado);
+            JOptionPane.showMessageDialog(this, "Cliente designado: " + seleccionado.getNombre());
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecciona un cliente de la tabla.");
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDesignado;
