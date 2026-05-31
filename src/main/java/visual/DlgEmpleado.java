@@ -137,9 +137,10 @@ import javax.swing.JOptionPane;
         txtNivel = new javax.swing.JTextField();
         lblFContrato = new javax.swing.JLabel();
         txtFContrato = new javax.swing.JTextField();
-        btnHoras = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
+        btnHoras1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nombre");
@@ -224,14 +225,17 @@ import javax.swing.JOptionPane;
         lblFContrato.setText("Fecha Contrato");
         lblFContrato.setToolTipText("");
 
-        btnHoras.setText("Añadir Horas");
-        btnHoras.addActionListener(this::btnHorasActionPerformed);
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(this::btnVolverActionPerformed);
 
         btnBorrar.setText("Borrar");
         btnBorrar.addActionListener(this::btnBorrarActionPerformed);
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
+
+        btnHoras1.setText("Añadir Horas");
+        btnHoras1.addActionListener(this::btnHoras1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,20 +248,7 @@ import javax.swing.JOptionPane;
                         .addComponent(lblTitulo)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(47, 47, 47)
-                                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -295,7 +286,22 @@ import javax.swing.JOptionPane;
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(btnHoras1)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31)))
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(110, 110, 110))))
         );
         layout.setVerticalGroup(
@@ -361,10 +367,11 @@ import javax.swing.JOptionPane;
                     .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHoras)
-                    .addComponent(btnBorrar)
-                    .addComponent(btnGuardar))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(btnVolver)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnHoras1)
+                    .addComponent(btnBorrar))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -382,9 +389,13 @@ import javax.swing.JOptionPane;
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBorrarActionPerformed
 
-    private void btnHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHorasActionPerformed
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHorasActionPerformed
+    }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void btnHoras1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoras1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHoras1ActionPerformed
 
 
     
@@ -394,7 +405,8 @@ import javax.swing.JOptionPane;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnHoras;
+    private javax.swing.JButton btnHoras1;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JLabel lblApellidos;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCiudad;

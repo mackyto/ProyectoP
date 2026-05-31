@@ -32,24 +32,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lblFContrato" min="-2" pref="116" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="txtFContrato" min="-2" pref="250" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="btnHoras" min="-2" pref="130" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                      <Component id="btnBorrar" min="-2" pref="100" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="btnGuardar" min="-2" pref="100" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
@@ -92,6 +75,25 @@
                                       <Component id="txtNivel" min="-2" pref="48" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="lblFContrato" min="-2" pref="116" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtFContrato" min="-2" pref="250" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="btnVolver" min="-2" pref="105" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                      <Component id="btnHoras1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                      <Component id="btnBorrar" min="-2" pref="105" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="btnGuardar" min="-2" pref="105" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
@@ -176,11 +178,12 @@
               </Group>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnHoras" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnVolver" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnHoras1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace pref="17" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -377,12 +380,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtFContrato">
     </Component>
-    <Component class="javax.swing.JButton" name="btnHoras">
+    <Component class="javax.swing.JButton" name="btnVolver">
       <Properties>
-        <Property name="text" type="java.lang.String" value="A&#xf1;adir Horas"/>
+        <Property name="text" type="java.lang.String" value="Volver"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHorasActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVolverActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnBorrar">
@@ -399,6 +402,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnHoras1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A&#xf1;adir Horas"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHoras1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
