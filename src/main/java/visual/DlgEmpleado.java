@@ -4,21 +4,98 @@
  */
 package visual;
 
+import entidades.Empleado;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import logica.GestorComercio;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author macky
  */
-public class DlgEmpleado extends javax.swing.JDialog {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgEmpleado.class.getName());
+  
 
-    /**
-     * Creates new form DlgEmpleado
-     */
-    public DlgEmpleado(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-    }
+    public class DlgEmpleado extends javax.swing.JDialog {
+
+        private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgEmpleado.class.getName());
+        private GestorComercio gestor;
+        private Empleado empleadoEdicion; // Si es null estamos creando; si tiene datos, editando
+
+        /**
+         * Constructor del Diálogo
+         *
+         * @param parent Ventana que lo invoca (FrmEmpleado)
+         * @param modal Bloquea la ventana de atrás mientras está abierto
+         */
+        public DlgEmpleado(java.awt.Frame parent, boolean modal, GestorComercio gestor, Empleado empleado) {
+            super(parent, modal);
+            initComponents();
+
+            this.gestor = gestor;
+            this.empleadoEdicion = empleado;
+
+            // Si nos pasaron un empleado, rellenamos los campos para EDITAR
+            if (empleadoEdicion != null) {
+                setTitle("Editar Empleado - Mazcu.fit");
+                txtDNI.setText(empleadoEdicion.getDni());
+                txtNombre.setText(empleadoEdicion.getNombre());
+                txtApellidos.setText(empleadoEdicion.getApellidos());
+                txtPuesto.setText(empleadoEdicion.getPuesto());
+                
+                txtDNI.setEditable(false); // Normalmente el DNI/ID no se deja editar por seguridad
+            } else {
+                setTitle("Nuevo Empleado - Mazcu.fit");
+            }
+
+            this.setLocationRelativeTo(parent);
+        }
+
+        // Genera el evento clic del botón Guardar (doble clic en btnGuardar en el diseño)
+        private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dni = txtDNI.getText().trim();
+            String nombre = txtNombre.getText().trim();
+            String puesto = txtPuesto.getText().trim();
+            String apellidos = txtApellidos.getText().trim();
+            int categoria = Integer.parseInt(txtCategoria.getText().trim());
+            String ciudad = txtCiudad.getText().trim();
+            String direccion = txtDireccion.getText().trim();
+            String email = txtEmail.getText().trim();
+            LocalDate FechaContrato = LocalDate.parse(txtFContrato.getText().trim(),formateador);
+            int grupo = Integer.parseInt(txtGrupo.getText().trim());
+            String inss = txtINSS.getText().trim();
+            int nivel  = Integer.parseInt(txtNivel.getText().trim());
+            String numero = txtNumero.getText().trim();
+            String provincia = txtProvincia.getText().trim();
+            String telefono = txtTelefono.getText().trim();
+
+            if (dni.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El DNI y el Nombre son obligatorios.");
+                return;
+            }
+
+            if (empleadoEdicion == null) {
+
+                gestor.crearEmpleado();
+                JOptionPane.showMessageDialog(this, "Empleado creado con éxito.");
+            } else {
+                // --- MODO: EDITAR EMPLEADO ---
+                empleadoEdicion.setNombre(nombre);
+                empleadoEdicion.setPuesto(puesto);
+                // Asumo que tienes un método similar a modificarEmpleado en tu gestor
+                gestor.modificarEmpleado(empleadoEdicion);
+                JOptionPane.showMessageDialog(this, "Empleado modificado con éxito.");
+            }
+
+            this.dispose(); // Cerramos el diálogo al terminar
+        }
+
+        // Genera el evento clic del botón Cancelar (doble clic en btnCancelar)
+        private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+            this.dispose();
+        }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,59 +106,325 @@ public class DlgEmpleado extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitulo = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        lblApellidos = new javax.swing.JLabel();
+        txtApellidos = new javax.swing.JTextField();
+        lblDNI = new javax.swing.JLabel();
+        txtDNI = new javax.swing.JTextField();
+        lblINSS = new javax.swing.JLabel();
+        txtINSS = new javax.swing.JTextField();
+        lblTelefono = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JTextField();
+        lblEmail = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+        lblDirección = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JTextField();
+        lblNumero = new javax.swing.JLabel();
+        txtNumero = new javax.swing.JTextField();
+        lblCiudad = new javax.swing.JLabel();
+        txtCiudad = new javax.swing.JTextField();
+        lblProvinncia = new javax.swing.JLabel();
+        txtProvincia = new javax.swing.JTextField();
+        lblPuesto = new javax.swing.JLabel();
+        txtPuesto = new javax.swing.JTextField();
+        lblCategoria = new javax.swing.JLabel();
+        txtCategoria = new javax.swing.JTextField();
+        lblGrupo = new javax.swing.JLabel();
+        txtGrupo = new javax.swing.JTextField();
+        lblNivel = new javax.swing.JLabel();
+        txtNivel = new javax.swing.JTextField();
+        lblFContrato = new javax.swing.JLabel();
+        txtFContrato = new javax.swing.JTextField();
+        btnHoras = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nombre");
+
+        lblTitulo.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        lblTitulo.setText("Empleado");
+
+        lblNombre.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblNombre.setText("Nombre");
+        lblNombre.setToolTipText("");
+
+        lblApellidos.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblApellidos.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblApellidos.setText("Apellidos");
+        lblApellidos.setToolTipText("");
+
+        lblDNI.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblDNI.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDNI.setText("DNI");
+        lblDNI.setToolTipText("");
+
+        lblINSS.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblINSS.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblINSS.setText("INSS");
+        lblINSS.setToolTipText("");
+
+        lblTelefono.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblTelefono.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTelefono.setText("Teléfono");
+        lblTelefono.setToolTipText("");
+
+        txtTelefono.addActionListener(this::txtTelefonoActionPerformed);
+
+        lblEmail.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblEmail.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblEmail.setText("email");
+        lblEmail.setToolTipText("");
+
+        lblDirección.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblDirección.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDirección.setText("Dirección");
+        lblDirección.setToolTipText("");
+
+        lblNumero.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblNumero.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblNumero.setText("Número");
+        lblNumero.setToolTipText("");
+
+        lblCiudad.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblCiudad.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCiudad.setText("Ciudad");
+        lblCiudad.setToolTipText("");
+
+        lblProvinncia.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblProvinncia.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblProvinncia.setText("Provincia");
+        lblProvinncia.setToolTipText("");
+
+        lblPuesto.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblPuesto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPuesto.setText("Puesto");
+        lblPuesto.setToolTipText("");
+
+        lblCategoria.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblCategoria.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCategoria.setText("Categoría");
+        lblCategoria.setToolTipText("");
+
+        lblGrupo.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblGrupo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblGrupo.setText("Grupo");
+        lblGrupo.setToolTipText("");
+
+        lblNivel.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblNivel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblNivel.setText("Nivel");
+        lblNivel.setToolTipText("");
+
+        lblFContrato.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        lblFContrato.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblFContrato.setText("Fecha Contrato");
+        lblFContrato.setToolTipText("");
+
+        btnHoras.setText("Añadir Horas");
+        btnHoras.addActionListener(this::btnHorasActionPerformed);
+
+        btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(this::btnBorrarActionPerformed);
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblINSS, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblDirección, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblProvinncia, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtDNI, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtINSS, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtDireccion, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNumero, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCiudad, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtProvincia, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPuesto, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(110, 110, 110))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombre))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblApellidos)
+                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDNI)
+                    .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblINSS)
+                    .addComponent(txtINSS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTelefono)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDirección))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNumero))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCiudad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProvinncia))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPuesto)
+                    .addComponent(txtPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCategoria)
+                    .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblGrupo)
+                    .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNivel)
+                    .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFContrato)
+                    .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnHoras)
+                    .addComponent(btnBorrar)
+                    .addComponent(btnGuardar))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelefonoActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                DlgEmpleado dialog = new DlgEmpleado(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void btnHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHorasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHorasActionPerformed
+
+
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBorrar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnHoras;
+    private javax.swing.JLabel lblApellidos;
+    private javax.swing.JLabel lblCategoria;
+    private javax.swing.JLabel lblCiudad;
+    private javax.swing.JLabel lblDNI;
+    private javax.swing.JLabel lblDirección;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblFContrato;
+    private javax.swing.JLabel lblGrupo;
+    private javax.swing.JLabel lblINSS;
+    private javax.swing.JLabel lblNivel;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblNumero;
+    private javax.swing.JLabel lblProvinncia;
+    private javax.swing.JLabel lblPuesto;
+    private javax.swing.JLabel lblTelefono;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtApellidos;
+    private javax.swing.JTextField txtCategoria;
+    private javax.swing.JTextField txtCiudad;
+    private javax.swing.JTextField txtDNI;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFContrato;
+    private javax.swing.JTextField txtGrupo;
+    private javax.swing.JTextField txtINSS;
+    private javax.swing.JTextField txtNivel;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtProvincia;
+    private javax.swing.JTextField txtPuesto;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

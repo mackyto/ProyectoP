@@ -142,6 +142,15 @@ public class GestorComercio implements LogicaNegocio {
             LocalDate fechaContrato, String puesto
             ) throws SQLException, ErrorDatos {
 
+        if (categoria > 5 || categoria < 0 ||
+            grupo > 5 || grupo < 0 ||
+            nivel > 5 || nivel < 0)
+            throw new ErrorDatos("Datos del contrato erroneos");
+        
+        Cliente cl = this.buscarCliente(nombre, apellidos); 
+        if  (cl != null)
+            clientes.remove(cl);
+        
         int id = Cliente.getPuntero();
         Empleado emp = new Empleado(id, nombre, apellidos, telefono, email,
             dni, inss, calle, numero, ciudad, 
