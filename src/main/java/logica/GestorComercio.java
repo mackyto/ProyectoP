@@ -33,6 +33,7 @@ public class GestorComercio implements LogicaNegocio {
 
     //ATRIBUTOS DE LAS RELACIONES
     private List<Cliente> clientes;
+    private List<Empleado> empleados;
     private List<Articulo> articulos;
     private List<Servicio> servicios;
     private List<Pedido> pedidos;
@@ -356,16 +357,43 @@ public class GestorComercio implements LogicaNegocio {
      * @return lista de clientes con coincidencias.
      */
     public List<Cliente> buscarClientes(String nombre) {
+        
         List<Cliente> result = new ArrayList<>();
         nombre = nombre.toLowerCase();
-        for (Cliente cl : this.listarClientes()) {
-            if (cl.getNombre().toLowerCase().contains(nombre) || cl.getApellidos().toLowerCase().contains(nombre)) {
+        
+        for (Cliente cl : this.listarClientes()) 
+            if (cl.getNombre().toLowerCase().contains(nombre) || cl.getApellidos().toLowerCase().contains(nombre) || cl.getTelefono().contains(nombre)) 
                 result.add(cl);
-            }
-        }
+            
+        
+        for (Empleado e: this.empleados)
+            if (e.getNombre().toLowerCase().contains(nombre) || e.getApellidos().toLowerCase().contains(nombre) || e.getTelefono().contains(nombre))
+                result.add(e);
+        
         return result;
     }
 
+
+    /**
+     * Lista los empleados que cumplen criterios en nombre apellidos, telefono, dni o inss
+     * @param nombre
+     * @return 
+     */
+    public List<Empleado> buscarEmpleados(String nombre) {
+        
+        List<Empleado> result = new ArrayList<>();
+        nombre = nombre.toLowerCase();
+                
+        for (Empleado e: this.empleados)
+            if (e.getNombre().toLowerCase().contains(nombre) || e.getApellidos().toLowerCase().contains(nombre) || e.getTelefono().contains(nombre) || e.getDni().toLowerCase().contains(nombre) || e.getNss().contains(nombre))
+                result.add(e);
+        
+        return result;
+    }
+    
+    
+    
+    
     /**
      * Selecciona un Cliente de una lista por su identificador único
      *

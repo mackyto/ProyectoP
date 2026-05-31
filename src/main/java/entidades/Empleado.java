@@ -5,6 +5,7 @@
 package entidades;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -12,23 +13,58 @@ import java.time.LocalDate;
  */
 public class Empleado extends Cliente {
   
-    private String dni, nss, puesto, calle, ciudad, provincia;
-    private int categoria, grupo, nivel, numero, cp;
-    private LocalDate fechaContrato, antiguedadAnterior;
-    
+    private String dni, nss, puesto, calle, ciudad, provincia, numero, cp;
+    private int categoria, grupo, nivel;
+    private LocalDate fechaContrato;
+    private double antiguedadAnterior;
+
+    /**
+     *
+     * @throws ErrorDatos
+     */
+    public Empleado() throws ErrorDatos{
+        this.antiguedadAnterior = 0.00;
+    }
     
     public Empleado(String nombre, String apellidos, String telefono, String email,
-            String dni, String nss, String calle, int numero, String ciudad, 
-            String provincia, int cp, int categoria, int grupo, int nivel, 
-            LocalDate fechaContrato, LocalDate antiguedadAnterior, String puesto) throws ErrorDatos {
+            String dni, String nss, String calle, String numero, String ciudad, 
+            String provincia, String cp, int categoria, int grupo, int nivel, 
+            LocalDate fechaContrato, String puesto) throws ErrorDatos {
 
         super.setNombre(nombre);
         super.setApellidos(apellidos);
         super.setTelefono(telefono);
         super.setEmail(email);
         super.setNivelFidelidad(5);
-        this.dni = dni;
-        this.nss = nss;
+        this.setDni(dni);
+        this.setNss(nss);
+        this.calle = calle;
+        this.numero = numero;
+        this.ciudad = ciudad;
+        this.provincia = provincia;
+        this.cp = cp;
+        this.categoria = categoria;
+        this.grupo = grupo;
+        this.nivel = nivel;
+        this.fechaContrato = fechaContrato;
+        this.antiguedadAnterior = 0.00;
+        this.puesto = puesto;
+
+    }
+
+   
+    public Empleado(String nombre, String apellidos, String telefono, String email,
+            String dni, String nss, String calle, String numero, String ciudad, 
+            String provincia, String cp, int categoria, int grupo, int nivel, 
+            LocalDate fechaContrato, double antiguedadAnterior, String puesto) throws ErrorDatos {
+
+        super.setNombre(nombre);
+        super.setApellidos(apellidos);
+        super.setTelefono(telefono);
+        super.setEmail(email);
+        super.setNivelFidelidad(5);
+        this.setDni(dni);
+        this.setNss(nss);
         this.calle = calle;
         this.numero = numero;
         this.ciudad = ciudad;
@@ -60,7 +96,7 @@ public class Empleado extends Cliente {
         return calle;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
@@ -72,7 +108,7 @@ public class Empleado extends Cliente {
         return provincia;
     }
 
-    public int getCp() {
+    public String getCp() {
         return cp;
     }
 
@@ -92,7 +128,7 @@ public class Empleado extends Cliente {
         return fechaContrato;
     }
 
-    public LocalDate getAntiguedadAnterior() {
+    public double getAntiguedadAnterior() {
         return antiguedadAnterior;
     }
 
@@ -103,19 +139,28 @@ public class Empleado extends Cliente {
     // Setters
 
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setDni(String dni) throws ErrorDatos {
+        dni = dni.trim().toUpperCase();
+        if (dni.matches("^[0-9]{8}[A-Z]$"))
+            this.dni = dni;
+        else
+            throw new ErrorDatos("DNI Incorrecto");
+        
     }
 
-    public void setNss(String nss) {
-        this.nss = nss;
+    public void setNss(String nss) throws ErrorDatos {
+        nss = nss.trim();
+        if (nss.matches("^[0-9]{12}$"))
+            this.nss = nss;
+        else
+            throw new ErrorDatos("Numero de seguridad social inválido");
     }
 
     public void setCalle(String calle) {
         this.calle = calle;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
@@ -127,7 +172,7 @@ public class Empleado extends Cliente {
         this.provincia = provincia;
     }
 
-    public void setCp(int cp) {
+    public void setCp(String cp) {
         this.cp = cp;
     }
 
@@ -147,7 +192,7 @@ public class Empleado extends Cliente {
         this.fechaContrato = fechaContrato;
     }
 
-    public void setAntiguedadAnterior(LocalDate antiguedad) {
+    public void setAntiguedadAnterior(double antiguedad) {
         this.antiguedadAnterior = antiguedad;
     }
 
@@ -155,4 +200,9 @@ public class Empleado extends Cliente {
         this.puesto = puesto;
     }
 
-}
+    public double getTrienios(){
+        return Math.abs(this.antiguedadAnterior + ChronoUnit.YEARS.between(fechaContrato, LocalDate.now())/3);
+    } 
+
+    
+}   
