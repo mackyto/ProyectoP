@@ -6,7 +6,7 @@ package persistencia;
 
 import entidades.Empleado;
 import entidades.ErrorDatos;
-import interfaces.InEmpleado; 
+import interfaces.InEmpleado;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Capa de persistencia para la entidad Empleado utilizando JDBC nativo.
- * Maneja transacciones atómicas para la inserción y actualización en cascada.
+ * Capa de persistencia para la entidad Empleado utilizando JDBC nativo. Maneja
+ * transacciones atómicas para la inserción y actualización en cascada.
+ *
  * * @author 29160712r
  */
 public class PersisEmpleado extends ConexionBase implements InEmpleado {
@@ -47,9 +48,7 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
         try (Connection conn = conexionDB()) {
             conn.setAutoCommit(false); // Transacción atómica
 
-            try (PreparedStatement pps = conn.prepareStatement(INSERT_PERSONA); 
-                 PreparedStatement cps = conn.prepareStatement(INSERT_CLIENTE); 
-                 PreparedStatement eps = conn.prepareStatement(INSERT_EMPLEADO)) {
+            try (PreparedStatement pps = conn.prepareStatement(INSERT_PERSONA); PreparedStatement cps = conn.prepareStatement(INSERT_CLIENTE); PreparedStatement eps = conn.prepareStatement(INSERT_EMPLEADO)) {
 
                 // 1. Tabla Persona
                 pps.setInt(1, e.getId());
@@ -78,16 +77,15 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
                 eps.setInt(11, e.getGrupo());
                 eps.setInt(12, e.getNivel());
 
-                // Mapeo seguro de la columna 13 (fecha_contrato) como LONG (Epoch Day)
                 if (e.getFechaContrato() != null) {
-                    eps.setLong(13, e.getFechaContrato().toEpochDay());
+                    eps.setObject(13, e.getFechaContrato());
                 } else {
-                    eps.setNull(13, Types.BIGINT);
+                    eps.setNull(13, Types.DATE);
                 }
 
                 // Al ser primitivo double, pasamos el valor directamente (si no tiene, pasará 0.0)
                 eps.setDouble(14, e.getAntiguedadAnterior());
-                
+
                 eps.executeUpdate();
 
                 conn.commit();
@@ -106,18 +104,17 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
     }
 
     /**
-     * Recupera todos los empleados haciendo uso de la vista relacional v_empleado.
+     * Recupera todos los empleados haciendo uso de la vista relacional
+     * v_empleado.
      *
      * @return List de objetos Empleado.
      * @throws entidades.ErrorDatos
      */
     @Override
-    public List<Empleado> recuperarTodos() throws ErrorDatos {
+    public List<Empleado> recuperarTodos() {
         List<Empleado> lista = new ArrayList<>();
 
-        try (Connection conn = conexionDB(); 
-             PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ALL); 
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = conexionDB(); PreparedStatement ps = conn.prepareStatement(SQL_SELECT_ALL); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Empleado e = new Empleado();
@@ -129,6 +126,7 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
                 e.setTelefono(rs.getString("telefono"));
 
                 // Datos de Cliente (Heredados en Empleado)
+                e.setNivelFidelidad(rs.getInt("fidelidad"));
                 e.setEmail(rs.getString("email"));
 
                 // Datos específicos de Empleado
@@ -145,12 +143,7 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
                 e.setNivel(rs.getInt("nivel"));
 
                 // Recuperación de la fecha de contrato (long/BIGINT)
-                long diasContrato = rs.getLong("fecha_contrato");
-                if (rs.wasNull()) {
-                    e.setFechaContrato(null);
-                } else {
-                    e.setFechaContrato(java.time.LocalDate.ofEpochDay(diasContrato));
-                }
+                e.setFechaContrato(rs.getObject("fecha_contrato", java.time.LocalDate.class));
 
                 // Al usar primitivo double, rs.getDouble ya asigna 0.0 automáticamente si es NULL en la BD
                 e.setAntiguedadAnterior(rs.getDouble("antiguedad_anterior"));
@@ -170,6 +163,7 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
     /**
      * Modifica las tres tablas correspondientes al empleado de manera segura
      * bajo control transaccional.
+     *
      * * @param e tipo Empleado con las modificaciones realizadas.
      * @return true si la operación es exitosa.
      */
@@ -178,9 +172,7 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
         try (Connection conn = conexionDB()) {
             conn.setAutoCommit(false); // Transacción atómica
 
-            try (PreparedStatement pps = conn.prepareStatement(UPDATE_PERSONA_EMP); 
-                 PreparedStatement cps = conn.prepareStatement(UPDATE_CLIENTE_EMP); 
-                 PreparedStatement eps = conn.prepareStatement(UPDATE_EMPLEADO)) {
+            try (PreparedStatement pps = conn.prepareStatement(UPDATE_PERSONA_EMP); PreparedStatement cps = conn.prepareStatement(UPDATE_CLIENTE_EMP); PreparedStatement eps = conn.prepareStatement(UPDATE_EMPLEADO)) {
 
                 // 1. Modificar Persona
                 pps.setString(1, e.getNombre());
@@ -207,19 +199,18 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
                 eps.setInt(9, e.getCategoria());
                 eps.setInt(10, e.getGrupo());
                 eps.setInt(11, e.getNivel());
-                
-                // Mapeo seguro de fecha_contrato (Parámetro 12)
+
                 if (e.getFechaContrato() != null) {
-                    eps.setLong(12, e.getFechaContrato().toEpochDay());
+                    eps.setObject(12, e.getFechaContrato());
                 } else {
-                    eps.setNull(12, Types.BIGINT);
+                    eps.setNull(12, Types.DATE);
                 }
-                
+
                 // Asignación directa del double primitivo (Parámetro 13)
                 eps.setDouble(13, e.getAntiguedadAnterior());
-                
+
                 // Cláusula WHERE persona_id = ? (Parámetro 14)
-                eps.setInt(14, e.getId()); 
+                eps.setInt(14, e.getId());
                 eps.executeUpdate();
 
                 conn.commit();
@@ -235,16 +226,16 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
         }
         return false;
     }
-    
+
     /**
      * Elimina exclusivamente el registro laboral de la tabla Empleado.
+     *
      * * @param id Identificador único (persona_id) del empleado a remover.
      * @return true si el borrado se efectúa con éxito.
      */
     @Override
     public boolean eliminarEmpleado(int id) {
-        try (Connection conn = conexionDB(); 
-             PreparedStatement ps = conn.prepareStatement(DELETE_EMPLEADO_ONLY)) {
+        try (Connection conn = conexionDB(); PreparedStatement ps = conn.prepareStatement(DELETE_EMPLEADO_ONLY)) {
 
             ps.setInt(1, id);
             int filasAfectadas = ps.executeUpdate();

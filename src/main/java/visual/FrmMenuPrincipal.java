@@ -69,6 +69,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         btnPedidos.addActionListener(this::btnPedidosActionPerformed);
 
         btnPersonal.setText("Personal");
+        btnPersonal.addActionListener(this::btnPersonalActionPerformed);
 
         javax.swing.GroupLayout jPanelGeneralLayout = new javax.swing.GroupLayout(jPanelGeneral);
         jPanelGeneral.setLayout(jPanelGeneralLayout);
@@ -181,6 +182,12 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void btnEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEstadoActionPerformed
+
+    private void btnPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalActionPerformed
+        FrmEmpleado ventanaEmpleados = new FrmEmpleado(gestor);
+        ventanaEmpleados.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPersonalActionPerformed
 
     private void actualizarColorBotonEstado() {
         btnEstado.setFocusPainted(false); // Elimina el recuadro de enfoque estético

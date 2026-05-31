@@ -192,7 +192,7 @@ SELECT
     
     -- Datos de contacto extra (de la tabla Cliente)
     c.email,
-    
+    c.fidelidad,
     -- Datos laborales y de ubicación (de la tabla Empleado)
     e.dni,
     e.nss,

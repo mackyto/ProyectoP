@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 import persistencia.PersisAlerta;
 import persistencia.PersisArticulo;
 import persistencia.PersisClient;
+import persistencia.PersisEmpleado;
 import persistencia.PersisPedido;
 
 public class GestorComercio implements LogicaNegocio {
@@ -44,21 +45,28 @@ public class GestorComercio implements LogicaNegocio {
     private PersisArticulo pArticul;
     private PersisPedido pPedido;
     private PersisAlerta pAlerta;
-
+    private PersisEmpleado pEmpleado;
+    
+    
     private GestorComercio() {
 
         pClient = new PersisClient();
         pArticul = new PersisArticulo();
         pPedido = new PersisPedido();
         pAlerta = new PersisAlerta();
+        pEmpleado = new PersisEmpleado();
 
         this.clientes = pClient.recuperarTodos();
 
+        this.empleados = pEmpleado.recuperarTodos();
+        
         this.articulos = pArticul.recuperarTodo();
 
         this.alertaStock = pAlerta.recuperarTodas();
 
         this.pedidos = new ArrayList<>();
+        
+        
 
         for (Cliente cl : this.clientes) {
             pPedido.recuperarPedidos(cl, this.articulos);

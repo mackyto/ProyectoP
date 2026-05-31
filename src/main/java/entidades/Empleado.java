@@ -150,7 +150,7 @@ public class Empleado extends Cliente {
 
     public void setNss(String nss) throws ErrorDatos {
         nss = nss.trim();
-        if (nss.matches("^[0-9]{12}$"))
+        if (nss.matches("^[0-9]{2}[-/ ]?[0-9]{8}[-/ ]?[0-9]{2}$"))
             this.nss = nss;
         else
             throw new ErrorDatos("Numero de seguridad social inválido");
