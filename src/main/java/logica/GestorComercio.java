@@ -19,6 +19,7 @@ package logica;
 import interfaces.LogicaNegocio;
 import entidades.*;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -134,6 +135,29 @@ public class GestorComercio implements LogicaNegocio {
 
     }
 
+
+    public Empleado crearEmpleado(String nombre, String apellidos, String telefono, String email, 
+            String dni, String inss, String calle, String numero, String ciudad, 
+            String provincia, String cp, int categoria, int grupo, int nivel, 
+            LocalDate fechaContrato, String puesto
+            ) throws SQLException, ErrorDatos {
+
+        int id = Cliente.getPuntero();
+        Empleado emp = new Empleado(id, nombre, apellidos, telefono, email,
+            dni, inss, calle, numero, ciudad, 
+            provincia, cp, categoria, grupo,  nivel, 
+            fechaContrato, puesto);
+        
+        if (!pEmpleado.persistirEmpleado(emp)) {
+            throw new SQLException("Error de Integridad de Datos");
+        }
+        empleados.add(emp);
+        return empleados.getLast();
+
+    }
+    
+    
+    
     /**
      * Getter Lista de clientes
      *
@@ -382,6 +406,11 @@ public class GestorComercio implements LogicaNegocio {
     }
 
 
+    
+    
+    
+    
+    
     /**
      * Lista los empleados que cumplen criterios en nombre apellidos, telefono, dni o inss
      * @param nombre
@@ -506,6 +535,10 @@ public class GestorComercio implements LogicaNegocio {
         }
     }
 
+    
+    
+    
+    
     /**
      * Imprime Los Datos de una lista de pedidos
      *

@@ -26,16 +26,13 @@ public class Empleado extends Cliente {
         this.antiguedadAnterior = 0.00;
     }
     
-    public Empleado(String nombre, String apellidos, String telefono, String email,
+    public Empleado(int id, String nombre, String apellidos, String telefono, String email,
             String dni, String nss, String calle, String numero, String ciudad, 
             String provincia, String cp, int categoria, int grupo, int nivel, 
             LocalDate fechaContrato, String puesto) throws ErrorDatos {
-
-        super.setNombre(nombre);
-        super.setApellidos(apellidos);
-        super.setTelefono(telefono);
-        super.setEmail(email);
-        super.setNivelFidelidad(5);
+        
+        super(email, 5, nombre, apellidos, telefono,id);
+        
         this.setDni(dni);
         this.setNss(nss);
         this.calle = calle;
@@ -53,16 +50,13 @@ public class Empleado extends Cliente {
     }
 
    
-    public Empleado(String nombre, String apellidos, String telefono, String email,
+    public Empleado(int id, String nombre, String apellidos, String telefono, String email,
             String dni, String nss, String calle, String numero, String ciudad, 
             String provincia, String cp, int categoria, int grupo, int nivel, 
             LocalDate fechaContrato, double antiguedadAnterior, String puesto) throws ErrorDatos {
 
-        super.setNombre(nombre);
-        super.setApellidos(apellidos);
-        super.setTelefono(telefono);
-        super.setEmail(email);
-        super.setNivelFidelidad(5);
+        super(email, 5, nombre, apellidos, telefono,id);
+        
         this.setDni(dni);
         this.setNss(nss);
         this.calle = calle;

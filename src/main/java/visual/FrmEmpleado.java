@@ -98,7 +98,7 @@ import entidades.Empleado;
             }
         });
 
-        btnNuevoEmpleado.setText("Nuevo");
+        btnNuevoEmpleado.setText("Nuevo Empleado");
 
         btnVolver.setText("Volver al Menú");
         btnVolver.addActionListener(this::btnVolverActionPerformed);
