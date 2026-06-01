@@ -5,6 +5,8 @@
 package visual;
 
 import entidades.Empleado;
+import entidades.ErrorDatos;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import logica.GestorComercio;
@@ -51,54 +53,7 @@ import javax.swing.JOptionPane;
             this.setLocationRelativeTo(parent);
         }
 
-        // Genera el evento clic del botón Guardar (doble clic en btnGuardar en el diseño)
-        private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {
-            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String dni = txtDNI.getText().trim();
-            String nombre = txtNombre.getText().trim();
-            String puesto = txtPuesto.getText().trim();
-            String apellidos = txtApellidos.getText().trim();
-            int categoria = Integer.parseInt(txtCategoria.getText().trim());
-            String ciudad = txtCiudad.getText().trim();
-            String direccion = txtDireccion.getText().trim();
-            String email = txtEmail.getText().trim();
-            LocalDate FechaContrato = LocalDate.parse(txtFContrato.getText().trim(),formateador);
-            int grupo = Integer.parseInt(txtGrupo.getText().trim());
-            String inss = txtINSS.getText().trim();
-            int nivel  = Integer.parseInt(txtNivel.getText().trim());
-            String numero = txtNumero.getText().trim();
-            String provincia = txtProvincia.getText().trim();
-            String telefono = txtTelefono.getText().trim();
-            double antiguedadAnt = Double.parseDouble(this.txtFAntiguedadant.getText().trim());
-            String cp = this.lblCP.getText().trim();
 
-            if (dni.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "El DNI y el Nombre son obligatorios.");
-                return;
-            }
-
-            if (empleadoEdicion == null) {
-
-                gestor.crearEmpleado();
-                JOptionPane.showMessageDialog(this, "Empleado creado con éxito.");
-            } else {
-                // --- MODO: EDITAR EMPLEADO ---
-                empleadoEdicion.setNombre(nombre);
-                empleadoEdicion.setPuesto(puesto);
-                empleadoEdicion.setAntiguedadAnterior(antiguedadAnt);
-                empleadoEdicion.setApellidos(apellidos);
-                empleadoEdicion.setCalle(direccion);
-                empleadoEdicion.setCategoria(categoria);
-                empleadoEdicion.setCiudad(ciudad);
-                empleadoEdicion.setCp(cp);
-                empleadoEdicion
-                // Asumo que tienes un método similar a modificarEmpleado en tu gestor
-                gestor.modificarEmpleado(empleadoEdicion);
-                JOptionPane.showMessageDialog(this, "Empleado modificado con éxito.");
-            }
-
-            this.dispose(); // Cerramos el diálogo al terminar
-        }
 
         // Genera el evento clic del botón Cancelar (doble clic en btnCancelar)
         private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -422,7 +377,65 @@ import javax.swing.JOptionPane;
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+            
+        try {
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dni = txtDNI.getText().trim();
+            String nombre = txtNombre.getText().trim();
+            String puesto = txtPuesto.getText().trim();
+            String apellidos = txtApellidos.getText().trim();
+            int categoria = Integer.parseInt(txtCategoria.getText().trim());
+            String ciudad = txtCiudad.getText().trim();
+            String direccion = txtDireccion.getText().trim();
+            String email = txtEmail.getText().trim();
+            LocalDate fechaContrato = LocalDate.parse(txtFContrato.getText().trim(),formateador);
+            int grupo = Integer.parseInt(txtGrupo.getText().trim());
+            String inss = txtINSS.getText().trim();
+            int nivel  = Integer.parseInt(txtNivel.getText().trim());
+            String numero = txtNumero.getText().trim();
+            String provincia = txtProvincia.getText().trim();
+            String telefono = txtTelefono.getText().trim();
+            double antiguedadAnt = Double.parseDouble(this.txtFAntiguedadant.getText().trim());
+            String cp = this.lblCP.getText().trim();
+
+            if (dni.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El DNI y el Nombre son obligatorios.");
+                return;
+            }
+
+            if (empleadoEdicion == null) {
+
+                gestor.crearEmpleado(nombre, apellidos, telefono, email, 
+                    dni, inss, direccion, numero, ciudad, 
+                    provincia, cp, categoria, grupo, nivel, 
+                    fechaContrato, puesto);
+                JOptionPane.showMessageDialog(this, "Empleado creado con éxito.");
+            } else {
+                // --- MODO: EDITAR EMPLEADO ---
+                empleadoEdicion.setNombre(nombre);
+                empleadoEdicion.setPuesto(puesto);
+                empleadoEdicion.setAntiguedadAnterior(antiguedadAnt);
+                empleadoEdicion.setApellidos(apellidos);
+                empleadoEdicion.setCalle(direccion);
+                empleadoEdicion.setCategoria(categoria);
+                empleadoEdicion.setCiudad(ciudad);
+                empleadoEdicion.setCp(cp);
+                empleadoEdicion.setDni(dni);
+                empleadoEdicion.setEmail(email);
+                empleadoEdicion.setFechaContrato(fechaContrato);
+                empleadoEdicion.setGrupo(grupo);
+                empleadoEdicion.setNivel(nivel);
+                empleadoEdicion.setNumero(numero);
+                empleadoEdicion.setProvincia(provincia);
+                empleadoEdicion.setPuesto(puesto);
+                empleadoEdicion.setTelefono(telefono)
+                        ;
+                // Asumo que tienes un método similar a modificarEmpleado en tu gestor
+                gestor.modificarEmpleado(empleadoEdicion);
+                JOptionPane.showMessageDialog(this, "Empleado modificado con éxito.");
+            }catch (ErrorDatos ed)
+
+            this.dispose(); // Cerramos el diálogo al terminar
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed

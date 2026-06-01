@@ -166,6 +166,23 @@ public class GestorComercio implements LogicaNegocio {
     }
     
     
+    public boolean modificarEmpleado (Empleado emp){
+        
+        return pEmpleado.modificarEmpleado(emp);
+        
+    }
+    
+    
+    public boolean borrarEmpleado (Empleado emp) throws ErrorDatos{
+        
+        int id = Cliente.getPuntero();
+        Cliente cl = new Cliente(emp.getEmail(), 3, emp.getNombre(), emp.getApellidos(), emp.getTelefono(), id);
+        clientes.add(cl);
+        empleados.remove(emp);
+        return pEmpleado.eliminarEmpleado(emp.getId());
+
+    } 
+    
     
     /**
      * Getter Lista de clientes
