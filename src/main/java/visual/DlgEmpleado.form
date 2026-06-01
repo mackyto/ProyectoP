@@ -32,7 +32,56 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                      <Component id="lblProvinncia" min="-2" pref="116" max="-2" attributes="0"/>
+                                      <Component id="lblPuesto" min="-2" pref="116" max="-2" attributes="0"/>
+                                      <Component id="lblCategoria" min="-2" pref="116" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="lblFContrato" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="txtProvincia" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtPuesto" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="txtCategoria" min="-2" pref="48" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="lblGrupo" min="-2" pref="116" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="txtFContrato" min="-2" pref="170" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblAntiguedadAnt" min="-2" pref="141" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="txtGrupo" min="-2" pref="48" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="lblNivel" min="-2" pref="116" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="txtNivel" min="-2" pref="48" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="btnVolver" min="-2" pref="105" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="btnHoras1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="btnBorrar" min="-2" pref="105" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnGuardar" min="-2" pref="105" max="-2" attributes="0"/>
+                                  <Component id="txtFAntiguedadant" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
@@ -44,9 +93,6 @@
                                       <Component id="lblDirección" min="-2" pref="116" max="-2" attributes="0"/>
                                       <Component id="lblNumero" min="-2" pref="116" max="-2" attributes="0"/>
                                       <Component id="lblCiudad" min="-2" pref="116" max="-2" attributes="0"/>
-                                      <Component id="lblProvinncia" min="-2" pref="116" max="-2" attributes="0"/>
-                                      <Component id="lblPuesto" min="-2" pref="116" max="-2" attributes="0"/>
-                                      <Component id="lblCategoria" min="-2" pref="116" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="lblNombre" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                               </Group>
@@ -60,40 +106,14 @@
                                   <Component id="txtEmail" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtDireccion" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtNumero" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtCiudad" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtProvincia" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtPuesto" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtCategoria" min="-2" pref="48" max="-2" attributes="0"/>
+                                      <Component id="txtCiudad" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <EmptySpace pref="34" max="32767" attributes="0"/>
+                                      <Component id="lblCP" min="-2" pref="116" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="lblGrupo" min="-2" pref="116" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtGrupo" min="-2" pref="48" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="lblNivel" min="-2" pref="116" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtNivel" min="-2" pref="48" max="-2" attributes="0"/>
+                                      <Component id="txtCP" min="-2" pref="100" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="lblFContrato" min="-2" pref="116" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtFContrato" min="-2" pref="250" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="btnVolver" min="-2" pref="105" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                                      <Component id="btnHoras1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                                      <Component id="btnBorrar" min="-2" pref="105" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Component id="btnGuardar" min="-2" pref="105" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
@@ -151,6 +171,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtCiudad" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblCiudad" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCP" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblCP" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -175,15 +197,17 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblFContrato" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFContrato" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAntiguedadAnt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFAntiguedadant" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnVolver" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnHoras1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -411,6 +435,30 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHoras1ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFAntiguedadant">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblAntiguedadAnt">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Liberation Sans" size="13" style="1"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Antiguedad Anterior"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblCP">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Liberation Sans" size="13" style="1"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Codigo Postal"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtCP">
     </Component>
   </SubComponents>
 </Form>
