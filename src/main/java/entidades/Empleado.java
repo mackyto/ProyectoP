@@ -17,6 +17,7 @@ public class Empleado extends Cliente {
     private int categoria, grupo, nivel;
     private LocalDate fechaContrato;
     private double antiguedadAnterior;
+//    private int[] horas;
 
     /**
      *
@@ -24,6 +25,7 @@ public class Empleado extends Cliente {
      */
     public Empleado() throws ErrorDatos{
         this.antiguedadAnterior = 0.00;
+     //   this.horas = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
     }
     
     public Empleado(int id, String nombre, String apellidos, String telefono, String email,
@@ -32,7 +34,7 @@ public class Empleado extends Cliente {
             LocalDate fechaContrato, String puesto) throws ErrorDatos {
         
         super(email, 5, nombre, apellidos, telefono,id);
-        
+    //    this.horas = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
         this.setDni(dni);
         this.setNss(nss);
         this.calle = calle;
@@ -130,6 +132,16 @@ public class Empleado extends Cliente {
         return puesto;
     }
 
+//    public int[] getHoras() {
+//        return horas;
+//    }
+
+//    public int[] getHoras(int mes) {
+//        if (mes >= 1 && mes <= 12)
+//            return horas[mes-1];
+//        throw new ErrorDatos ("Mes de extraccion de horas mal definido")
+//    }
+    
     // Setters
 
 
@@ -194,7 +206,7 @@ public class Empleado extends Cliente {
     public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
-
+    
     public double getTrienios(){
         return Math.abs(this.antiguedadAnterior + ChronoUnit.YEARS.between(fechaContrato, LocalDate.now())/3);
     } 
