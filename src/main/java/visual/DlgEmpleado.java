@@ -70,7 +70,7 @@ import javax.swing.JOptionPane;
             String provincia = txtProvincia.getText().trim();
             String telefono = txtTelefono.getText().trim();
             double antiguedadAnt = Double.parseDouble(this.txtFAntiguedadant.getText().trim());
-            String 
+            String cp = this.lblCP.getText().trim();
 
             if (dni.isEmpty() || nombre.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "El DNI y el Nombre son obligatorios.");
@@ -90,7 +90,8 @@ import javax.swing.JOptionPane;
                 empleadoEdicion.setCalle(direccion);
                 empleadoEdicion.setCategoria(categoria);
                 empleadoEdicion.setCiudad(ciudad);
-                empleadoEdicion.setCp(dni);
+                empleadoEdicion.setCp(cp);
+                empleadoEdicion
                 // Asumo que tienes un método similar a modificarEmpleado en tu gestor
                 gestor.modificarEmpleado(empleadoEdicion);
                 JOptionPane.showMessageDialog(this, "Empleado modificado con éxito.");
