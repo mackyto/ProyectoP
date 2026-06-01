@@ -176,6 +176,7 @@ public class Empleado extends Cliente {
 
     public void setGrupo(int grupo) {
         this.grupo = grupo;
+        
     }
 
     public void setNivel(int nivel) {

@@ -16,50 +16,59 @@ import javax.swing.JOptionPane;
  *
  * @author macky
  */
-  
+public class DlgEmpleado extends javax.swing.JDialog {
 
-    public class DlgEmpleado extends javax.swing.JDialog {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgEmpleado.class.getName());
+    private GestorComercio gestor;
+    private Empleado empleadoEdicion; // Si es null estamos creando; si tiene datos, editando
 
-        private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgEmpleado.class.getName());
-        private GestorComercio gestor;
-        private Empleado empleadoEdicion; // Si es null estamos creando; si tiene datos, editando
+    /**
+     * Constructor del Diálogo
+     *
+     * @param parent Ventana que lo invoca (FrmEmpleado)
+     * @param modal Bloquea la ventana de atrás mientras está abierto
+     */
+    public DlgEmpleado(java.awt.Frame parent, boolean modal, GestorComercio gestor, Empleado empleado) {
+        super(parent, modal);
+        initComponents();
 
-        /**
-         * Constructor del Diálogo
-         *
-         * @param parent Ventana que lo invoca (FrmEmpleado)
-         * @param modal Bloquea la ventana de atrás mientras está abierto
-         */
-        public DlgEmpleado(java.awt.Frame parent, boolean modal, GestorComercio gestor, Empleado empleado) {
-            super(parent, modal);
-            initComponents();
+        this.gestor = gestor;
+        this.empleadoEdicion = empleado;
 
-            this.gestor = gestor;
-            this.empleadoEdicion = empleado;
+        // Si nos pasaron un empleado, rellenamos los campos para EDITAR
+        if (empleadoEdicion != null) {
+            setTitle("Editar Empleado - Mazcu.fit");
+            txtDNI.setText(empleadoEdicion.getDni());
+            txtNombre.setText(empleadoEdicion.getNombre());
+            txtApellidos.setText(empleadoEdicion.getApellidos());
+            txtPuesto.setText(empleadoEdicion.getPuesto());
+            this.txtCP.setText(empleadoEdicion.getCp());
+            this.txtCategoria.setText(empleadoEdicion.getCategoria() + "");
+            this.txtCiudad.setText(empleadoEdicion.getCiudad());
+            this.txtTelefono.setText(empleadoEdicion.getTelefono());
+            this.txtDireccion.setText(empleadoEdicion.getCalle());
+            this.txtEmail.setText(empleadoEdicion.getEmail());
+            this.txtFAntiguedadant.setText(empleadoEdicion.getAntiguedadAnterior() + "");
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("d/M/yyyy");
+            this.txtFContrato.setText(empleadoEdicion.getFechaContrato().format(formato));
+            this.txtGrupo.setText(empleadoEdicion.getGrupo() + "");
+            this.txtINSS.setText(empleadoEdicion.getNss());
+            this.txtNivel.setText(empleadoEdicion.getNivel() + "");
+            this.txtNumero.setText(empleadoEdicion.getNumero());
+            this.txtProvincia.setText(empleadoEdicion.getProvincia());
 
-            // Si nos pasaron un empleado, rellenamos los campos para EDITAR
-            if (empleadoEdicion != null) {
-                setTitle("Editar Empleado - Mazcu.fit");
-                txtDNI.setText(empleadoEdicion.getDni());
-                txtNombre.setText(empleadoEdicion.getNombre());
-                txtApellidos.setText(empleadoEdicion.getApellidos());
-                txtPuesto.setText(empleadoEdicion.getPuesto());
-                
-                txtDNI.setEditable(false); // Normalmente el DNI/ID no se deja editar por seguridad
-            } else {
-                setTitle("Nuevo Empleado - Mazcu.fit");
-            }
-
-            this.setLocationRelativeTo(parent);
+            txtDNI.setEditable(false); // Normalmente el DNI/ID no se deja editar por seguridad
+        } else {
+            setTitle("Nuevo Empleado - Mazcu.fit");
         }
 
+        this.setLocationRelativeTo(parent);
+    }
 
-
-        // Genera el evento clic del botón Cancelar (doble clic en btnCancelar)
-        private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-            this.dispose();
-        }
-    
+    // Genera el evento clic del botón Cancelar (doble clic en btnCancelar)
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,273 +110,170 @@ import javax.swing.JOptionPane;
         txtNivel = new javax.swing.JTextField();
         lblFContrato = new javax.swing.JLabel();
         txtFContrato = new javax.swing.JTextField();
+        lblAntiguedadAnt = new javax.swing.JLabel();
+        txtFAntiguedadant = new javax.swing.JTextField();
+        lblCP = new javax.swing.JLabel();
+        txtCP = new javax.swing.JTextField();
         btnVolver = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnHoras1 = new javax.swing.JButton();
-        txtFAntiguedadant = new javax.swing.JTextField();
-        lblAntiguedadAnt = new javax.swing.JLabel();
-        lblCP = new javax.swing.JLabel();
-        txtCP = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nombre");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
         lblTitulo.setText("Empleado");
+        getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
 
         lblNombre.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNombre.setText("Nombre");
         lblNombre.setToolTipText("");
+        getContentPane().add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 43, 60, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 40, 406, -1));
 
         lblApellidos.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblApellidos.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblApellidos.setText("Apellidos");
         lblApellidos.setToolTipText("");
+        getContentPane().add(lblApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 71, 60, -1));
+        getContentPane().add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 68, 406, -1));
 
         lblDNI.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblDNI.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDNI.setText("DNI");
         lblDNI.setToolTipText("");
+        getContentPane().add(lblDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 99, 31, -1));
+        getContentPane().add(txtDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 96, 406, -1));
 
         lblINSS.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblINSS.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblINSS.setText("INSS");
         lblINSS.setToolTipText("");
+        getContentPane().add(lblINSS, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 127, -1, -1));
+        getContentPane().add(txtINSS, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 124, 406, -1));
 
         lblTelefono.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblTelefono.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTelefono.setText("Teléfono");
         lblTelefono.setToolTipText("");
+        getContentPane().add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 155, 60, -1));
 
         txtTelefono.addActionListener(this::txtTelefonoActionPerformed);
+        getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 152, 406, -1));
 
         lblEmail.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblEmail.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblEmail.setText("email");
         lblEmail.setToolTipText("");
+        getContentPane().add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(86, 183, -1, -1));
+        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 180, 406, -1));
 
         lblDirección.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblDirección.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDirección.setText("Dirección");
         lblDirección.setToolTipText("");
+        getContentPane().add(lblDirección, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 211, -1, -1));
+        getContentPane().add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 208, 406, -1));
 
         lblNumero.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblNumero.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNumero.setText("Número");
         lblNumero.setToolTipText("");
+        getContentPane().add(lblNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 239, -1, -1));
+        getContentPane().add(txtNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 236, 406, -1));
 
         lblCiudad.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblCiudad.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblCiudad.setText("Ciudad");
         lblCiudad.setToolTipText("");
+        getContentPane().add(lblCiudad, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 267, 50, -1));
+        getContentPane().add(txtCiudad, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 264, 150, -1));
 
         lblProvinncia.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblProvinncia.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblProvinncia.setText("Provincia");
         lblProvinncia.setToolTipText("");
+        getContentPane().add(lblProvinncia, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 295, -1, -1));
+        getContentPane().add(txtProvincia, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 292, 406, -1));
 
         lblPuesto.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblPuesto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblPuesto.setText("Puesto");
         lblPuesto.setToolTipText("");
+        getContentPane().add(lblPuesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(79, 323, -1, -1));
+        getContentPane().add(txtPuesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 320, 406, -1));
 
         lblCategoria.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblCategoria.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCategoria.setText("Categoría");
+        lblCategoria.setText("Categoría (1-5)");
         lblCategoria.setToolTipText("");
+        getContentPane().add(lblCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, -1, -1));
+
+        txtCategoria.setColumns(2);
+        getContentPane().add(txtCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 348, -1, -1));
 
         lblGrupo.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblGrupo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblGrupo.setText("Grupo");
+        lblGrupo.setText("Grupo (1-5)");
         lblGrupo.setToolTipText("");
+        getContentPane().add(lblGrupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, -1));
+
+        txtGrupo.setColumns(2);
+        getContentPane().add(txtGrupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, -1, -1));
 
         lblNivel.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblNivel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblNivel.setText("Nivel");
+        lblNivel.setText("Nivel (1-5)");
         lblNivel.setToolTipText("");
+        getContentPane().add(lblNivel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 350, -1, -1));
+
+        txtNivel.setColumns(2);
+        getContentPane().add(txtNivel, new org.netbeans.lib.awtextra.AbsoluteConstraints(457, 348, -1, -1));
 
         lblFContrato.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblFContrato.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblFContrato.setText("Fecha Contrato");
         lblFContrato.setToolTipText("");
+        getContentPane().add(lblFContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 379, 105, -1));
 
-        btnVolver.setText("Volver");
-        btnVolver.addActionListener(this::btnVolverActionPerformed);
-
-        btnBorrar.setText("Borrar");
-        btnBorrar.addActionListener(this::btnBorrarActionPerformed);
-
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
-
-        btnHoras1.setText("Añadir Horas");
-        btnHoras1.addActionListener(this::btnHoras1ActionPerformed);
+        txtFContrato.setText("dd/MM/yyyy");
+        getContentPane().add(txtFContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(128, 376, 170, -1));
 
         lblAntiguedadAnt.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblAntiguedadAnt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblAntiguedadAnt.setText("Antiguedad Anterior");
         lblAntiguedadAnt.setToolTipText("");
+        getContentPane().add(lblAntiguedadAnt, new org.netbeans.lib.awtextra.AbsoluteConstraints(304, 379, 141, -1));
+
+        txtFAntiguedadant.setText("0.00");
+        txtFAntiguedadant.addActionListener(this::txtFAntiguedadantActionPerformed);
+        getContentPane().add(txtFAntiguedadant, new org.netbeans.lib.awtextra.AbsoluteConstraints(457, 376, -1, -1));
 
         lblCP.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         lblCP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblCP.setText("Codigo Postal");
         lblCP.setToolTipText("");
+        getContentPane().add(lblCP, new org.netbeans.lib.awtextra.AbsoluteConstraints(312, 267, 116, -1));
+        getContentPane().add(txtCP, new org.netbeans.lib.awtextra.AbsoluteConstraints(434, 264, 100, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblTitulo)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblProvinncia, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblFContrato, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtProvincia, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPuesto, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(lblGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblAntiguedadAnt, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(btnHoras1)
-                                .addGap(28, 28, 28)
-                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFAntiguedadant, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblINSS, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblDirección, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtNombre)
-                                    .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDNI, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtINSS, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDireccion, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNumero, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                        .addComponent(lblCP, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCP, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(110, 110, 110))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblApellidos)
-                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDNI)
-                    .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblINSS)
-                    .addComponent(txtINSS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTelefono)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmail)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDirección))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNumero))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCiudad)
-                    .addComponent(txtCP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCP))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProvinncia))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPuesto)
-                    .addComponent(txtPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCategoria)
-                    .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblGrupo)
-                    .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNivel)
-                    .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFContrato)
-                    .addComponent(txtFContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAntiguedadAnt)
-                    .addComponent(txtFAntiguedadant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnVolver)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnHoras1)
-                    .addComponent(btnBorrar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(this::btnVolverActionPerformed);
+        getContentPane().add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 416, 105, -1));
+
+        btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(this::btnBorrarActionPerformed);
+        getContentPane().add(btnBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(293, 416, 105, -1));
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(429, 416, 105, -1));
+
+        btnHoras1.setText("Añadir Horas");
+        btnHoras1.addActionListener(this::btnHoras1ActionPerformed);
+        getContentPane().add(btnHoras1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 416, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -377,9 +283,9 @@ import javax.swing.JOptionPane;
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-            
+
         try {
-            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("d/M/yyyy");
             String dni = txtDNI.getText().trim();
             String nombre = txtNombre.getText().trim();
             String puesto = txtPuesto.getText().trim();
@@ -388,15 +294,21 @@ import javax.swing.JOptionPane;
             String ciudad = txtCiudad.getText().trim();
             String direccion = txtDireccion.getText().trim();
             String email = txtEmail.getText().trim();
-            LocalDate fechaContrato = LocalDate.parse(txtFContrato.getText().trim(),formateador);
+            LocalDate fechaContrato = LocalDate.parse(txtFContrato.getText().trim(), formateador);
             int grupo = Integer.parseInt(txtGrupo.getText().trim());
             String inss = txtINSS.getText().trim();
-            int nivel  = Integer.parseInt(txtNivel.getText().trim());
+            int nivel = Integer.parseInt(txtNivel.getText().trim());
             String numero = txtNumero.getText().trim();
             String provincia = txtProvincia.getText().trim();
             String telefono = txtTelefono.getText().trim();
-            double antiguedadAnt = Double.parseDouble(this.txtFAntiguedadant.getText().trim());
-            String cp = this.lblCP.getText().trim();
+            String antiant = this.txtFAntiguedadant.getText().trim();
+            double antiguedadAnt;
+            if (antiant.matches("\\d{1,2}(\\.\\d{1,2})?")) {
+                antiguedadAnt = Double.parseDouble(antiant);
+            } else {
+                antiguedadAnt = 0.00;
+            }
+            String cp = this.txtCP.getText().trim();
 
             if (dni.isEmpty() || nombre.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "El DNI y el Nombre son obligatorios.");
@@ -405,10 +317,10 @@ import javax.swing.JOptionPane;
 
             if (empleadoEdicion == null) {
 
-                gestor.crearEmpleado(nombre, apellidos, telefono, email, 
-                    dni, inss, direccion, numero, ciudad, 
-                    provincia, cp, categoria, grupo, nivel, 
-                    fechaContrato, puesto);
+                gestor.crearEmpleado(nombre, apellidos, telefono, email,
+                        dni, inss, direccion, numero, ciudad,
+                        provincia, cp, categoria, grupo, nivel,
+                        fechaContrato, puesto);
                 JOptionPane.showMessageDialog(this, "Empleado creado con éxito.");
             } else {
                 // --- MODO: EDITAR EMPLEADO ---
@@ -428,32 +340,42 @@ import javax.swing.JOptionPane;
                 empleadoEdicion.setNumero(numero);
                 empleadoEdicion.setProvincia(provincia);
                 empleadoEdicion.setPuesto(puesto);
-                empleadoEdicion.setTelefono(telefono)
-                        ;
+                empleadoEdicion.setTelefono(telefono);
                 // Asumo que tienes un método similar a modificarEmpleado en tu gestor
                 gestor.modificarEmpleado(empleadoEdicion);
                 JOptionPane.showMessageDialog(this, "Empleado modificado con éxito.");
-            }catch (ErrorDatos ed)
+            }
+        } catch (SQLException sqle) {
+            JOptionPane.showMessageDialog(this, sqle.getMessage());
 
-            this.dispose(); // Cerramos el diálogo al terminar
+        } catch (ErrorDatos ed) {
+            JOptionPane.showMessageDialog(this, ed.getMessage());
+        }
+
+        this.dispose(); // Cerramos el diálogo al terminar
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        // TODO add your handling code here:
+        try {
+            gestor.borrarEmpleado(empleadoEdicion);
+            this.dispose();
+        } catch (ErrorDatos ed) {
+            JOptionPane.showMessageDialog(this, ed.getMessage());
+        }
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnHoras1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoras1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHoras1ActionPerformed
 
+    private void txtFAntiguedadantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFAntiguedadantActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFAntiguedadantActionPerformed
 
-    
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrar;

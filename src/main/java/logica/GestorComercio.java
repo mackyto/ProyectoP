@@ -79,6 +79,10 @@ public class GestorComercio implements LogicaNegocio {
             if (c.getId() > maxId) {
                 maxId = c.getId();
             }
+        for (Empleado em: empleados)
+            if (em.getId()>maxId)
+                maxId =  em.getId();
+        
             Persona.setPuntero(maxId + 1);
 //        System.out.println("puntero Clietes "  + Persona.getPuntero());
         }
