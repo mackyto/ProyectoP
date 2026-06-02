@@ -56,8 +56,8 @@ public class FrmEmpleado extends javax.swing.JFrame {
             // Ajusta estos métodos (.getId(), .getDni(), etc.) a los nombres reales en tu entidad Empleado
             Object[] fila = {
                 emp.getId(),
-                emp.getDni(),
-                emp.getNombreCompleto(),
+                emp.getNombre(),
+                emp.getApellidos(),
                 emp.getPuesto(),
                 emp.getDni(),
                 emp.getNss(),

@@ -118,6 +118,7 @@ public class DlgEmpleado extends javax.swing.JDialog {
         btnBorrar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnHoras1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nombre");
@@ -274,6 +275,7 @@ public class DlgEmpleado extends javax.swing.JDialog {
         btnHoras1.setText("Añadir Horas");
         btnHoras1.addActionListener(this::btnHoras1ActionPerformed);
         getContentPane().add(btnHoras1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 416, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -382,6 +384,7 @@ public class DlgEmpleado extends javax.swing.JDialog {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnHoras1;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblAntiguedadAnt;
     private javax.swing.JLabel lblApellidos;
     private javax.swing.JLabel lblCP;

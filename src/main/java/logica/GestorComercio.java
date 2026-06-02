@@ -155,7 +155,7 @@ public class GestorComercio implements LogicaNegocio {
         if  (cl != null)
             clientes.remove(cl);
         
-        int id = Cliente.getPuntero();
+        int id = cl.getId();
         Empleado emp = new Empleado(id, nombre, apellidos, telefono, email,
             dni, inss, calle, numero, ciudad, 
             provincia, cp, categoria, grupo,  nivel, 
