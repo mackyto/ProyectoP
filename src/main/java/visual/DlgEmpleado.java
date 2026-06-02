@@ -371,7 +371,23 @@ public class DlgEmpleado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnHoras1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoras1ActionPerformed
-        // TODO add your handling code here:
+        if (empleadoEdicion != null) {
+
+            // 2. Abrimos el cuadro de diálogo de los meses pasándole la ventana actual (this)
+            // Como 'this' aquí es un JDialog, usamos SwingUtilities para buscar el Frame padre por detrás
+            java.awt.Frame padre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            DlgSeleccionarMesNomina selector = new DlgSeleccionarMesNomina(padre, true, gestor, empleadoEdicion);
+            selector.setVisible(true);
+
+        } else {
+            // Por si acaso el botón se quedara clickeable al crear un empleado nuevo
+            JOptionPane.showMessageDialog(this,
+                    "No se puede emitir una nómina para un empleado nuevo. Primero debes guardarlo.",
+                    "Acción no permitida",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_btnHoras1ActionPerformed
 
     private void txtFAntiguedadantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFAntiguedadantActionPerformed
