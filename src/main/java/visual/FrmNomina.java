@@ -47,6 +47,9 @@ public class FrmNomina extends javax.swing.JFrame {
         nombreMes = nombreMes.substring(0, 1).toUpperCase() + nombreMes.substring(1);
         this.lbMes.setText(nombreMes + " de " + mesNomina.getYear());
         lblDiasMes.setText(mesNomina.lengthOfMonth() + "");
+        
+        calculoNomina (emp, mesNomina, horas);
+        
     }
 
     /**
@@ -141,7 +144,7 @@ public class FrmNomina extends javax.swing.JFrame {
         txtTipoEmpCP = new javax.swing.JTextField();
         txCProfesionales2 = new javax.swing.JTextField();
         txTipoTrabCP = new javax.swing.JTextField();
-        txTotalBCCC3 = new javax.swing.JTextField();
+        txTotalBCCP = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         txTotalTrabContingencias = new javax.swing.JTextField();
@@ -235,156 +238,126 @@ public class FrmNomina extends javax.swing.JFrame {
                 jPanel2MouseClicked(evt);
             }
         });
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ldT2.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT2.setText("Concepto");
-        jPanel2.add(ldT2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         ldT3.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT3.setText("Cantidad");
-        jPanel2.add(ldT3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, -1, -1));
 
         ldT4.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT4.setText("Precio");
-        jPanel2.add(ldT4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, -1, -1));
 
         ldT5.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT5.setText("Devengos");
-        jPanel2.add(ldT5, new org.netbeans.lib.awtextra.AbsoluteConstraints(515, 10, -1, -1));
 
         jLabel7.setText("Sueldo Base");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 32, -1, -1));
 
         txSueldoBase.setEditable(false);
         txSueldoBase.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txSueldoBase.setText("1000.00");
         txSueldoBase.setBorder(null);
-        jPanel2.add(txSueldoBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 32, -1, -1));
 
         jLabel8.setText("Complemento de Destino");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 54, -1, -1));
 
         txCDestino.setEditable(false);
         txCDestino.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCDestino.setText("1000.00");
         txCDestino.setBorder(null);
-        jPanel2.add(txCDestino, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 54, -1, -1));
 
         jLabel9.setText("Complemento Especifico");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 76, -1, -1));
 
         txCEspecifico.setEditable(false);
         txCEspecifico.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCEspecifico.setText("1000.00");
         txCEspecifico.setBorder(null);
-        jPanel2.add(txCEspecifico, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 76, -1, -1));
 
         txTotalHoras.setEditable(false);
         txTotalHoras.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txTotalHoras.setText("1000.00");
         txTotalHoras.setBorder(null);
-        jPanel2.add(txTotalHoras, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 98, -1, -1));
 
         jLabel10.setText("Horas  Extras");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 98, -1, -1));
 
         txCantHoras.setEditable(false);
         txCantHoras.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCantHoras.setText("0");
         txCantHoras.setBorder(null);
         txCantHoras.addActionListener(this::txCantHorasActionPerformed);
-        jPanel2.add(txCantHoras, new org.netbeans.lib.awtextra.AbsoluteConstraints(326, 98, -1, -1));
 
         jLabel11.setText("Cuota Empleado C. Comunes");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
         txCComPorcent.setEditable(false);
         txCComPorcent.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCComPorcent.setText("4.85");
         txCComPorcent.setBorder(null);
         txCComPorcent.addActionListener(this::txCComPorcentActionPerformed);
-        jPanel2.add(txCComPorcent, new org.netbeans.lib.awtextra.AbsoluteConstraints(326, 120, -1, -1));
 
         txCComunes.setEditable(false);
         txCComunes.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCComunes.setText("100.00");
         txCComunes.setBorder(null);
-        jPanel2.add(txCComunes, new org.netbeans.lib.awtextra.AbsoluteConstraints(513, 120, -1, -1));
 
         txCProfesionales.setEditable(false);
         txCProfesionales.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCProfesionales.setText("50.00");
         txCProfesionales.setBorder(null);
-        jPanel2.add(txCProfesionales, new org.netbeans.lib.awtextra.AbsoluteConstraints(513, 142, -1, -1));
 
         txCProfessPorcent.setEditable(false);
         txCProfessPorcent.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txCProfessPorcent.setText("1.65");
         txCProfessPorcent.setBorder(null);
         txCProfessPorcent.addActionListener(this::txCProfessPorcentActionPerformed);
-        jPanel2.add(txCProfessPorcent, new org.netbeans.lib.awtextra.AbsoluteConstraints(326, 142, -1, -1));
 
         jLabel12.setText("Cuota Empleado C. Profesionales");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 142, -1, -1));
 
         jLabel13.setText("Retención a cuenta IRPF");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 164, -1, -1));
 
         txRetenciones.setEditable(false);
         txRetenciones.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txRetenciones.setText("1000.00");
         txRetenciones.setBorder(null);
-        jPanel2.add(txRetenciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(513, 164, -1, -1));
 
         txRetPorcent.setEditable(false);
         txRetPorcent.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txRetPorcent.setText("19.84");
         txRetPorcent.setBorder(null);
         txRetPorcent.addActionListener(this::txRetPorcentActionPerformed);
-        jPanel2.add(txRetPorcent, new org.netbeans.lib.awtextra.AbsoluteConstraints(326, 164, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("Total");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 186, -1, -1));
 
         txTotalSueldoParcial.setEditable(false);
         txTotalSueldoParcial.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txTotalSueldoParcial.setText("1000.00");
         txTotalSueldoParcial.setBorder(null);
         txTotalSueldoParcial.addActionListener(this::txTotalSueldoParcialActionPerformed);
-        jPanel2.add(txTotalSueldoParcial, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 186, -1, -1));
 
         txTotalReten.setEditable(false);
         txTotalReten.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txTotalReten.setText("1000.00");
         txTotalReten.setBorder(null);
-        jPanel2.add(txTotalReten, new org.netbeans.lib.awtextra.AbsoluteConstraints(513, 186, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Base IRPF");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(53, 195, -1, -1));
 
         txTotalSueldoParcial2.setEditable(false);
         txTotalSueldoParcial2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txTotalSueldoParcial2.setText("1000");
         txTotalSueldoParcial2.setBorder(null);
         txTotalSueldoParcial2.addActionListener(this::txTotalSueldoParcial2ActionPerformed);
-        jPanel2.add(txTotalSueldoParcial2, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 195, -1, -1));
 
         txRetPorcent2.setEditable(false);
         txRetPorcent2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txRetPorcent2.setText("19.84");
         txRetPorcent2.setBorder(null);
         txRetPorcent2.addActionListener(this::txRetPorcent2ActionPerformed);
-        jPanel2.add(txRetPorcent2, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 217, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("Retencion %");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 217, -1, -1));
 
         txTotalCobrar.setEditable(false);
         txTotalCobrar.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
@@ -392,13 +365,152 @@ public class FrmNomina extends javax.swing.JFrame {
         txTotalCobrar.setText("1000.00");
         txTotalCobrar.setBorder(null);
         txTotalCobrar.addActionListener(this::txTotalCobrarActionPerformed);
-        jPanel2.add(txTotalCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, -1, -1));
 
         jLabel17.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Cuota Líquida");
-        jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 220, -1, -1));
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 600, -1));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(ldT2)
+                .addGap(230, 230, 230)
+                .addComponent(ldT3)
+                .addGap(53, 53, 53)
+                .addComponent(ldT4)
+                .addGap(34, 34, 34)
+                .addComponent(ldT5))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel7)
+                .addGap(309, 309, 309)
+                .addComponent(txSueldoBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel8)
+                .addGap(237, 237, 237)
+                .addComponent(txCDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel9)
+                .addGap(239, 239, 239)
+                .addComponent(txCEspecifico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel10)
+                .addGap(206, 206, 206)
+                .addComponent(txCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(txTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel11)
+                .addGap(114, 114, 114)
+                .addComponent(txCComPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(123, 123, 123)
+                .addComponent(txCComunes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel12)
+                .addGap(91, 91, 91)
+                .addComponent(txCProfessPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(123, 123, 123)
+                .addComponent(txCProfesionales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel13)
+                .addGap(141, 141, 141)
+                .addComponent(txRetPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(123, 123, 123)
+                .addComponent(txRetenciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jLabel15)
+                .addGap(18, 18, 18)
+                .addComponent(txTotalSueldoParcial2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(158, 158, 158)
+                .addComponent(jLabel14)
+                .addGap(33, 33, 33)
+                .addComponent(txTotalSueldoParcial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(txTotalReten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel16)
+                .addGap(18, 18, 18)
+                .addComponent(txRetPorcent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(210, 210, 210)
+                .addComponent(jLabel17)
+                .addGap(11, 11, 11)
+                .addComponent(txTotalCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ldT2)
+                    .addComponent(ldT3)
+                    .addComponent(ldT4)
+                    .addComponent(ldT5))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txSueldoBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(txCDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(txCEspecifico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(txCantHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(txCComPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txCComunes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(txCProfessPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txCProfesionales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(txRetPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txRetenciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addComponent(txTotalSueldoParcial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txTotalReten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(txTotalSueldoParcial2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addComponent(txRetPorcent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(txTotalCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(14, 14, 14)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 600, 260));
 
@@ -537,12 +649,12 @@ public class FrmNomina extends javax.swing.JFrame {
         txTipoTrabCP.addActionListener(this::txTipoTrabCPActionPerformed);
         jPanel3.add(txTipoTrabCP, new org.netbeans.lib.awtextra.AbsoluteConstraints(314, 128, -1, -1));
 
-        txTotalBCCC3.setEditable(false);
-        txTotalBCCC3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txTotalBCCC3.setText("1250.00");
-        txTotalBCCC3.setBorder(null);
-        txTotalBCCC3.addActionListener(this::txTotalBCCC3ActionPerformed);
-        jPanel3.add(txTotalBCCC3, new org.netbeans.lib.awtextra.AbsoluteConstraints(211, 128, -1, -1));
+        txTotalBCCP.setEditable(false);
+        txTotalBCCP.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txTotalBCCP.setText("1250.00");
+        txTotalBCCP.setBorder(null);
+        txTotalBCCP.addActionListener(this::txTotalBCCPActionPerformed);
+        jPanel3.add(txTotalBCCP, new org.netbeans.lib.awtextra.AbsoluteConstraints(211, 128, -1, -1));
 
         jLabel30.setText("Contingencias Profesionales");
         jPanel3.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 128, -1, -1));
@@ -649,9 +761,9 @@ public class FrmNomina extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txTipoTrabCPActionPerformed
 
-    private void txTotalBCCC3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalBCCC3ActionPerformed
+    private void txTotalBCCPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalBCCPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txTotalBCCC3ActionPerformed
+    }//GEN-LAST:event_txTotalBCCPActionPerformed
 
     private void txTotalTrabContingenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalTrabContingenciasActionPerformed
         // TODO add your handling code here:
@@ -679,34 +791,45 @@ public class FrmNomina extends javax.swing.JFrame {
         Complementos cpt = new Complementos();
 
         double sb = tS25.getBaseMes(emp.getGrupo(), emp.getNivel());
-        this.txSueldoBase.setText(sb + "");
+        this.txSueldoBase.setText(String.format("%6.2f", sb));
         double cd = cpt.getComplementoDestino();
-        this.txCDestino.setText(cd + "");
+        this.txCDestino.setText(String.format("%6.2f", cd));
         double ce = cpt.getComplementoEspecifico(emp.getCategoria());
-        this.txCantHoras.setText(horasXtra + "");
+        this.txCantHoras.setText(String.format("%8d", horasXtra));
         double hXt = cpt.getHoraXtra()*horasXtra;
-        this.txTotalHoras.setText(hXt + "");
+        this.txTotalHoras.setText(String.format("%6.2f", hXt));
         double tSP = sb + cd + ce + hXt;
-        this.txTotalSueldoParcial.setText(tSP + "");
+        this.txTotalSueldoParcial.setText(String.format("%6.2f", tSP));
         this.txTotalSueldoParcial2.setText(this.txTotalSueldoParcial.getText());
         this.txTotalSueldoParcial3.setText(this.txTotalSueldoParcial.getText());
         double irpf = tSP * 0.1984;
-        this.txTotalReten.setText(irpf + "");
+        this.txRetenciones.setText(String.format("%6.2f", irpf));
         double reten = irpf;
-        
-        double bccc = sb + sb / 6 + cd + ce;
-        double bccp = bccc + tS25.getHora(emp.getGrupo(), emp.getNivel()) * 0;
+        this.txProRat.setText(String.format("%6.2f", sb/6));
+
+        double prorat = (sb + cd)/6;
+        this.txProRat.setText(String.format("%6.2f", prorat));
+        double bccc = sb + prorat + cd + ce;
+        this.txTotalBCCC.setText(String.format("%6.2f", bccc));
+        this.txTotalBCCC2.setText(this.txTotalBCCC.getText());
+        double bccp = bccc + tS25.getHora(emp.getGrupo(), emp.getNivel()) * horasXtra;
+        this.txTotalBCCP.setText(String.format("%6.2f", bccp));
         double qbccc = bccc * 0.0483;
         double qbccp = bccp * 0.0165;
 
-        
-        this.txCComunes.setText(qbccc + "");
+        this.txCComunes.setText(String.format("%6.2f", qbccc));
         this.txCComunes2.setText(this.txCComunes.getText());
-        this.txCProfesionales.setText(qbccp  + "");
+        this.txCProfesionales.setText(String.format("%6.2f", qbccp));
         this.txCProfesionales2.setText(this.txCProfesionales.getText());
+        double tReten= irpf + qbccc + qbccp;
+        this.txTotalReten.setText(String.format("%6.2f", tReten));
+        double cecc = bccp * 0.2435;
+        this.txTotalEmpCC.setText(String.format("%6.2f", cecc));
+        double cecp = bccp * 0.78 ;
+        this.txTotalEmpCP.setText(String.format("%6.2f", cecp));
+        this.txTotalTrabContingencias.setText(String.format("%6.2f", qbccc + qbccp));
+        this.txTotalEmpContingencias.setText(String.format("%6.2f", cecc + cecp));
         
-        
-
     }
 
 
@@ -786,7 +909,7 @@ public class FrmNomina extends javax.swing.JFrame {
     private javax.swing.JTextField txTipoTrabCP;
     private javax.swing.JTextField txTotalBCCC;
     private javax.swing.JTextField txTotalBCCC2;
-    private javax.swing.JTextField txTotalBCCC3;
+    private javax.swing.JTextField txTotalBCCP;
     private javax.swing.JTextField txTotalCobrar;
     private javax.swing.JTextField txTotalEmpCC;
     private javax.swing.JTextField txTotalEmpCP;
