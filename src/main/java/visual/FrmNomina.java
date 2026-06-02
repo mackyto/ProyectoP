@@ -107,18 +107,18 @@ public class FrmNomina extends javax.swing.JFrame {
         txRetenciones = new javax.swing.JTextField();
         txRetPorcent = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txTotalCobrar = new javax.swing.JTextField();
+        txTotalSueldoParcial = new javax.swing.JTextField();
         txTotalReten = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txTotalCobrar2 = new javax.swing.JTextField();
+        txTotalSueldoParcial2 = new javax.swing.JTextField();
         txRetPorcent2 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        txRetPorcent3 = new javax.swing.JTextField();
+        txTotalCobrar = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        txTotalCobrar3 = new javax.swing.JTextField();
+        txTotalSueldoParcial3 = new javax.swing.JTextField();
         txProRat = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -127,7 +127,7 @@ public class FrmNomina extends javax.swing.JFrame {
         txTipoTrabCC = new javax.swing.JTextField();
         txTotalBCCC2 = new javax.swing.JTextField();
         txtTipoEmpCC = new javax.swing.JTextField();
-        txTotalTrabCC = new javax.swing.JTextField();
+        txCComunes2 = new javax.swing.JTextField();
         txTotalEmpCC = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -139,7 +139,7 @@ public class FrmNomina extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         txTotalEmpCP = new javax.swing.JTextField();
         txtTipoEmpCP = new javax.swing.JTextField();
-        txTotalTrabCP = new javax.swing.JTextField();
+        txCProfesionales2 = new javax.swing.JTextField();
         txTipoTrabCP = new javax.swing.JTextField();
         txTotalBCCC3 = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
@@ -339,7 +339,7 @@ public class FrmNomina extends javax.swing.JFrame {
 
         txRetPorcent.setEditable(false);
         txRetPorcent.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txRetPorcent.setText("18.00");
+        txRetPorcent.setText("19.84");
         txRetPorcent.setBorder(null);
         txRetPorcent.addActionListener(this::txRetPorcentActionPerformed);
         jPanel2.add(txRetPorcent, new org.netbeans.lib.awtextra.AbsoluteConstraints(326, 164, -1, -1));
@@ -349,12 +349,12 @@ public class FrmNomina extends javax.swing.JFrame {
         jLabel14.setText("Total");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 186, -1, -1));
 
-        txTotalCobrar.setEditable(false);
-        txTotalCobrar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txTotalCobrar.setText("1000");
-        txTotalCobrar.setBorder(null);
-        txTotalCobrar.addActionListener(this::txTotalCobrarActionPerformed);
-        jPanel2.add(txTotalCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 186, -1, -1));
+        txTotalSueldoParcial.setEditable(false);
+        txTotalSueldoParcial.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txTotalSueldoParcial.setText("1000.00");
+        txTotalSueldoParcial.setBorder(null);
+        txTotalSueldoParcial.addActionListener(this::txTotalSueldoParcialActionPerformed);
+        jPanel2.add(txTotalSueldoParcial, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 186, -1, -1));
 
         txTotalReten.setEditable(false);
         txTotalReten.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -367,16 +367,16 @@ public class FrmNomina extends javax.swing.JFrame {
         jLabel15.setText("Base IRPF");
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(53, 195, -1, -1));
 
-        txTotalCobrar2.setEditable(false);
-        txTotalCobrar2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txTotalCobrar2.setText("1000");
-        txTotalCobrar2.setBorder(null);
-        txTotalCobrar2.addActionListener(this::txTotalCobrar2ActionPerformed);
-        jPanel2.add(txTotalCobrar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 195, -1, -1));
+        txTotalSueldoParcial2.setEditable(false);
+        txTotalSueldoParcial2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txTotalSueldoParcial2.setText("1000");
+        txTotalSueldoParcial2.setBorder(null);
+        txTotalSueldoParcial2.addActionListener(this::txTotalSueldoParcial2ActionPerformed);
+        jPanel2.add(txTotalSueldoParcial2, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 195, -1, -1));
 
         txRetPorcent2.setEditable(false);
         txRetPorcent2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txRetPorcent2.setText("18.00");
+        txRetPorcent2.setText("19.84");
         txRetPorcent2.setBorder(null);
         txRetPorcent2.addActionListener(this::txRetPorcent2ActionPerformed);
         jPanel2.add(txRetPorcent2, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 217, -1, -1));
@@ -386,13 +386,13 @@ public class FrmNomina extends javax.swing.JFrame {
         jLabel16.setText("Retencion %");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 217, -1, -1));
 
-        txRetPorcent3.setEditable(false);
-        txRetPorcent3.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
-        txRetPorcent3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txRetPorcent3.setText("1000.00");
-        txRetPorcent3.setBorder(null);
-        txRetPorcent3.addActionListener(this::txRetPorcent3ActionPerformed);
-        jPanel2.add(txRetPorcent3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, -1, -1));
+        txTotalCobrar.setEditable(false);
+        txTotalCobrar.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        txTotalCobrar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txTotalCobrar.setText("1000.00");
+        txTotalCobrar.setBorder(null);
+        txTotalCobrar.addActionListener(this::txTotalCobrarActionPerformed);
+        jPanel2.add(txTotalCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, -1, -1));
 
         jLabel17.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -412,12 +412,12 @@ public class FrmNomina extends javax.swing.JFrame {
         jLabel18.setText("Remuneración Mensual");
         jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 6, -1, -1));
 
-        txTotalCobrar3.setEditable(false);
-        txTotalCobrar3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txTotalCobrar3.setText("1000.00");
-        txTotalCobrar3.setBorder(null);
-        txTotalCobrar3.addActionListener(this::txTotalCobrar3ActionPerformed);
-        jPanel3.add(txTotalCobrar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(183, 6, -1, -1));
+        txTotalSueldoParcial3.setEditable(false);
+        txTotalSueldoParcial3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txTotalSueldoParcial3.setText("1000.00");
+        txTotalSueldoParcial3.setBorder(null);
+        txTotalSueldoParcial3.addActionListener(this::txTotalSueldoParcial3ActionPerformed);
+        jPanel3.add(txTotalSueldoParcial3, new org.netbeans.lib.awtextra.AbsoluteConstraints(183, 6, -1, -1));
 
         txProRat.setEditable(false);
         txProRat.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -463,12 +463,12 @@ public class FrmNomina extends javax.swing.JFrame {
         txtTipoEmpCC.addActionListener(this::txtTipoEmpCCActionPerformed);
         jPanel3.add(txtTipoEmpCC, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, -1, -1));
 
-        txTotalTrabCC.setEditable(false);
-        txTotalTrabCC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txTotalTrabCC.setText("100.00");
-        txTotalTrabCC.setBorder(null);
-        txTotalTrabCC.addActionListener(this::txTotalTrabCCActionPerformed);
-        jPanel3.add(txTotalTrabCC, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 100, -1, -1));
+        txCComunes2.setEditable(false);
+        txCComunes2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txCComunes2.setText("100.00");
+        txCComunes2.setBorder(null);
+        txCComunes2.addActionListener(this::txCComunes2ActionPerformed);
+        jPanel3.add(txCComunes2, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 100, -1, -1));
 
         txTotalEmpCC.setEditable(false);
         txTotalEmpCC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -523,12 +523,12 @@ public class FrmNomina extends javax.swing.JFrame {
         txtTipoEmpCP.addActionListener(this::txtTipoEmpCPActionPerformed);
         jPanel3.add(txtTipoEmpCP, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 128, -1, -1));
 
-        txTotalTrabCP.setEditable(false);
-        txTotalTrabCP.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txTotalTrabCP.setText("50.00");
-        txTotalTrabCP.setBorder(null);
-        txTotalTrabCP.addActionListener(this::txTotalTrabCPActionPerformed);
-        jPanel3.add(txTotalTrabCP, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 128, -1, -1));
+        txCProfesionales2.setEditable(false);
+        txCProfesionales2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txCProfesionales2.setText("50.00");
+        txCProfesionales2.setBorder(null);
+        txCProfesionales2.addActionListener(this::txCProfesionales2ActionPerformed);
+        jPanel3.add(txCProfesionales2, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 128, -1, -1));
 
         txTipoTrabCP.setEditable(false);
         txTipoTrabCP.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -585,25 +585,25 @@ public class FrmNomina extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txRetPorcentActionPerformed
 
-    private void txTotalCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalCobrarActionPerformed
+    private void txTotalSueldoParcialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalSueldoParcialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txTotalCobrarActionPerformed
+    }//GEN-LAST:event_txTotalSueldoParcialActionPerformed
 
-    private void txTotalCobrar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalCobrar2ActionPerformed
+    private void txTotalSueldoParcial2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalSueldoParcial2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txTotalCobrar2ActionPerformed
+    }//GEN-LAST:event_txTotalSueldoParcial2ActionPerformed
 
     private void txRetPorcent2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txRetPorcent2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txRetPorcent2ActionPerformed
 
-    private void txRetPorcent3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txRetPorcent3ActionPerformed
+    private void txTotalCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalCobrarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txRetPorcent3ActionPerformed
+    }//GEN-LAST:event_txTotalCobrarActionPerformed
 
-    private void txTotalCobrar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalCobrar3ActionPerformed
+    private void txTotalSueldoParcial3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalSueldoParcial3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txTotalCobrar3ActionPerformed
+    }//GEN-LAST:event_txTotalSueldoParcial3ActionPerformed
 
     private void txProRatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txProRatActionPerformed
         // TODO add your handling code here:
@@ -625,9 +625,9 @@ public class FrmNomina extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTipoEmpCCActionPerformed
 
-    private void txTotalTrabCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalTrabCCActionPerformed
+    private void txCComunes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txCComunes2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txTotalTrabCCActionPerformed
+    }//GEN-LAST:event_txCComunes2ActionPerformed
 
     private void txTotalEmpCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalEmpCCActionPerformed
         // TODO add your handling code here:
@@ -641,9 +641,9 @@ public class FrmNomina extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTipoEmpCPActionPerformed
 
-    private void txTotalTrabCPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalTrabCPActionPerformed
+    private void txCProfesionales2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txCProfesionales2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txTotalTrabCPActionPerformed
+    }//GEN-LAST:event_txCProfesionales2ActionPerformed
 
     private void txTipoTrabCPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTipoTrabCPActionPerformed
         // TODO add your handling code here:
@@ -673,20 +673,39 @@ public class FrmNomina extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jPanel3MouseClicked
 
-    private void calculoNomina(Empleado emp, YearMonth mesNomina) {
+    private void calculoNomina(Empleado emp, YearMonth mesNomina, int horasXtra) {
 
         Tabla tS25 = new Tabla();
         Complementos cpt = new Complementos();
 
         double sb = tS25.getBaseMes(emp.getGrupo(), emp.getNivel());
+        this.txSueldoBase.setText(sb + "");
         double cd = cpt.getComplementoDestino();
+        this.txCDestino.setText(cd + "");
         double ce = cpt.getComplementoEspecifico(emp.getCategoria());
+        this.txCantHoras.setText(horasXtra + "");
+        double hXt = cpt.getHoraXtra()*horasXtra;
+        this.txTotalHoras.setText(hXt + "");
+        double tSP = sb + cd + ce + hXt;
+        this.txTotalSueldoParcial.setText(tSP + "");
+        this.txTotalSueldoParcial2.setText(this.txTotalSueldoParcial.getText());
+        this.txTotalSueldoParcial3.setText(this.txTotalSueldoParcial.getText());
+        double irpf = tSP * 0.1984;
+        this.txTotalReten.setText(irpf + "");
+        double reten = irpf;
+        
         double bccc = sb + sb / 6 + cd + ce;
         double bccp = bccc + tS25.getHora(emp.getGrupo(), emp.getNivel()) * 0;
         double qbccc = bccc * 0.0483;
         double qbccp = bccp * 0.0165;
-        double irpf = (sb + ce + cd) * 0.1984;
 
+        
+        this.txCComunes.setText(qbccc + "");
+        this.txCComunes2.setText(this.txCComunes.getText());
+        this.txCProfesionales.setText(qbccp  + "");
+        this.txCProfesionales2.setText(this.txCProfesionales.getText());
+        
+        
 
     }
 
@@ -751,15 +770,16 @@ public class FrmNomina extends javax.swing.JFrame {
     private javax.swing.JLabel ldTitulo1a;
     private javax.swing.JTextField txCComPorcent;
     private javax.swing.JTextField txCComunes;
+    private javax.swing.JTextField txCComunes2;
     private javax.swing.JTextField txCDestino;
     private javax.swing.JTextField txCEspecifico;
     private javax.swing.JTextField txCProfesionales;
+    private javax.swing.JTextField txCProfesionales2;
     private javax.swing.JTextField txCProfessPorcent;
     private javax.swing.JTextField txCantHoras;
     private javax.swing.JTextField txProRat;
     private javax.swing.JTextField txRetPorcent;
     private javax.swing.JTextField txRetPorcent2;
-    private javax.swing.JTextField txRetPorcent3;
     private javax.swing.JTextField txRetenciones;
     private javax.swing.JTextField txSueldoBase;
     private javax.swing.JTextField txTipoTrabCC;
@@ -768,15 +788,14 @@ public class FrmNomina extends javax.swing.JFrame {
     private javax.swing.JTextField txTotalBCCC2;
     private javax.swing.JTextField txTotalBCCC3;
     private javax.swing.JTextField txTotalCobrar;
-    private javax.swing.JTextField txTotalCobrar2;
-    private javax.swing.JTextField txTotalCobrar3;
     private javax.swing.JTextField txTotalEmpCC;
     private javax.swing.JTextField txTotalEmpCP;
     private javax.swing.JTextField txTotalEmpContingencias;
     private javax.swing.JTextField txTotalHoras;
     private javax.swing.JTextField txTotalReten;
-    private javax.swing.JTextField txTotalTrabCC;
-    private javax.swing.JTextField txTotalTrabCP;
+    private javax.swing.JTextField txTotalSueldoParcial;
+    private javax.swing.JTextField txTotalSueldoParcial2;
+    private javax.swing.JTextField txTotalSueldoParcial3;
     private javax.swing.JTextField txTotalTrabContingencias;
     private javax.swing.JTextField txtTipoEmpCC;
     private javax.swing.JTextField txtTipoEmpCP;
