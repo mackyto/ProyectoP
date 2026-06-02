@@ -4,8 +4,16 @@
  */
 package visual;
 
+import Nominas.Complementos;
+import Nominas.Tabla;
+
 import entidades.Empleado;
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import logica.GestorComercio;
 
 /**
@@ -13,14 +21,32 @@ import logica.GestorComercio;
  * @author macky
  */
 public class FrmNomina extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmNomina.class.getName());
 
     /**
      * Creates new form FrmNomina
      */
-    public FrmNomina(GestorComercio gestor,Empleado empleado,YearMonth mesNomina,int horas) {
+    public FrmNomina(GestorComercio gestor, Empleado emp, YearMonth mesNomina, int horas) {
         initComponents();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("d/M/yyyy");
+        lbFechaContrato.setText(emp.getFechaContrato().format(formato));
+        lbINSS.setText(emp.getNss());
+        lbNombre.setText(emp.getNombreCompleto());
+        lbPuesto.setText(emp.getPuesto());
+        ldDirección.setText(emp.getCiudad());
+        this.lbCPCiudadProvincia.setText(
+                emp.getCp() + "  "
+                + emp.getCiudad() + "  "
+                + emp.getProvincia());
+        this.lbNIF.setText(emp.getDni());
+        String nombreMes = mesNomina.getMonth().getDisplayName(
+                java.time.format.TextStyle.FULL,
+                new java.util.Locale("es", "ES")
+        );
+        nombreMes = nombreMes.substring(0, 1).toUpperCase() + nombreMes.substring(1);
+        this.lbMes.setText(nombreMes + " de " + mesNomina.getYear());
+
     }
 
     /**
@@ -44,16 +70,19 @@ public class FrmNomina extends javax.swing.JFrame {
         ldTitulo1a = new javax.swing.JLabel();
         lbNombre = new javax.swing.JLabel();
         ldDirección = new javax.swing.JLabel();
-        lbCPEmp1 = new javax.swing.JLabel();
+        lbCPCiudadProvincia = new javax.swing.JLabel();
         ldCIFEMP1 = new javax.swing.JLabel();
         lbINSS = new javax.swing.JLabel();
-        ldCIFEMP2 = new javax.swing.JLabel();
+        lbNIF = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lbPuesto = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         lbFechaContrato = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel32 = new javax.swing.JLabel();
+        lblDiasMes = new javax.swing.JLabel();
+        lbMes = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         ldT2 = new javax.swing.JLabel();
         ldT3 = new javax.swing.JLabel();
@@ -127,68 +156,166 @@ public class FrmNomina extends javax.swing.JFrame {
                 jPanel1MouseClicked(evt);
             }
         });
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("DejaVu Sans", 1, 48)); // NOI18N
         lblTitulo.setText("Mazcu.Fit");
-        jPanel1.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 17, 280, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 6, -1, -1));
 
         ldEmpresaNonbre.setText("Mazcu.Fit S.L.");
-        jPanel1.add(ldEmpresaNonbre, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 104, -1, -1));
 
         lbDirEmp.setText("Carretera Ribarroja s/n");
-        jPanel1.add(lbDirEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 126, -1, -1));
 
         lbCPEmp.setText("46940 Manises (Valencia)");
-        jPanel1.add(lbCPEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 148, -1, -1));
 
         ldCIFEMP.setText("CIF: A12345678");
-        jPanel1.add(ldCIFEMP, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 170, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel1.setText("Cuenta de cotización");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 192, -1, -1));
 
         jLabel4.setText("46/1234567/89");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 214, -1, -1));
 
-        ldTitulo1a.setText("Recibo Nómina de Junio de 2026 Paga Ordinaria");
-        jPanel1.add(ldTitulo1a, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, -1, -1));
+        ldTitulo1a.setText("Recibo Nómina de ");
 
         lbNombre.setText("Nombre Empleado");
-        jPanel1.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 104, 243, -1));
 
         ldDirección.setText("Dirección");
-        jPanel1.add(ldDirección, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 126, 243, -1));
 
-        lbCPEmp1.setText("CP - Ciudad (Provincia)");
-        jPanel1.add(lbCPEmp1, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 148, 243, -1));
+        lbCPCiudadProvincia.setText("CP - Ciudad (Provincia)");
 
         ldCIFEMP1.setText("NIF:");
-        jPanel1.add(ldCIFEMP1, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 170, -1, -1));
 
         lbINSS.setText("46/12345678/12");
-        jPanel1.add(lbINSS, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 170, 107, -1));
 
-        ldCIFEMP2.setText("12345678L");
-        jPanel1.add(ldCIFEMP2, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 170, 74, -1));
+        lbNIF.setText("12345678L");
 
         jLabel3.setText("INSS:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 170, -1, -1));
 
         jLabel5.setText("Puesto:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 192, -1, -1));
 
         lbPuesto.setText("Puesto");
-        jPanel1.add(lbPuesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(319, 192, 178, -1));
 
         jLabel6.setText("Antiguedad:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 214, -1, -1));
-        jPanel1.add(lbFechaContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(343, 214, 105, -1));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 600, -1));
+
+        jLabel32.setText("dias");
+
+        lblDiasMes.setText("dias");
+
+        lbMes.setText("Mes");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(ldTitulo1a)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(ldEmpresaNonbre)
+                        .addGap(146, 146, 146)
+                        .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbDirEmp)
+                        .addGap(102, 102, 102)
+                        .addComponent(ldDirección, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbCPEmp)
+                        .addGap(82, 82, 82)
+                        .addComponent(lbCPCiudadProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(ldCIFEMP)
+                        .addGap(139, 139, 139)
+                        .addComponent(ldCIFEMP1)
+                        .addGap(6, 6, 6)
+                        .addComponent(lbNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel3)
+                        .addGap(6, 6, 6)
+                        .addComponent(lbINSS, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(98, 98, 98)
+                        .addComponent(jLabel5)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lbPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(105, 105, 105)
+                                .addComponent(lbFechaContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(147, 147, 147)
+                        .addComponent(lblDiasMes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel32)
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel6))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(lblTitulo)
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ldTitulo1a)
+                            .addComponent(lbMes))))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ldEmpresaNonbre)
+                    .addComponent(lbNombre))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbDirEmp)
+                    .addComponent(ldDirección))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbCPEmp)
+                    .addComponent(lbCPCiudadProvincia))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ldCIFEMP)
+                    .addComponent(ldCIFEMP1)
+                    .addComponent(lbNIF)
+                    .addComponent(jLabel3)
+                    .addComponent(lbINSS))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel5))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblDiasMes)
+                                .addComponent(jLabel32)
+                                .addComponent(jLabel6))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbPuesto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbFechaContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 250));
 
@@ -552,7 +679,7 @@ public class FrmNomina extends javax.swing.JFrame {
     }//GEN-LAST:event_txTotalCobrarActionPerformed
 
     private void txTotalCobrar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTotalCobrar2ActionPerformed
-         // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_txTotalCobrar2ActionPerformed
 
     private void txRetPorcent2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txRetPorcent2ActionPerformed
@@ -635,6 +762,22 @@ public class FrmNomina extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jPanel3MouseClicked
 
+    private void calculoNomina(Empleado emp, YearMonth mesNomina) {
+
+        Tabla tS25 = new Tabla();
+        Complementos cpt = new Complementos();
+
+        double sb = tS25.getBaseMes(emp.getGrupo(), emp.getNivel());
+        double cd = cpt.getComplementoDestino();
+        double ce = cpt.getComplementoEspecifico(emp.getCategoria());
+        double bccc = sb + sb / 6 + cd + ce;
+        double bccp = bccc + tS25.getHora(emp.getGrupo(), emp.getNivel()) * 0;
+        double qbccc = bccc * 0.0483;
+        double qbccp = bccp * 0.0165;
+        double irpf = (sb + ce + cd) * 0.1984;
+        lblDiasMes.setText(mesNomina.lengthOfMonth() + "");
+
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -663,6 +806,7 @@ public class FrmNomina extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -674,17 +818,19 @@ public class FrmNomina extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lbCPCiudadProvincia;
     private javax.swing.JLabel lbCPEmp;
-    private javax.swing.JLabel lbCPEmp1;
     private javax.swing.JLabel lbDirEmp;
     private javax.swing.JLabel lbFechaContrato;
     private javax.swing.JLabel lbINSS;
+    private javax.swing.JLabel lbMes;
+    private javax.swing.JLabel lbNIF;
     private javax.swing.JLabel lbNombre;
     private javax.swing.JLabel lbPuesto;
+    private javax.swing.JLabel lblDiasMes;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel ldCIFEMP;
     private javax.swing.JLabel ldCIFEMP1;
-    private javax.swing.JLabel ldCIFEMP2;
     private javax.swing.JLabel ldDirección;
     private javax.swing.JLabel ldEmpresaNonbre;
     private javax.swing.JLabel ldT2;
