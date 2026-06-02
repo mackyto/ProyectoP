@@ -272,9 +272,21 @@ public class DlgEmpleado extends javax.swing.JDialog {
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
         getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(429, 416, 105, -1));
 
-        btnHoras1.setText("Añadir Horas");
+        btnHoras1.setText("Nómina");
         btnHoras1.addActionListener(this::btnHoras1ActionPerformed);
         getContentPane().add(btnHoras1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 416, -1, -1));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 550, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 460, Short.MAX_VALUE)
+        );
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 460));
 
         pack();
