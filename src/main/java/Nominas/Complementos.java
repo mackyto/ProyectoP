@@ -21,5 +21,9 @@ public class Complementos {
         return ESPECIFICO[clase-1];
     }
     
+    public double  getHoraXtra (){
+        return 19.16;
+    }
+    
     
 }

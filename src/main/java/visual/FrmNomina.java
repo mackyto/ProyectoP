@@ -46,7 +46,7 @@ public class FrmNomina extends javax.swing.JFrame {
         );
         nombreMes = nombreMes.substring(0, 1).toUpperCase() + nombreMes.substring(1);
         this.lbMes.setText(nombreMes + " de " + mesNomina.getYear());
-
+        lblDiasMes.setText(mesNomina.lengthOfMonth() + "");
     }
 
     /**
@@ -156,168 +156,79 @@ public class FrmNomina extends javax.swing.JFrame {
                 jPanel1MouseClicked(evt);
             }
         });
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("DejaVu Sans", 1, 48)); // NOI18N
         lblTitulo.setText("Mazcu.Fit");
+        jPanel1.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 17, 280, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 6, -1, -1));
 
         ldEmpresaNonbre.setText("Mazcu.Fit S.L.");
+        jPanel1.add(ldEmpresaNonbre, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 104, -1, -1));
 
         lbDirEmp.setText("Carretera Ribarroja s/n");
+        jPanel1.add(lbDirEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 126, -1, -1));
 
         lbCPEmp.setText("46940 Manises (Valencia)");
+        jPanel1.add(lbCPEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 148, -1, -1));
 
         ldCIFEMP.setText("CIF: A12345678");
+        jPanel1.add(ldCIFEMP, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 170, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel1.setText("Cuenta de cotización");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 192, -1, -1));
 
         jLabel4.setText("46/1234567/89");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 214, -1, -1));
 
         ldTitulo1a.setText("Recibo Nómina de ");
+        jPanel1.add(ldTitulo1a, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, -1, -1));
 
         lbNombre.setText("Nombre Empleado");
+        jPanel1.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 104, 243, -1));
 
         ldDirección.setText("Dirección");
+        jPanel1.add(ldDirección, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 126, 243, -1));
 
         lbCPCiudadProvincia.setText("CP - Ciudad (Provincia)");
+        jPanel1.add(lbCPCiudadProvincia, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 148, 243, -1));
 
         ldCIFEMP1.setText("NIF:");
+        jPanel1.add(ldCIFEMP1, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 170, -1, -1));
 
         lbINSS.setText("46/12345678/12");
+        jPanel1.add(lbINSS, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 170, 107, -1));
 
         lbNIF.setText("12345678L");
+        jPanel1.add(lbNIF, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 170, 74, -1));
 
         jLabel3.setText("INSS:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 170, -1, -1));
 
         jLabel5.setText("Puesto:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 192, -1, -1));
 
         lbPuesto.setText("Puesto");
+        jPanel1.add(lbPuesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(319, 192, 178, -1));
 
         jLabel6.setText("Antiguedad:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 210, -1, -1));
+        jPanel1.add(lbFechaContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 210, 100, 20));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 600, -1));
 
         jLabel32.setText("dias");
+        jPanel1.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, -1, 20));
 
         lblDiasMes.setText("dias");
+        jPanel1.add(lblDiasMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 30, 20));
 
         lbMes.setText("Mes");
+        jPanel1.add(lbMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 140, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(ldTitulo1a)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(ldEmpresaNonbre)
-                        .addGap(146, 146, 146)
-                        .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbDirEmp)
-                        .addGap(102, 102, 102)
-                        .addComponent(ldDirección, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbCPEmp)
-                        .addGap(82, 82, 82)
-                        .addComponent(lbCPCiudadProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(ldCIFEMP)
-                        .addGap(139, 139, 139)
-                        .addComponent(ldCIFEMP1)
-                        .addGap(6, 6, 6)
-                        .addComponent(lbNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel3)
-                        .addGap(6, 6, 6)
-                        .addComponent(lbINSS, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(98, 98, 98)
-                        .addComponent(jLabel5)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lbPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(105, 105, 105)
-                                .addComponent(lbFechaContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(147, 147, 147)
-                        .addComponent(lblDiasMes)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel32)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel6))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(lblTitulo)
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ldTitulo1a)
-                            .addComponent(lbMes))))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ldEmpresaNonbre)
-                    .addComponent(lbNombre))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbDirEmp)
-                    .addComponent(ldDirección))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbCPEmp)
-                    .addComponent(lbCPCiudadProvincia))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ldCIFEMP)
-                    .addComponent(ldCIFEMP1)
-                    .addComponent(lbNIF)
-                    .addComponent(jLabel3)
-                    .addComponent(lbINSS))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel5))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblDiasMes)
-                                .addComponent(jLabel32)
-                                .addComponent(jLabel6))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbPuesto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbFechaContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 250));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, -1));
 
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -332,11 +243,11 @@ public class FrmNomina extends javax.swing.JFrame {
 
         ldT3.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT3.setText("Cantidad");
-        jPanel2.add(ldT3, new org.netbeans.lib.awtextra.AbsoluteConstraints(333, 10, -1, -1));
+        jPanel2.add(ldT3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, -1, -1));
 
         ldT4.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT4.setText("Precio");
-        jPanel2.add(ldT4, new org.netbeans.lib.awtextra.AbsoluteConstraints(446, 10, -1, -1));
+        jPanel2.add(ldT4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, -1, -1));
 
         ldT5.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         ldT5.setText("Devengos");
@@ -481,15 +392,15 @@ public class FrmNomina extends javax.swing.JFrame {
         txRetPorcent3.setText("1000.00");
         txRetPorcent3.setBorder(null);
         txRetPorcent3.addActionListener(this::txRetPorcent3ActionPerformed);
-        jPanel2.add(txRetPorcent3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, -1, -1));
+        jPanel2.add(txRetPorcent3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, -1, -1));
 
         jLabel17.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Cuota Líquida");
         jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 220, -1, -1));
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 600, -1));
+        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 600, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 600, 250));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 600, 260));
 
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -775,7 +686,7 @@ public class FrmNomina extends javax.swing.JFrame {
         double qbccc = bccc * 0.0483;
         double qbccp = bccp * 0.0165;
         double irpf = (sb + ce + cd) * 0.1984;
-        lblDiasMes.setText(mesNomina.lengthOfMonth() + "");
+
 
     }
 
