@@ -151,11 +151,13 @@ public class GestorComercio implements LogicaNegocio {
             nivel > 5 || nivel < 0)
             throw new ErrorDatos("Datos del contrato erroneos");
         
+        int id = Cliente.getPuntero();
         Cliente cl = this.buscarCliente(nombre, apellidos); 
-        if  (cl != null)
+        if  (cl != null){
+            id = cl.getId();
             clientes.remove(cl);
+        }
         
-        int id = cl.getId();
         Empleado emp = new Empleado(id, nombre, apellidos, telefono, email,
             dni, inss, calle, numero, ciudad, 
             provincia, cp, categoria, grupo,  nivel, 
