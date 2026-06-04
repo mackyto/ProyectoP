@@ -47,8 +47,7 @@ public class GestorComercio implements LogicaNegocio {
     private PersisPedido pPedido;
     private PersisAlerta pAlerta;
     private PersisEmpleado pEmpleado;
-    
-    
+
     private GestorComercio() {
 
         pClient = new PersisClient();
@@ -60,14 +59,12 @@ public class GestorComercio implements LogicaNegocio {
         this.clientes = pClient.recuperarTodos();
 
         this.empleados = pEmpleado.recuperarTodos();
-        
+
         this.articulos = pArticul.recuperarTodo();
 
         this.alertaStock = pAlerta.recuperarTodas();
 
         this.pedidos = new ArrayList<>();
-        
-        
 
         for (Cliente cl : this.clientes) {
             pPedido.recuperarPedidos(cl, this.articulos);
@@ -79,10 +76,12 @@ public class GestorComercio implements LogicaNegocio {
             if (c.getId() > maxId) {
                 maxId = c.getId();
             }
-        for (Empleado em: empleados)
-            if (em.getId()>maxId)
-                maxId =  em.getId();
-        
+            for (Empleado em : empleados) {
+                if (em.getId() > maxId) {
+                    maxId = em.getId();
+                }
+            }
+
             Persona.setPuntero(maxId + 1);
 //        System.out.println("puntero Clietes "  + Persona.getPuntero());
         }
@@ -139,57 +138,70 @@ public class GestorComercio implements LogicaNegocio {
 
     }
 
-
-    public Empleado crearEmpleado(String nombre, String apellidos, String telefono, String email, 
-            String dni, String inss, String calle, String numero, String ciudad, 
-            String provincia, String cp, int categoria, int grupo, int nivel, 
+    public Empleado crearEmpleado(String nombre, String apellidos, String telefono, String email,
+            String dni, String inss, String calle, String numero, String ciudad,
+            String provincia, String cp, int categoria, int grupo, int nivel,
             LocalDate fechaContrato, String puesto
-            ) throws SQLException, ErrorDatos {
+    ) throws SQLException, ErrorDatos {
 
-        if (categoria > 5 || categoria < 0 ||
-            grupo > 5 || grupo < 0 ||
-            nivel > 5 || nivel < 0)
+        if (categoria > 5 || categoria < 0
+                || grupo > 5 || grupo < 0
+                || nivel > 5 || nivel < 0) {
             throw new ErrorDatos("Datos del contrato erroneos");
+        }
+
+        int id;
+        Empleado emp;
+        Cliente cl = this.buscarCliente(nombre, apellidos);
         
-        int id = Cliente.getPuntero();
-        Cliente cl = this.buscarCliente(nombre, apellidos); 
-        if  (cl != null){
+        if (cl != null) {
             id = cl.getId();
+            List<Pedido> listaPedidos = cl.getListaPedidos();
             clientes.remove(cl);
+            cl = null;
+            emp = new Empleado(id, nombre, apellidos, telefono, email,
+                    dni, inss, calle, numero, ciudad,
+                    provincia, cp, categoria, grupo, nivel,
+                    fechaContrato, puesto);
+            emp.setListaPedidos(listaPedidos);
+            
+            if (!pEmpleado.persistirSoloEmpleado(emp)) {
+                throw new SQLException("Error de Integridad de Datos");
+            }
+        } else {
+
+            id = Cliente.getPuntero();
+            emp = new Empleado(id, nombre, apellidos, telefono, email,
+                    dni, inss, calle, numero, ciudad,
+                    provincia, cp, categoria, grupo, nivel,
+                    fechaContrato, puesto);
+
+            if (!pEmpleado.persistirEmpleado(emp)) {
+                throw new SQLException("Error de Integridad de Datos");
+            }
         }
-        
-        Empleado emp = new Empleado(id, nombre, apellidos, telefono, email,
-            dni, inss, calle, numero, ciudad, 
-            provincia, cp, categoria, grupo,  nivel, 
-            fechaContrato, puesto);
-        
-        if (!pEmpleado.persistirEmpleado(emp)) {
-            throw new SQLException("Error de Integridad de Datos");
-        }
+
         empleados.add(emp);
         return empleados.getLast();
 
     }
-    
-    
-    public boolean modificarEmpleado (Empleado emp){
-        
+
+    public boolean modificarEmpleado(Empleado emp) {
+
         return pEmpleado.modificarEmpleado(emp);
-        
+
     }
-    
-    
-    public boolean borrarEmpleado (Empleado emp) throws ErrorDatos{
-        
+
+    public boolean borrarEmpleado(Empleado emp) throws ErrorDatos {
+
         int id = Cliente.getPuntero();
         Cliente cl = new Cliente(emp.getEmail(), 3, emp.getNombre(), emp.getApellidos(), emp.getTelefono(), id);
         clientes.add(cl);
         empleados.remove(emp);
         return pEmpleado.eliminarEmpleado(emp.getId());
 
-    } 
-    
-    
+    }
+
     /**
      * Getter Lista de clientes
      *
@@ -323,7 +335,7 @@ public class GestorComercio implements LogicaNegocio {
      */
     @Override
     public Pedido confirmarPedido() throws ErrorDatos {
-        
+
         if (this.obtenerPedidoEnCurso().getLista().size() != 0) {
             pedidoEnCurso.setTotal(pedidoEnCurso.calcularTotal());
             // --- ACTUALIZACIÓN DE STOCK ---
@@ -342,7 +354,7 @@ public class GestorComercio implements LogicaNegocio {
                     prod.setStock(nuevoStock);
                     pArticul.actualizarStock(prod);
                     this.actualizarAlerta();
-                    
+
                 }
             }
             // ------------------------------
@@ -407,10 +419,12 @@ public class GestorComercio implements LogicaNegocio {
      */
     public Cliente buscarCliente(String nombre, String apellidos) {
         for (Cliente cl : this.listarClientes()) {
-            if (cl.getNombre().equalsIgnoreCase(nombre) && cl.getApellidos().equalsIgnoreCase(apellidos)) {
+            if (cl.getNombre().equalsIgnoreCase(nombre.trim()) && 
+                cl.getApellidos().equalsIgnoreCase(apellidos.trim()) ||
+                cl.getNombre().toLowerCase().contains(nombre.toLowerCase().trim()) &&
+                cl.getApellidos().toLowerCase().contains(apellidos.toLowerCase().trim()))
                 return cl;
             }
-        }
         return null;
     }
 
@@ -421,48 +435,46 @@ public class GestorComercio implements LogicaNegocio {
      * @return lista de clientes con coincidencias.
      */
     public List<Cliente> buscarClientes(String nombre) {
-        
+
         List<Cliente> result = new ArrayList<>();
         nombre = nombre.toLowerCase();
-        
-        for (Cliente cl : this.listarClientes()) 
-            if (cl.getNombre().toLowerCase().contains(nombre) || cl.getApellidos().toLowerCase().contains(nombre) || cl.getTelefono().contains(nombre)) 
+
+        for (Cliente cl : this.listarClientes()) {
+            if (cl.getNombre().toLowerCase().contains(nombre) || cl.getApellidos().toLowerCase().contains(nombre) || cl.getTelefono().contains(nombre)) {
                 result.add(cl);
-            
-        
-        for (Empleado e: this.empleados)
-            if (e.getNombre().toLowerCase().contains(nombre) || e.getApellidos().toLowerCase().contains(nombre) || e.getTelefono().contains(nombre))
+            }
+        }
+
+        for (Empleado e : this.empleados) {
+            if (e.getNombre().toLowerCase().contains(nombre) || e.getApellidos().toLowerCase().contains(nombre) || e.getTelefono().contains(nombre)) {
                 result.add(e);
-        
+            }
+        }
+
         return result;
     }
 
-
-    
-    
-    
-    
-    
     /**
-     * Lista los empleados que cumplen criterios en nombre apellidos, telefono, dni o inss
+     * Lista los empleados que cumplen criterios en nombre apellidos, telefono,
+     * dni o inss
+     *
      * @param nombre
-     * @return 
+     * @return
      */
     public List<Empleado> buscarEmpleados(String nombre) {
-        
+
         List<Empleado> result = new ArrayList<>();
         nombre = nombre.toLowerCase();
-                
-        for (Empleado e: this.empleados)
-            if (e.getNombre().toLowerCase().contains(nombre) || e.getApellidos().toLowerCase().contains(nombre) || e.getTelefono().contains(nombre) || e.getDni().toLowerCase().contains(nombre) || e.getNss().contains(nombre))
+
+        for (Empleado e : this.empleados) {
+            if (e.getNombre().toLowerCase().contains(nombre) || e.getApellidos().toLowerCase().contains(nombre) || e.getTelefono().contains(nombre) || e.getDni().toLowerCase().contains(nombre) || e.getNss().contains(nombre)) {
                 result.add(e);
-        
+            }
+        }
+
         return result;
     }
-    
-    
-    
-    
+
     /**
      * Selecciona un Cliente de una lista por su identificador único
      *
@@ -567,10 +579,6 @@ public class GestorComercio implements LogicaNegocio {
         }
     }
 
-    
-    
-    
-    
     /**
      * Imprime Los Datos de una lista de pedidos
      *
@@ -604,65 +612,70 @@ public class GestorComercio implements LogicaNegocio {
                 System.out.println("Error procesando un pedido: " + e.getMessage());
             }
         }
-        
+
     }
 
     public List<AlertaStock> stockCero() {
         List<AlertaStock> articulos = new ArrayList<>();
-        if (!this.alertaStock.isEmpty())
-        for (AlertaStock aS: this.alertaStock){
-            
-            if (aS.getStockActual() == 0)
-                articulos.add(aS);
-    
+        if (!this.alertaStock.isEmpty()) {
+            for (AlertaStock aS : this.alertaStock) {
+
+                if (aS.getStockActual() == 0) {
+                    articulos.add(aS);
+                }
+
+            }
         }
-        return articulos;  
+        return articulos;
     }
 
-    public int countStockCero (){
-        if (!this.alertaStock.isEmpty())
+    public int countStockCero() {
+        if (!this.alertaStock.isEmpty()) {
             return this.stockCero().size();
-        
+        }
+
         return 0;
-        
-    }    
-    
-    public boolean estadoRojo (){
-        
-        return (!stockCero().isEmpty()); 
-        
-    }
-    
-    public boolean estadoAmbar (){
-        
-        return (stockCero().isEmpty()) && !this.alertaStock.isEmpty();
-        
+
     }
 
-    public boolean estadoVerde (){
-        
+    public boolean estadoRojo() {
+
+        return (!stockCero().isEmpty());
+
+    }
+
+    public boolean estadoAmbar() {
+
+        return (stockCero().isEmpty()) && !this.alertaStock.isEmpty();
+
+    }
+
+    public boolean estadoVerde() {
+
         return this.alertaStock.isEmpty();
-        
+
     }
-    
-    public void actualizarAlerta (int id){
-        
-                AlertaStock productoAlerta = pAlerta.recuperarAlertaByID(id);
-                if (productoAlerta != null)
-                    this.alertaStock.add(productoAlerta);
-                else 
-                    for (AlertaStock as: this.alertaStock)
-                        if(as.getId() == id)
-                            this.alertaStock.remove(as);
-        
+
+    public void actualizarAlerta(int id) {
+
+        AlertaStock productoAlerta = pAlerta.recuperarAlertaByID(id);
+        if (productoAlerta != null) {
+            this.alertaStock.add(productoAlerta);
+        } else {
+            for (AlertaStock as : this.alertaStock) {
+                if (as.getId() == id) {
+                    this.alertaStock.remove(as);
+                }
+            }
+        }
+
     }
-    
-    public void actualizarAlerta (){
-        
+
+    public void actualizarAlerta() {
+
         this.alertaStock.clear();
         this.alertaStock = pAlerta.recuperarTodas();
-        
+
     }
-    
-    
+
 }

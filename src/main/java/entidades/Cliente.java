@@ -133,6 +133,15 @@ public class Cliente extends Persona {
         }
     }
 
+    public List<Pedido> getListaPedidos() {
+        return listaPedidos;
+    }
+
+    public void setListaPedidos(List<Pedido> listaPedidos) {
+        this.listaPedidos = listaPedidos;
+    }
+    
+    
     /**
      * Método para añadir un pedido a la lista del cliente.
      *

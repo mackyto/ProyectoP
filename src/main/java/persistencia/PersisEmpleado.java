@@ -35,6 +35,77 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM v_empleado";
 
+    
+        /**
+     * Guarda los datos de un empleado que ya era cliente en la base de datos
+     * actualizando secuencialmente las tablas Persona y Cliente y rellenando
+     * la tabla Empleado.
+     *
+     * @param e tipo Empleado, datos del objeto a persistir.
+     * @return true si completa con éxito la transacción.
+     */
+    @Override
+    public boolean persistirSoloEmpleado(Empleado e) {
+
+        try (Connection conn = conexionDB()) {
+            conn.setAutoCommit(false); // Transacción atómica
+
+            try (PreparedStatement pps = conn.prepareStatement(UPDATE_PERSONA_EMP); PreparedStatement cps = conn.prepareStatement(UPDATE_CLIENTE_EMP); PreparedStatement eps = conn.prepareStatement(INSERT_EMPLEADO)) {
+
+                // 1. Tabla Persona
+                pps.setInt(1, e.getId());
+                pps.setString(2, e.getNombre());
+                pps.setString(3, e.getApellidos());
+                pps.setString(4, e.getTelefono());
+                pps.executeUpdate();
+
+                // 2. Tabla Cliente
+                cps.setInt(1, e.getId());
+                cps.setInt(2, e.getNivelFidelidad());
+                cps.setString(3, e.getEmail());
+                cps.executeUpdate();
+
+                // 3. Tabla Empleado
+                eps.setInt(1, e.getId());
+                eps.setString(2, e.getDni());
+                eps.setString(3, e.getNss());
+                eps.setString(4, e.getPuesto());
+                eps.setString(5, e.getCalle());
+                eps.setString(6, e.getNumero());
+                eps.setString(7, e.getCiudad());
+                eps.setString(8, e.getProvincia());
+                eps.setString(9, e.getCp());
+                eps.setInt(10, e.getCategoria());
+                eps.setInt(11, e.getGrupo());
+                eps.setInt(12, e.getNivel());
+
+                if (e.getFechaContrato() != null) {
+                    eps.setObject(13, e.getFechaContrato());
+                } else {
+                    eps.setNull(13, Types.DATE);
+                }
+
+                // Al ser primitivo double, pasamos el valor directamente (si no tiene, pasará 0.0)
+                eps.setDouble(14, e.getAntiguedadAnterior());
+
+                eps.executeUpdate();
+
+                conn.commit();
+                return true;
+
+            } catch (SQLException sqle) {
+                conn.rollback();
+                System.err.println("Error en la transacción de Empleado. Transacción revertida (Rollback).");
+                sqle.printStackTrace();
+            }
+        } catch (SQLException sqle) {
+            System.err.println("Error de conexión a la base de datos: " + sqle.getMessage());
+        }
+
+        return false;
+    }
+    
+    
     /**
      * Guarda los datos de un empleado en la base de datos rellenando
      * secuencialmente las tablas Persona, Cliente y Empleado.

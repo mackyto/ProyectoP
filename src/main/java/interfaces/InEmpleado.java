@@ -18,5 +18,6 @@ public interface InEmpleado {
     public List<Empleado> recuperarTodos() throws ErrorDatos;
     public boolean modificarEmpleado(Empleado e);
     public boolean eliminarEmpleado(int id);
+    public boolean persistirSoloEmpleado(Empleado e);
     
 }
