@@ -52,19 +52,19 @@ public class PersisEmpleado extends ConexionBase implements InEmpleado {
 
             try (PreparedStatement pps = conn.prepareStatement(UPDATE_PERSONA_EMP); PreparedStatement cps = conn.prepareStatement(UPDATE_CLIENTE_EMP); PreparedStatement eps = conn.prepareStatement(INSERT_EMPLEADO)) {
 
-                // 1. Tabla Persona
-                pps.setInt(1, e.getId());
-                pps.setString(2, e.getNombre());
-                pps.setString(3, e.getApellidos());
-                pps.setString(4, e.getTelefono());
+                // 1. Modificar Persona
+                pps.setString(1, e.getNombre());
+                pps.setString(2, e.getApellidos());
+                pps.setString(3, e.getTelefono());
+                pps.setInt(4, e.getId());
                 pps.executeUpdate();
 
-                // 2. Tabla Cliente
-                cps.setInt(1, e.getId());
-                cps.setInt(2, e.getNivelFidelidad());
-                cps.setString(3, e.getEmail());
+                // 2. Modificar Cliente (Heredado por Empleado)
+                cps.setInt(1, e.getNivelFidelidad());
+                cps.setString(2, e.getEmail());
+                cps.setInt(3, e.getId());
                 cps.executeUpdate();
-
+                
                 // 3. Tabla Empleado
                 eps.setInt(1, e.getId());
                 eps.setString(2, e.getDni());

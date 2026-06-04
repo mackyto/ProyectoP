@@ -153,7 +153,7 @@ public class GestorComercio implements LogicaNegocio {
         int id;
         Empleado emp;
         Cliente cl = this.buscarCliente(nombre, apellidos);
-        
+
         if (cl != null) {
             id = cl.getId();
             List<Pedido> listaPedidos = cl.getListaPedidos();
@@ -164,7 +164,7 @@ public class GestorComercio implements LogicaNegocio {
                     provincia, cp, categoria, grupo, nivel,
                     fechaContrato, puesto);
             emp.setListaPedidos(listaPedidos);
-            
+
             if (!pEmpleado.persistirSoloEmpleado(emp)) {
                 throw new SQLException("Error de Integridad de Datos");
             }
@@ -194,11 +194,13 @@ public class GestorComercio implements LogicaNegocio {
 
     public boolean borrarEmpleado(Empleado emp) throws ErrorDatos {
 
-        int id = Cliente.getPuntero();
+        int id = emp.getId();
+        empleados.remove(emp);
+        boolean estado = pEmpleado.eliminarEmpleado(id);
+        emp = null;
         Cliente cl = new Cliente(emp.getEmail(), 3, emp.getNombre(), emp.getApellidos(), emp.getTelefono(), id);
         clientes.add(cl);
-        empleados.remove(emp);
-        return pEmpleado.eliminarEmpleado(emp.getId());
+        return estado;
 
     }
 
@@ -411,20 +413,26 @@ public class GestorComercio implements LogicaNegocio {
     }
 
     /**
-     * Busca un cliente por nombre
+     * Busca un cliente por nombre y apellidos
      *
      * @param nombre del cliente a buscar
      * @param apellidos del cliente a buscar
      * @return del primer cliente localizado.
      */
     public Cliente buscarCliente(String nombre, String apellidos) {
+
+        if (nombre == null || apellidos == null) {
+            return null;
+        }
+
         for (Cliente cl : this.listarClientes()) {
-            if (cl.getNombre().equalsIgnoreCase(nombre.trim()) && 
-                cl.getApellidos().equalsIgnoreCase(apellidos.trim()) ||
-                cl.getNombre().toLowerCase().contains(nombre.toLowerCase().trim()) &&
-                cl.getApellidos().toLowerCase().contains(apellidos.toLowerCase().trim()))
+
+            if (cl.getNombre().toLowerCase().contains(nombre.trim().toLowerCase()) &&
+                cl.getApellidos().toLowerCase().contains(apellidos.trim().toLowerCase())) {
                 return cl;
             }
+        }
+
         return null;
     }
 

@@ -17,7 +17,7 @@ public class Empleado extends Cliente {
     private int categoria, grupo, nivel;
     private LocalDate fechaContrato;
     private double antiguedadAnterior;
-//    private int[] horas;
+
 
     /**
      *
@@ -25,7 +25,6 @@ public class Empleado extends Cliente {
      */
     public Empleado() throws ErrorDatos{
         this.antiguedadAnterior = 0.00;
-     //   this.horas = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
     }
     
     public Empleado(int id, String nombre, String apellidos, String telefono, String email,
@@ -34,7 +33,6 @@ public class Empleado extends Cliente {
             LocalDate fechaContrato, String puesto) throws ErrorDatos {
         
         super(email, 5, nombre, apellidos, telefono,id);
-    //    this.horas = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
         this.setDni(dni);
         this.setNss(nss);
         this.calle = calle;
